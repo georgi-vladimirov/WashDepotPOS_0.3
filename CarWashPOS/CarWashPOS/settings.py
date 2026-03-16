@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 
 import django
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,3 +133,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "/login/"  # Where to redirect if not logged in
 LOGIN_REDIRECT_URL = "/"  # Where to go after login
+
+
+LANGUAGES = [
+    ("en", _("English")),
+    ("bg", _("Bulgarian")),
+]
