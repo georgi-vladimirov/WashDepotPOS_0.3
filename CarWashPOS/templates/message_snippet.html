@@ -1,0 +1,39 @@
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  {% for message in messages %}
+    <div class="toast align-items-center"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true"
+         data-bs-autohide="true"
+         data-bs-delay="5000">
+      <div class="toast-header">
+        <i class="me-2 {% comment %} Icons based on message type {% endcomment %}
+                  {% if message.tags == "success" %}
+                    bi-check-circle-fill
+                  {% elif message.tags == "error" %}
+                    bi-x-circle-fill
+                  {% elif message.tags == "warning" %}
+                    bi-exclamation-triangle-fill
+                  {% elif message.tags == "info" %}
+                    bi-info-circle-fill
+                  {% else %}
+                  {% endif %}"></i>
+        <strong class="me-auto">{{ message.tags|capfirst }}</strong>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
+      </div>
+      <div class="toast-body">{{ message }}</div>
+    </div>
+  </div>
+{% endfor %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl, { autohide: true, delay: 5000 });
+        });
+        toastList.forEach(toast => toast.show());
+    });
+</script>

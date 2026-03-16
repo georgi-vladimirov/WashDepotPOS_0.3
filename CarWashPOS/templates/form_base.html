@@ -1,0 +1,29 @@
+{% for field in form %}
+  <!-- It's a radio input -->
+  {% if field.field.widget.input_type == "radio" %}
+    <div class="mt-3">
+      {{ field.label_tag }}
+      <div>
+        {% for option in field %}
+          <input type="radio"
+                 class="btn-check"
+                 name="{{ field.name }}"
+                 id="{{ option.id_for_label }}"
+                 value="{{ option.data.value }}"
+                 {% if option.data.selected %}checked{% endif %}
+                 autocomplete="off">
+          <label class="btn btn-outline-secondary" for="{{ option.id_for_label }}">{{ option.choice_label }}</label>
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="mt-3">
+      {{ field.label_tag }}
+      {{ field }}
+    </div>
+  {% endif %}
+  {% if field.errors %}
+    {% include "error_snippet.html" with errors=field.errors %}
+
+  {% endif %}
+{% endfor %}
