@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if error %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{ error }}</strong>
+      <button type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"></button>
+    </div>
+  {% endif %}
+  <div class="container w-25 h-25 mt-5 p-4 rounded-4 shadow-lg">
+    <h2>Login</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-floating mb-1 mt-3">
+        <input type="text"
+               class="form-control"
+               id="floatingInput"
+               name="username"
+               placeholder="User name" />
+        <label for="floatingInput">User name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password"
+               class="form-control"
+               id="floatingPassword"
+               name="password"
+               placeholder="Password" />
+        <label for="floatingPassword">Password</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock content %}
