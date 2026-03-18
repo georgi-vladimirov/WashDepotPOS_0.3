@@ -1,28 +1,27 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
 from django.views import View
 
+from .selectors import get_authenticated_user
+from .services import user_login, user_logout
 
-# Create your views here.
+
 class LoginView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return render(request, "accounts/login.html")
-        else:
-            return redirect("core:home")
+        return redirect("core:home")
 
     def post(self, request):
         username = request.POST.get("username")
         password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
+        user = get_authenticated_user(username=username, password=password)
         if user is not None:
-            login(request, user)
+            user_login(request=request, user=user)
             return redirect("core:home")
-        else:
-            return render(request, "accounts/login.html", {"error": "Invalid credentials"})
+        return render(request, "accounts/login.html", {"error": "Invalid credentials"})
 
 
 class LogoutView(View):
     def get(self, request):
-        logout(request)
+        user_logout(request=request)
         return redirect("accounts:login")

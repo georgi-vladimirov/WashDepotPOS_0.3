@@ -1,0 +1,9 @@
+INFO 2026-03-18 17:27:53,422 accounts.services user: admin logged in.
+WARNING 2026-03-18 17:30:58,956 accounts.selectors Failed authentication attempt for username: admin
+INFO 2026-03-18 17:31:13,694 accounts.selectors user: admin authenticated.
+INFO 2026-03-18 17:31:13,694 accounts.services user: admin logged in.
+INFO 2026-03-18 18:34:25,146 accounts.selectors user: admin authenticated.
+INFO 2026-03-18 18:34:25,146 accounts.services user: admin logged in.
+INFO 2026-03-18 18:54:01,103 accounts.services user: admin logged out.
+INFO 2026-03-18 18:54:07,669 accounts.selectors user: admin authenticated.
+INFO 2026-03-18 18:54:07,669 accounts.services user: admin logged in.
