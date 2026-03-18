@@ -4,7 +4,9 @@ from typing import cast
 from datetime import datetime
 from .selectors import get_cal_event_by_id, get_last_cal_event_by_user, get_location_by_id
 from .models import CalendarEvent
+import logging
 
+logger = logging.getLogger("core.services")
 
 def sync_cal_event_session(*, request: HttpRequest) -> None:
     """Ensures the session contains a valid cal_event_id, location and date."""
@@ -18,8 +20,8 @@ def sync_cal_event_session(*, request: HttpRequest) -> None:
         return
 
     cal_event = get_cal_event_by_id(cal_event_id=cal_event_id)
-    request.session["location"] = cal_event.location if cal_event else ""
-    request.session["date"] = cal_event.date if cal_event else ""
+    request.session["location"] = cal_event.location.name if cal_event else ""
+    request.session["date"] = cal_event.date.strftime("%d %B %Y") if cal_event else ""
     return
 
 
@@ -29,4 +31,5 @@ def calendar_event_create(date_str: str, location_str: str) -> CalendarEvent:
     date = datetime.strptime(date_str, "%Y-%m-%d").date()
     cal_event = CalendarEvent(date=date, location=location, is_active=True)
     cal_event.save()
+    logger.info("Created new CalendarEvent: %s", cal_event)
     return cal_event

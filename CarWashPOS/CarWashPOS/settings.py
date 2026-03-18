@@ -168,7 +168,12 @@ LOGGING = {
             "handlers": ["console"],
             "level": "WARNING",
         },
-        "accounts": {  # your app
+        "accounts": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "core": {
             "handlers": ["console", "file"],
             "level": "INFO",
             "propagate": False,
