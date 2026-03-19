@@ -1,0 +1,20 @@
+{
+    "cSpell.words": [
+        "endfor",
+        "endblock",
+        "endif",
+        "endwith",
+        "forloop",
+        "blocktrans",
+        "endblocktrans",
+        "endload",
+        "crispy",
+        "djlint",
+        "staticfiles",
+        "urlconf",
+        "onchange",
+        "onclick",
+        "stringformat",
+        "endcomment",
+    ]
+}

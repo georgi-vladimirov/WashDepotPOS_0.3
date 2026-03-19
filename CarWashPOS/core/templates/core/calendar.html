@@ -1,58 +1,59 @@
 {% extends "base.html" %}
+
+{% load i18n %}
+{% load l10n %}
 {% load calendar_tags %}
+
 {% block title %}
     Calendar - CarWash POS
 {% endblock title %}
 {% block navbar %}
     {% include "core/navbar.html" %}
+
 {% endblock navbar %}
 {% block content %}
     <div class="container mt-4">
         <div class="row mb-4">
             <div class="col-md-12">
                 <h2 class="text-center mb-4">
-                    <i class="bi bi-calendar3"></i> Calendar View
+                    <i class="bi bi-calendar3"></i> {% translate "Calendar View" %}
                 </h2>
                 <!-- Month/Year/Location Selector -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <form method="get" id="calendarForm" class="row g-3">
                             <div class="col-md-4">
-                                <label for="month" class="form-label">Month</label>
+                                <label for="month" class="form-label">{% translate "Month" %}</label>
                                 <select name="month"
                                         id="month"
                                         class="form-select"
                                         onchange="this.form.submit()">
                                     {% for month_num, month_name in months %}
                                         <option value="{{ month_num }}"
-                                                {% if month_num == selected_month %}selected{% endif %}>
-                                            {{ month_name }}
-                                        </option>
+                                                {% if month_num == selected_month %}selected{% endif %}>{% translate month_name %}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="year" class="form-label">Year</label>
+                                <label for="year" class="form-label">{% translate "Year" %}</label>
                                 <select name="year"
                                         id="year"
                                         class="form-select"
                                         onchange="this.form.submit()">
                                     {% for year in years %}
-                                        <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                                        <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year|unlocalize }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="location" class="form-label">Location</label>
+                                <label for="location" class="form-label">{% translate "Location" %}</label>
                                 <select name="location"
                                         id="location"
                                         class="form-select"
                                         onchange="this.form.submit()">
                                     {% for location in locations %}
                                         <option value="{{ location.pk }}"
-                                                {% if selected_location.pk == location.pk %}selected{% endif %}>
-                                            {{ location.name }}
-                                        </option>
+                                                {% if selected_location.pk == location.pk %}selected{% endif %}>{{ location.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -63,7 +64,7 @@
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h4 class="mb-0 text-center">
-                            {{ month_name }} {{ selected_year }}
+                            {% translate month_name %} {{ selected_year|unlocalize }}
                             {% if selected_location %}- {{ selected_location.name }}{% endif %}
                         </h4>
                     </div>
@@ -72,27 +73,28 @@
                             <table class="table table-bordered mb-0 calendar-table">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="text-center py-1">Понеделник</th>
-                                        <th class="text-center py-1">Вторник</th>
-                                        <th class="text-center py-1">Сряда</th>
-                                        <th class="text-center py-1">Четвъртък</th>
-                                        <th class="text-center py-1">Петък</th>
-                                        <th class="text-center py-1 table-info">Събота</th>
-                                        <th class="text-center py-1 table-warning">Неделя</th>
+                                        <th class="text-center py-1">{% translate "Monday" %}</th>
+                                        <th class="text-center py-1">{% translate "Tuesday" %}</th>
+                                        <th class="text-center py-1">{% translate "Wednesday" %}</th>
+                                        <th class="text-center py-1">{% translate "Thursday" %}</th>
+                                        <th class="text-center py-1">{% translate "Friday" %}</th>
+                                        <th class="text-center py-1 table-info">{% translate "Saturday" %}</th>
+                                        <th class="text-center py-1 table-warning">{% translate "Sunday" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for week in calendar %}
                                         <tr>
                                             {% for day in week %}
-                                                <td class="p-0 calendar-cell {% if day == today.day and selected_month == today.month and selected_year == today.year %}table-primary{% endif %}">
+                                                <td class="p-0 calendar-cell
+                                                           {% if day == today.day and selected_month == today.month and selected_year == today.year %}table-primary{% endif %}">
                                                     {% if day != 0 %}
                                                         <div class="d-flex flex-column h-100">
                                                             <!-- Day Number -->
                                                             <div class="p-2">
                                                                 <strong class="fs-5">{{ day }}</strong>
                                                                 {% if day == today.day and selected_month == today.month and selected_year == today.year %}
-                                                                    <span class="badge bg-info ms-1">Today</span>
+                                                                    <span class="badge bg-info ms-1">{% translate "Today" %}</span>
                                                                 {% endif %}
                                                             </div>
                                                             <!-- Event Info -->
@@ -100,16 +102,16 @@
                                                                 {% if day in events %}
                                                                     {% if events|lookup:day|lookup:"active" %}
                                                                         <span class="badge bg-success">
-                                                                            <i class="bi bi-check-circle"></i> Open
+                                                                            <i class="bi bi-check-circle"></i> {% translate "Open" %}
                                                                         </span>
                                                                     {% else %}
                                                                         <span class="badge bg-warning text-dark">
-                                                                            <i class="bi bi-exclamation-circle"></i> Closed
+                                                                            <i class="bi bi-exclamation-circle"></i> {% translate "Closed" %}
                                                                         </span>
                                                                     {% endif %}
                                                                 {% else %}
                                                                     <span class="badge bg-secondary">
-                                                                        <i class="bi bi-x-circle"></i> No Event
+                                                                        <i class="bi bi-x-circle"></i> {% translate "No Event" %}
                                                                     </span>
                                                                 {% endif %}
                                                             </div>
@@ -118,12 +120,12 @@
                                                                 {% if day in events %}
                                                                     <button class="btn btn-sm btn-outline-primary w-100"
                                                                             onclick="selectDate('{{ events|lookup:day|lookup:'date'|date:'Y-m-d' }}', '{{ events|lookup:day|lookup:'id' }}')">
-                                                                        <i class="bi bi-box-arrow-in-right"></i> Select
+                                                                        <i class="bi bi-box-arrow-in-right"></i>{% translate "Select" %}
                                                                     </button>
                                                                 {% else %}
                                                                     <button class="btn btn-sm btn-outline-success w-100"
                                                                             onclick="createCalendarEvent('{{ selected_year }}-{{ selected_month|stringformat:'02d' }}-{{ day|stringformat:'02d' }}', '{{ selected_location.pk }}')">
-                                                                        <i class="bi bi-plus-circle"></i> Create
+                                                                        <i class="bi bi-plus-circle"></i> {% translate "Create" %}
                                                                     </button>
                                                                 {% endif %}
                                                             </div>
@@ -143,9 +145,9 @@
                     <div class="card-body">
                         <h6 class="card-title">Legend:</h6>
                         <div class="d-flex flex-wrap gap-3">
-                            <span><span class="badge bg-success"><i class="bi bi-check-circle"></i> Open</span> = Денят е отворен за работа</span>
-                            <span><span class="badge bg-warning text-dark"><i class="bi bi-exclamation-circle"></i> Closed</span> = Денят е затворен за работа</span>
-                            <span><span class="badge bg-secondary"><i class="bi bi-x-circle"></i> No Event</span> = Няма събитие за този ден</span>
+                            <span><span class="badge bg-success"><i class="bi bi-check-circle"></i> {% translate "Open" %}</span> = {% translate "Day is open" %}</span>
+                            <span><span class="badge bg-warning text-dark"><i class="bi bi-exclamation-circle"></i> {% translate "Closed" %}</span> = {% translate "Day is closed" %}</span>
+                            <span><span class="badge bg-secondary"><i class="bi bi-x-circle"></i> {% translate "No Event" %}</span> = {% translate "No event for this day" %}</span>
                         </div>
                     </div>
                 </div>

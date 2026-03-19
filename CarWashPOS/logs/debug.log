@@ -12,3 +12,5 @@ INFO 2026-03-18 20:02:35,675 accounts.selectors user: bps authenticated.
 INFO 2026-03-18 20:02:35,675 accounts.services user: bps logged in.
 INFO 2026-03-18 20:23:37,555 core.services Created new CalendarEvent: 2026-03-17 - Bussiness Park Sofia - Active: True
 INFO 2026-03-18 20:25:25,506 accounts.services user: bps logged out.
+INFO 2026-03-19 17:52:58,527 accounts.selectors user: admin authenticated.
+INFO 2026-03-19 17:52:58,528 accounts.services user: admin logged in.

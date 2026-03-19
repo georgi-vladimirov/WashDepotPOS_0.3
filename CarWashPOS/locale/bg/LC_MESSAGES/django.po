@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-16 21:41+0200\n"
+"POT-Creation-Date: 2026-03-19 20:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,114 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: .\CarWashPOS\settings.py:139
-msgid "English"
-msgstr ""
 
-#: .\CarWashPOS\settings.py:140
+#: .\CarWashPOS\settings.py:144
+msgid "English"
+msgstr "Английски"
+
+#: .\CarWashPOS\settings.py:145
 msgid "Bulgarian"
 msgstr "Български"
+
+#: .\core\templates\core\calendar.html:18
+msgid "Calendar View"
+msgstr "Календар"
+
+#: .\core\templates\core\calendar.html:25
+msgid "Month"
+msgstr "Месец"
+
+#: .\core\templates\core\calendar.html:37
+msgid "Year"
+msgstr "Година"
+
+#: .\core\templates\core\calendar.html:48
+msgid "Location"
+msgstr "Локация"
+
+#: .\core\templates\core\calendar.html:75
+msgid "Monday"
+msgstr "Понеделник"
+
+#: .\core\templates\core\calendar.html:76
+msgid "Tuesday"
+msgstr "Вторник"
+
+#: .\core\templates\core\calendar.html:77
+msgid "Wednesday"
+msgstr "Сряда"
+
+#: .\core\templates\core\calendar.html:78
+msgid "Thursday"
+msgstr "Четвъртък"
+
+#: .\core\templates\core\calendar.html:79
+msgid "Friday"
+msgstr "Петък"
+
+#: .\core\templates\core\calendar.html:80
+msgid "Saturday"
+msgstr "Събота"
+
+#: .\core\templates\core\calendar.html:81
+msgid "Sunday"
+msgstr "Неделя"
+
+#: .\core\templates\core\calendar.html:96
+msgid "Today"
+msgstr "Днес"
+
+#: .\core\templates\core\calendar.html:104
+#: .\core\templates\core\calendar.html:147
+msgid "Open"
+msgstr "Отворен"
+
+#: .\core\templates\core\calendar.html:108
+#: .\core\templates\core\calendar.html:148
+msgid "Closed"
+msgstr "Затворен"
+
+#: .\core\templates\core\calendar.html:113
+#: .\core\templates\core\calendar.html:149
+msgid "No Event"
+msgstr "Няма събитие"
+
+#: .\core\templates\core\calendar.html:122
+msgid "Select"
+msgstr "Избери"
+
+#: .\core\templates\core\calendar.html:127
+msgid "Create"
+msgstr "Създай"
+
+#: .\core\templates\core\calendar.html:147
+msgid "Day is open"
+msgstr "Денят е отворен"
+
+#: .\core\templates\core\calendar.html:148
+msgid "Day is closed"
+msgstr "Денят е затворен"
+
+#: .\core\templates\core\calendar.html:149
+msgid "No event for this day"
+msgstr "Няма събитие за този ден"
+
+#: .\core\templates\core\navbar.html:5
+msgid "Home"
+msgstr "Начало"
+
+#: .\core\templates\core\navbar.html:26
+msgid "Calendar"
+msgstr "Календар"
+
+#: .\core\templates\core\navbar.html:56
+msgid "User"
+msgstr "Потребител"
+
+#: .\core\templates\core\navbar.html:65
+msgid "Logout"
+msgstr "Изход"
+
+#: .\core\templates\core\navbar.html:80
+msgid "Language"
+msgstr "Език"
