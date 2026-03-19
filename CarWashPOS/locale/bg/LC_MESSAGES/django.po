@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-19 20:40+0200\n"
+"POT-Creation-Date: 2026-03-19 21:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,86 +26,86 @@ msgstr "Английски"
 msgid "Bulgarian"
 msgstr "Български"
 
-#: .\core\templates\core\calendar.html:18
+#: .\core\templates\core\calendar.html:19
 msgid "Calendar View"
 msgstr "Календар"
 
-#: .\core\templates\core\calendar.html:25
+#: .\core\templates\core\calendar.html:26
 msgid "Month"
 msgstr "Месец"
 
-#: .\core\templates\core\calendar.html:37
+#: .\core\templates\core\calendar.html:38
 msgid "Year"
 msgstr "Година"
 
-#: .\core\templates\core\calendar.html:48
+#: .\core\templates\core\calendar.html:49
 msgid "Location"
 msgstr "Локация"
 
-#: .\core\templates\core\calendar.html:75
+#: .\core\templates\core\calendar.html:76
 msgid "Monday"
 msgstr "Понеделник"
 
-#: .\core\templates\core\calendar.html:76
+#: .\core\templates\core\calendar.html:77
 msgid "Tuesday"
 msgstr "Вторник"
 
-#: .\core\templates\core\calendar.html:77
+#: .\core\templates\core\calendar.html:78
 msgid "Wednesday"
 msgstr "Сряда"
 
-#: .\core\templates\core\calendar.html:78
+#: .\core\templates\core\calendar.html:79
 msgid "Thursday"
 msgstr "Четвъртък"
 
-#: .\core\templates\core\calendar.html:79
+#: .\core\templates\core\calendar.html:80
 msgid "Friday"
 msgstr "Петък"
 
-#: .\core\templates\core\calendar.html:80
+#: .\core\templates\core\calendar.html:81
 msgid "Saturday"
 msgstr "Събота"
 
-#: .\core\templates\core\calendar.html:81
+#: .\core\templates\core\calendar.html:82
 msgid "Sunday"
 msgstr "Неделя"
 
-#: .\core\templates\core\calendar.html:96
+#: .\core\templates\core\calendar.html:97
 msgid "Today"
 msgstr "Днес"
 
-#: .\core\templates\core\calendar.html:104
-#: .\core\templates\core\calendar.html:147
+#: .\core\templates\core\calendar.html:105
+#: .\core\templates\core\calendar.html:148
 msgid "Open"
 msgstr "Отворен"
 
-#: .\core\templates\core\calendar.html:108
-#: .\core\templates\core\calendar.html:148
+#: .\core\templates\core\calendar.html:109
+#: .\core\templates\core\calendar.html:149
 msgid "Closed"
 msgstr "Затворен"
 
-#: .\core\templates\core\calendar.html:113
-#: .\core\templates\core\calendar.html:149
+#: .\core\templates\core\calendar.html:114
+#: .\core\templates\core\calendar.html:150
 msgid "No Event"
 msgstr "Няма събитие"
 
-#: .\core\templates\core\calendar.html:122
+#: .\core\templates\core\calendar.html:123
 msgid "Select"
 msgstr "Избери"
 
-#: .\core\templates\core\calendar.html:127
+#: .\core\templates\core\calendar.html:128
 msgid "Create"
 msgstr "Създай"
 
-#: .\core\templates\core\calendar.html:147
+#: .\core\templates\core\calendar.html:148
 msgid "Day is open"
 msgstr "Денят е отворен"
 
-#: .\core\templates\core\calendar.html:148
+#: .\core\templates\core\calendar.html:149
 msgid "Day is closed"
 msgstr "Денят е затворен"
 
-#: .\core\templates\core\calendar.html:149
+#: .\core\templates\core\calendar.html:150
 msgid "No event for this day"
 msgstr "Няма събитие за този ден"
 

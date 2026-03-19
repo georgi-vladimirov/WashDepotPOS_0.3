@@ -8,6 +8,7 @@ import logging
 
 logger = logging.getLogger("core.services")
 
+
 def sync_cal_event_session(*, request: HttpRequest) -> None:
     """Ensures the session contains a valid cal_event_id, location and date."""
     cal_event_id = request.session.get("cal_event_id")
@@ -17,12 +18,11 @@ def sync_cal_event_session(*, request: HttpRequest) -> None:
         cal_event = get_last_cal_event_by_user(user=user)
         cal_event_id = cal_event.pk if cal_event else ""
         request.session["cal_event_id"] = cal_event_id
-        return
+    else:
+        cal_event = get_cal_event_by_id(cal_event_id=cal_event_id)
 
-    cal_event = get_cal_event_by_id(cal_event_id=cal_event_id)
     request.session["location"] = cal_event.location.name if cal_event else ""
-    request.session["date"] = cal_event.date.strftime("%d %B %Y") if cal_event else ""
-    return
+    request.session["date"] = cal_event.date.isoformat() if cal_event else ""
 
 
 def calendar_event_create(date_str: str, location_str: str) -> CalendarEvent:

@@ -14,3 +14,6 @@ INFO 2026-03-18 20:23:37,555 core.services Created new CalendarEvent: 2026-03-17
 INFO 2026-03-18 20:25:25,506 accounts.services user: bps logged out.
 INFO 2026-03-19 17:52:58,527 accounts.selectors user: admin authenticated.
 INFO 2026-03-19 17:52:58,528 accounts.services user: admin logged in.
+INFO 2026-03-19 20:54:51,787 accounts.services user: admin logged out.
+INFO 2026-03-19 20:54:59,611 accounts.selectors user: bps authenticated.
+INFO 2026-03-19 20:54:59,611 accounts.services user: bps logged in.
