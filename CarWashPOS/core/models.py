@@ -49,6 +49,20 @@ class ServicePrice(BaseModel):
     service = models.ForeignKey("Service", on_delete=models.CASCADE, related_name="service_prices")
     amount = models.DecimalField(max_digits=10, decimal_places=2)
 
+    IMMUTABLE_FIELDS = {"vehicle_type_id", "service_id", "amount"}
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            original = ServicePrice.objects.get(pk=self.pk)
+            changed = {f for f in self.IMMUTABLE_FIELDS if getattr(self, f) != getattr(original, f)}
+            if changed:
+                raise ValueError(f"ServicePrice fields {changed} cannot be modified after creation.")
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.is_active = False
+        self.save()
+
     def __str__(self) -> str:
         locations = ", ".join([loc.name for loc in self.location.all()])
         return f"{self.service.name} - {self.vehicle_type.name} @ {locations}: {self.amount} | Active: {self.is_active}"

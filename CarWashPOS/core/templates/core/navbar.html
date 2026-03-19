@@ -67,25 +67,23 @@
   <div class="container-fluid">
     <span class="navbar-text">{{ request.session.location }} | {{ request.session.date|parse_date|date:"d F Y" }}</span>
   </div>
-  <div class="dropdown mx-5">
-    <a class="btn btn-secondary dropdown-toggle"
-       href="#"
-       role="button"
-       data-bs-toggle="dropdown"
-       aria-expanded="false">{% translate "Language" %}</a>
-    <ul class="dropdown-menu">
-      {% get_available_languages as LANGUAGES %}
-      {% get_language_info_list for LANGUAGES as languages %}
-      {% for lang in languages %}
-        <li>
-          <form action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="language" value="{{ lang.code }}">
-            <input type="hidden" name="next" value="{{ request.get_full_path }}">
-            <button type="submit" class="dropdown-item">{{ lang.name_local }}</button>
-          </form>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+  <form id="lang-switch-form"
+        action="{% url 'set_language' %}"
+        method="post"
+        class="mx-5">
+    {% csrf_token %}
+    {% get_current_language as LANGUAGE_CODE %}
+    <input type="hidden" name="language" id="lang-switch-value" value="">
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    <div class="form-check form-switch d-flex align-items-center gap-2 mb-0">
+      <span class="form-check-label">EN</span>
+      <input class="form-check-input mx-2"
+             type="checkbox"
+             role="switch"
+             id="langSwitch"
+             {% if LANGUAGE_CODE == 'bg' %}checked{% endif %}
+             onchange="document.getElementById('lang-switch-value').value = this.checked ? 'bg' : 'en'; document.getElementById('lang-switch-form').submit();">
+      <span class="form-check-label">BG</span>
+    </div>
+  </form>
 </nav>
