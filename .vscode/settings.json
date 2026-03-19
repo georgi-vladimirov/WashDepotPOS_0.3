@@ -16,5 +16,6 @@
         "onclick",
         "stringformat",
         "endcomment",
+        "nplurals",
     ]
 }

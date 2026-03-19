@@ -10,10 +10,13 @@ INFO 2026-03-18 18:54:07,669 accounts.services user: admin logged in.
 INFO 2026-03-18 20:02:26,958 accounts.services user: admin logged out.
 INFO 2026-03-18 20:02:35,675 accounts.selectors user: bps authenticated.
 INFO 2026-03-18 20:02:35,675 accounts.services user: bps logged in.
-INFO 2026-03-18 20:23:37,555 core.services Created new CalendarEvent: 2026-03-17 - Bussiness Park Sofia - Active: True
+INFO 2026-03-18 20:23:37,555 core.services Created new CalendarEvent: 2026-03-17 - Business Park Sofia - Active: True
 INFO 2026-03-18 20:25:25,506 accounts.services user: bps logged out.
 INFO 2026-03-19 17:52:58,527 accounts.selectors user: admin authenticated.
 INFO 2026-03-19 17:52:58,528 accounts.services user: admin logged in.
 INFO 2026-03-19 20:54:51,787 accounts.services user: admin logged out.
 INFO 2026-03-19 20:54:59,611 accounts.selectors user: bps authenticated.
 INFO 2026-03-19 20:54:59,611 accounts.services user: bps logged in.
+INFO 2026-03-19 21:55:57,015 accounts.services user: bps logged out.
+INFO 2026-03-19 21:56:02,380 accounts.selectors user: admin authenticated.
+INFO 2026-03-19 21:56:02,380 accounts.services user: admin logged in.
