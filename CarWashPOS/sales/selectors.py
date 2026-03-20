@@ -8,3 +8,8 @@ def get_sales_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet[Sale]:
     return Sale.objects.filter(date=cal_event).select_related(
         "vehicle_type", "vehicle_brand", "subscriber", "cart", "worker", "manager"
     )
+
+
+def get_sale_by_id(*, sale_id: int) -> Sale | None:
+    """Return a Sale by primary key, or None if not found."""
+    return Sale.objects.filter(pk=sale_id).first()

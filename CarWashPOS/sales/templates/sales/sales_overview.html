@@ -56,9 +56,14 @@
                 <button type="button" class="btn btn-info btn-sm">
                   <i class="bi bi-cart-plus-fill"></i> {% translate "Add Services" %}
                 </button>
-                <button type="button" class="btn btn-danger btn-sm ms-3">
+                <a href="{% url 'sales:delete_sale' sale_id=sale.id %}"
+                   class="btn btn-danger btn-sm ms-3"
+                   data-bs-toggle="modal"
+                   data-bs-target="#deleteApprovalModal"
+                   data-sale-delete-url="{% url 'sales:delete_sale' sale_id=sale.id %}"
+                   onclick="event.preventDefault();">
                   <i class="bi bi-trash3-fill"></i> {% translate "Delete" %}
-                </button>
+                </a>
               </td>
             </tr>
           {% endfor %}
@@ -66,19 +71,16 @@
       </table>
     </div>
   </div>
-  {% comment %} <h6>
-{% include "delete_confirm_modal.html" with title="Delete Confirmation" message="Are you sure you want to delete?" %}
+  {% translate "Are you sure you want to delete?" as the_message %}
+  {% include "delete_confirm_modal.html" with title="Delete Confirmation" message=the_message %}
 
-
-  {% endcomment %}
-  {% comment %} <script>
-    // Update modal delete link with sale ID
+  <script>
     const deleteModal = document.getElementById('deleteApprovalModal');
     deleteModal.addEventListener('show.bs.modal', function(event) {
       const button = event.relatedTarget;
-      const saleId = button.getAttribute('data-sale-id');
+      const deleteUrl = button.getAttribute('data-sale-delete-url');
       const deleteBtn = document.getElementById('confirmDeleteBtn');
-      deleteBtn.href = '{% url "sales:delete_sale" %}?sale_id=' + saleId;
+      deleteBtn.href = deleteUrl;
     });
-  </script> {% endcomment %}
+  </script>
 {% endblock content %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-20 14:09+0200\n"
+"POT-Creation-Date: 2026-03-20 16:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,14 +181,36 @@ msgstr "Отказ"
 msgid "New Car"
 msgstr "Нов автомобил"
 
+#: .\sales\templates\sales\sales_overview.html:57
+#, fuzzy
+#| msgid "Add Sale"
+msgid "Add Services"
+msgstr "Добавяне на продажба"
+
+#: .\sales\templates\sales\sales_overview.html:65
+msgid "Delete"
+msgstr "Изтрий"
+
+#: .\sales\templates\sales\sales_overview.html:74
+msgid "Are you sure you want to delete?"
+msgstr "Сигурни ли сте, че искате да изтриете?"
+
+#: .\templates\delete_confirm_modal.html:19
+msgid "No"
+msgstr "НЕ"
+
+#: .\templates\delete_confirm_modal.html:20
+msgid "Yes"
+msgstr "ДА"
+
 #~ msgid "Language"
 #~ msgstr "Език"
 
-msgid "SUV"
-msgstr "Джип"
+#~ msgid "SUV"
+#~ msgstr "Джип"
 
-msgid "CAR"
-msgstr "Лек автомобил"
+#~ msgid "CAR"
+#~ msgstr "Лек автомобил"
 
-msgid "VAN"
-msgstr "ВАН"
+#~ msgid "VAN"
+#~ msgstr "ВАН"

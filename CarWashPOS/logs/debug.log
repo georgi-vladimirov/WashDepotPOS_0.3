@@ -36,3 +36,5 @@ INFO 2026-03-20 15:11:05,164 accounts.services user: admin logged out.
 INFO 2026-03-20 15:11:13,734 accounts.selectors user: bps authenticated.
 INFO 2026-03-20 15:11:13,734 accounts.services user: bps logged in.
 INFO 2026-03-20 15:24:07,521 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: A5656 | Active: True
+INFO 2026-03-20 15:55:12,203 sales.services Sale deleted: Sale on 2026-03-19 at Business Park Sofia | Reg#: A5656 | Active: True
+INFO 2026-03-20 15:59:57,943 sales.services Sale deleted: Sale on 2026-03-19 at Business Park Sofia | Reg#: 789789 | Active: True

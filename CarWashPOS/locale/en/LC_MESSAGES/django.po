@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-20 14:09+0200\n"
+"POT-Creation-Date: 2026-03-20 16:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -179,4 +179,24 @@ msgstr ""
 
 #: .\sales\templates\sales\sales_overview.html:12
 msgid "New Car"
+msgstr ""
+
+#: .\sales\templates\sales\sales_overview.html:57
+msgid "Add Services"
+msgstr ""
+
+#: .\sales\templates\sales\sales_overview.html:65
+msgid "Delete"
+msgstr ""
+
+#: .\sales\templates\sales\sales_overview.html:74
+msgid "Are you sure you want to delete?"
+msgstr ""
+
+#: .\templates\delete_confirm_modal.html:19
+msgid "No"
+msgstr ""
+
+#: .\templates\delete_confirm_modal.html:20
+msgid "Yes"
 msgstr ""

@@ -7,9 +7,9 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from core.selectors import get_cal_event_by_id
-from .selectors import get_sales_by_cal_event
-from .services import create_sale
 from .forms import AddSaleForm
+from .selectors import get_sales_by_cal_event, get_sale_by_id
+from .services import create_sale, delete_sale
 
 logger = logging.getLogger("sales.services")
 
@@ -59,3 +59,18 @@ class AddSale(LoginRequiredMixin, View):
             messages.error(request, "Error recording sale. Please check the form for errors.")
 
         return render(request, "sales/add_sale.html", {"form": form})
+
+
+class DeleteSale(LoginRequiredMixin, View):
+    def get(self, request, sale_id):
+        sale = get_sale_by_id(sale_id=sale_id)
+        if sale is None:
+            messages.error(request, "Sale not found")
+            return redirect("sales:sales_overview")
+
+        if delete_sale(sale_id=sale_id):
+            messages.success(request, "Sale deleted successfully")
+        else:
+            messages.error(request, "Error deleting sale")
+
+        return redirect("sales:sales_overview")

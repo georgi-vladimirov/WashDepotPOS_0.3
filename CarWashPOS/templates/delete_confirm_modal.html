@@ -1,4 +1,5 @@
 <!-- Modal -->
+{% load i18n %}
 <div class="modal fade"
      id="deleteApprovalModal"
      tabindex="-1"
@@ -15,8 +16,8 @@
       </div>
       <div class="modal-body">{{ message }}</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <a class="btn btn-danger" id="confirmDeleteBtn" href="" role="button">Yes</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "No" %}</button>
+        <a class="btn btn-danger" id="confirmDeleteBtn" href="" role="button">{% translate "Yes" %}</a>
       </div>
     </div>
   </div>
