@@ -1,21 +1,22 @@
 {
     "cSpell.words": [
-        "endfor",
-        "endblock",
-        "endif",
-        "endwith",
-        "forloop",
         "blocktrans",
-        "endblocktrans",
-        "endload",
         "crispy",
         "djlint",
-        "staticfiles",
-        "urlconf",
+        "elif",
+        "endblock",
+        "endblocktrans",
+        "endcomment",
+        "endfor",
+        "endif",
+        "endload",
+        "endwith",
+        "forloop",
+        "nplurals",
         "onchange",
         "onclick",
+        "staticfiles",
         "stringformat",
-        "endcomment",
-        "nplurals",
+        "urlconf"
     ]
 }

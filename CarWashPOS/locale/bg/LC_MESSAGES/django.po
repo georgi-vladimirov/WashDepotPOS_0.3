@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-19 21:03+0200\n"
+"POT-Creation-Date: 2026-03-20 14:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:144
+#: .\CarWashPOS\settings.py:145
 msgid "English"
 msgstr "Английски"
 
-#: .\CarWashPOS\settings.py:145
+#: .\CarWashPOS\settings.py:146
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -117,14 +117,78 @@ msgstr "Начало"
 msgid "Calendar"
 msgstr "Календар"
 
-#: .\core\templates\core\navbar.html:56
+#: .\core\templates\core\navbar.html:38
+msgid "Cars"
+msgstr "Автомобили"
+
+#: .\core\templates\core\navbar.html:62
 msgid "User"
 msgstr "Потребител"
 
-#: .\core\templates\core\navbar.html:65
+#: .\core\templates\core\navbar.html:71
 msgid "Logout"
 msgstr "Изход"
 
-#: .\core\templates\core\navbar.html:80
-msgid "Language"
-msgstr "Език"
+#: .\sales\forms.py:64
+msgid "Brand"
+msgstr "Марка"
+
+#: .\sales\forms.py:65
+msgid "Vehicle Type"
+msgstr "Вид автомобил"
+
+#: .\sales\forms.py:66
+msgid "Reg. Number"
+msgstr "Рег. Номер"
+
+#: .\sales\forms.py:67
+msgid "Manager"
+msgstr "Управител"
+
+#: .\sales\forms.py:68
+msgid "Worker"
+msgstr "Работник"
+
+#: .\sales\forms.py:69
+msgid "Subscriber"
+msgstr "Абонат"
+
+#: .\sales\models.py:18
+msgid "Paid"
+msgstr "Платено"
+
+#: .\sales\models.py:19
+msgid "Unpaid"
+msgstr "Неплатено"
+
+#: .\sales\models.py:20
+msgid "Partial"
+msgstr "Частично"
+
+#: .\sales\templates\sales\add_sale.html:6
+msgid "Add Sale"
+msgstr "Добавяне на продажба"
+
+#: .\sales\templates\sales\add_sale.html:43
+msgid "Save"
+msgstr "Запазване"
+
+#: .\sales\templates\sales\add_sale.html:44
+msgid "Cancel"
+msgstr "Отказ"
+
+#: .\sales\templates\sales\sales_overview.html:12
+msgid "New Car"
+msgstr "Нов автомобил"
+
+#~ msgid "Language"
+#~ msgstr "Език"
+
+msgid "SUV"
+msgstr "Джип"
+
+msgid "CAR"
+msgstr "Лек автомобил"
+
+msgid "VAN"
+msgstr "ВАН"

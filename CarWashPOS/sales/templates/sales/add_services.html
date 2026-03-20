@@ -1,0 +1,175 @@
+{% extends "Main/home.html" %}
+{% load l10n %}
+{% block content %}
+    <h2 class="text-center mt-4">Add Services | {{ vehicle_type }}</h2>
+    <form method="post"
+          action="{% url 'Sales:add_services' %}"
+          id="select_services_form">
+        {% csrf_token %}
+        <input type="hidden" name="sale_id" value="{{ request.GET.sale_id }}">
+        <div class="container">
+            <div class="row">
+                <div class="col-10">
+                    {% for service_type in service_types %}
+                        <div class="mb-3">
+                            <label class="fw-semibold" for="{{ service_type.name|slugify }}">{{ service_type.name }}</label>
+                            {% if service_type.selectivity != 1 %}
+                                <section class="fst-italic">
+                                    За да изберете повече от една услуги задържите Ctrl
+                                </section>
+                            {% endif %}
+                            <div>
+                                <button type="button"
+                                        class="btn btn-sm btn-secondary my-1"
+                                        onclick="clearSelection('{{ service_type.name|slugify }}')">
+                                    Clear Selection
+                                </button>
+                            </div>
+                            <select class="form-select"
+                                    {% if service_type.selectivity != 1 %}multiple{% endif %}
+                                    size="6"
+                                    id="{{ service_type.name|slugify }}"
+                                    aria-label="Select services for {{ service_type.name }}">
+                                {% for cart_item in cart_items %}
+                                    {% if cart_item.service_type == service_type.name %}
+                                        <option value="{{ cart_item.name }}"
+                                                amount="{{ cart_item.amount|unlocalize }}"
+                                                service-type="{{ cart_item.service_type }}"
+                                                vehicle-type="{{ cart_item.vehicle_type }}"
+                                                {% for selected_item in selected_cart_items %} {% if selected_item.name == cart_item.name %}selected{% endif %}
+                                                {% endfor %}>{{ cart_item.name }} | {{ cart_item.amount }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-2">
+                    <div class="row form-floating mb-2">
+                        <input type="number"
+                               class="form-control"
+                               id="floatingInputTotalAmount"
+                               value=""
+                               disabled>
+                        <label for="floatingInputTotalAmount">Total Amount</label>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col form-floating me-1 p-0">
+                            <input type="number"
+                                   class="form-control"
+                                   id="floatingInputDiscount%"
+                                   value="{{ subscriber.discount_percentage|unlocalize|default:'0' }}">
+                            <label for="floatingInputDiscount%">Discount %</label>
+                        </div>
+                        <div class="col form-floating p-0">
+                            <input type="number"
+                                   class="form-control"
+                                   id="floatingInputDiscount"
+                                   value=""
+                                   disabled>
+                            <label for="floatingInputDiscount">Discount</label>
+                        </div>
+                    </div>
+                    <div class="row form-floating mb-2">
+                        <input type="number"
+                               class="form-control"
+                               id="floatingInputFinalAmount"
+                               value=""
+                               disabled>
+                        <label for="floatingInputFinalAmount">Final Amount</label>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary mb-2">Save</button>
+                        <a class="btn btn-secondary"
+                           href="{% url 'Sales:sales_overview' %}"
+                           role="button">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="selected_services" id="selectedServicesData">
+    </form>
+    <script>
+        function clearSelection(selectId) {
+            var selectElement = document.getElementById(selectId);
+            if (selectElement) {
+                for (var i = 0; i < selectElement.options.length; i++) {
+                    selectElement.options[i].selected = false;
+                }
+                calculateAmounts();
+            }
+        }
+        
+        // Calculate total, discount, and final amounts
+        function calculateAmounts() {
+            var allSelects = document.querySelectorAll('select.form-select');
+            var total = 0;
+            
+            allSelects.forEach(function(selectElement) {
+                var selectedOptions = Array.from(selectElement.selectedOptions);
+                selectedOptions.forEach(function(option) {
+                    var amount = parseFloat(option.getAttribute('amount')) || 0;
+                    total += amount;
+                });
+            });
+            
+            var discountPercent = parseFloat(document.getElementById('floatingInputDiscount%').value) || 0;
+            var discountAmount = total * discountPercent / 100;
+            var finalAmount = total - discountAmount;
+            
+            document.getElementById('floatingInputTotalAmount').value = total.toFixed(2);
+            document.getElementById('floatingInputDiscount').value = discountAmount.toFixed(2);
+            document.getElementById('floatingInputFinalAmount').value = finalAmount.toFixed(2);
+        }
+        
+        // Recalculate on selection change
+        document.querySelectorAll('select.form-select').forEach(function(select) {
+            select.addEventListener('change', calculateAmounts);
+        });
+        
+        // Recalculate when discount percentage changes
+        document.getElementById('floatingInputDiscount%').addEventListener('input', calculateAmounts);
+        
+        // Calculate on page load
+        document.addEventListener('DOMContentLoaded', calculateAmounts);
+        
+        // Handle form submission
+        document.getElementById('select_services_form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var selectedServices = [];
+            var allSelects = document.querySelectorAll('select.form-select');
+            
+            // Loop through all select elements
+            allSelects.forEach(function(selectElement) {
+                var selectedOptions = Array.from(selectElement.selectedOptions);
+                
+                // Extract data from each selected option
+                selectedOptions.forEach(function(option) {
+                    var serviceData = {
+                        name: option.value,
+                        amount: option.getAttribute('amount'),
+                        service_type: option.getAttribute('service-type'),
+                        vehicle_type: option.getAttribute('vehicle-type')
+                    };
+                    selectedServices.push(serviceData);
+                });
+            });
+            
+            // Prepare data with services and totals
+            var formData = {
+                services: selectedServices,
+                total_amount: document.getElementById('floatingInputTotalAmount').value,
+                discount_percentage: document.getElementById('floatingInputDiscount%').value,
+                discount_amount: document.getElementById('floatingInputDiscount').value,
+                final_amount: document.getElementById('floatingInputFinalAmount').value
+            };
+            
+            // Store JSON data in hidden input
+            document.getElementById('selectedServicesData').value = JSON.stringify(formData);
+            
+            // Submit the form
+            this.submit(); 
+        });
+    </script>
+{% endblock content %}

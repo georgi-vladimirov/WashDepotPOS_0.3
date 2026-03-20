@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "common",
     "core",
     "accounts",
+    "sales",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -176,6 +177,11 @@ LOGGING = {
             "propagate": False,
         },
         "core": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "sales": {
             "handlers": ["console", "file"],
             "level": "INFO",
             "propagate": False,

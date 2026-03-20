@@ -20,3 +20,19 @@ INFO 2026-03-19 20:54:59,611 accounts.services user: bps logged in.
 INFO 2026-03-19 21:55:57,015 accounts.services user: bps logged out.
 INFO 2026-03-19 21:56:02,380 accounts.selectors user: admin authenticated.
 INFO 2026-03-19 21:56:02,380 accounts.services user: admin logged in.
+INFO 2026-03-20 12:22:25,214 accounts.services user: admin logged out.
+INFO 2026-03-20 12:22:32,705 accounts.selectors user: bps authenticated.
+INFO 2026-03-20 12:22:32,705 accounts.services user: bps logged in.
+INFO 2026-03-20 13:56:23,240 accounts.services user: bps logged out.
+WARNING 2026-03-20 13:56:27,869 accounts.selectors Failed authentication attempt for username: admin
+WARNING 2026-03-20 13:56:31,539 accounts.selectors Failed authentication attempt for username: 
+INFO 2026-03-20 13:56:36,799 accounts.selectors user: admin authenticated.
+INFO 2026-03-20 13:56:36,800 accounts.services user: admin logged in.
+INFO 2026-03-20 14:01:00,279 accounts.services user: admin logged out.
+WARNING 2026-03-20 14:01:05,959 accounts.selectors Failed authentication attempt for username: bps
+INFO 2026-03-20 14:01:18,186 accounts.selectors user: bps authenticated.
+INFO 2026-03-20 14:01:18,186 accounts.services user: bps logged in.
+INFO 2026-03-20 15:11:05,164 accounts.services user: admin logged out.
+INFO 2026-03-20 15:11:13,734 accounts.selectors user: bps authenticated.
+INFO 2026-03-20 15:11:13,734 accounts.services user: bps logged in.
+INFO 2026-03-20 15:24:07,521 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: A5656 | Active: True

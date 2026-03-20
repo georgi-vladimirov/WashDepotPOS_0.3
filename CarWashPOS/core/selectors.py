@@ -1,4 +1,4 @@
-from .models import CalendarEvent, Location
+from .models import CalendarEvent, Location, VehicleBrand, VehicleType, Employee, Subscriber
 from django.contrib.auth.models import AbstractUser
 from django.db.models import QuerySet
 import calendar
@@ -48,3 +48,23 @@ def get_cal_events_for_month(*, location: Location, year: int, month: int) -> di
         }
         for event in cal_events
     }
+
+
+def get_vehicle_brands(is_active: bool = True) -> QuerySet:
+    """Return a QuerySet of  VehicleBrand objects ordered by number_sort."""
+    return VehicleBrand.objects.filter(is_active=is_active).order_by("number_sort")
+
+
+def get_vehicle_types(is_active: bool = True) -> QuerySet:
+    """Return a QuerySet of  VehicleType objects ordered by name."""
+    return VehicleType.objects.filter(is_active=is_active).order_by("name")
+
+
+def get_employees_by_location_and_position(*, is_active: bool = True, location: Location, position: str) -> QuerySet:
+    """Return a QuerySet of active Employees with the given position for the given location."""
+    return Employee.objects.filter(is_active=is_active, position__position=position, location=location)
+
+
+def get_subscribers_by_location(*, is_active: bool = True, location: Location) -> QuerySet:
+    """Return a QuerySet of active Subscribers for the given location."""
+    return Subscriber.objects.filter(is_active=is_active, location=location)
