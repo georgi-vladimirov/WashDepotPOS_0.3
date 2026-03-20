@@ -1,4 +1,4 @@
-{% extends "core/home.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
 
@@ -9,7 +9,8 @@
          type="button"
          role="button"
          href="{% url 'sales:add_sale' %}"
-         onclick="window.open(this.href, '_blank', 'width=500, height=600, toolbar=no, menubar=no, scrollbars=yes'); return false;">{% translate "New Car" %}</a>
+         onclick="window.open(this.href, '_blank', 'width=500, height=600, toolbar=no, menubar=no, scrollbars=yes'); return false;">
+      {% translate "New Car" %}</a>
     </div>
     <div class="border shadow-sm p-2 mt-3 mx-2 bg-body-tertiary rounded">
       <table class="table table-sm">
@@ -53,9 +54,11 @@
               <td class="text-center">{{ sale.worker.employee_id }}</td>
               <td class="text-center">{{ sale.manager.employee_id }}</td>
               <td class="text-center me-2">
-                <button type="button" class="btn btn-info btn-sm">
+                <a href="{% url 'sales:add_cart' sale_id=sale.id %}"
+                   class="btn btn-info btn-sm"
+                   onclick="window.open(this.href, '_blank', 'width=500, height=600, toolbar=no, menubar=no, scrollbars=yes'); return false;">
                   <i class="bi bi-cart-plus-fill"></i> {% translate "Add Services" %}
-                </button>
+                </a>
                 <a href="{% url 'sales:delete_sale' sale_id=sale.id %}"
                    class="btn btn-danger btn-sm ms-3"
                    data-bs-toggle="modal"

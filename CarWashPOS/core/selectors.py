@@ -1,4 +1,4 @@
-from .models import CalendarEvent, Location, VehicleBrand, VehicleType, Employee, Subscriber
+from .models import CalendarEvent, Location, ServicePrice, VehicleBrand, VehicleType, Employee, Service, Subscriber
 from django.contrib.auth.models import AbstractUser
 from django.db.models import QuerySet
 import calendar
@@ -68,3 +68,18 @@ def get_employees_by_location_and_position(*, is_active: bool = True, location: 
 def get_subscribers_by_location(*, is_active: bool = True, location: Location) -> QuerySet:
     """Return a QuerySet of active Subscribers for the given location."""
     return Subscriber.objects.filter(is_active=is_active, location=location)
+
+
+def get_services_by_location_and_vehicle_type(*, location: Location, vehicle_type: VehicleType) -> QuerySet[Service]:
+    """Return active Services that have an active ServicePrice for the given location and vehicle type."""
+    return (
+        Service.objects.filter(
+            is_active=True,
+            service_prices__is_active=True,
+            service_prices__location=location,
+            service_prices__vehicle_type=vehicle_type,
+        )
+        .select_related("service_type")
+        .distinct()
+        .order_by("service_type__order", "name")
+    )

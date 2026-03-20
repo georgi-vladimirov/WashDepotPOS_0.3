@@ -7,7 +7,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from core.selectors import get_cal_event_by_id
-from .forms import AddSaleForm
+from .forms import AddSaleForm, AddServiceForm
 from .selectors import get_sales_by_cal_event, get_sale_by_id
 from .services import create_sale, delete_sale
 
@@ -74,3 +74,14 @@ class DeleteSale(LoginRequiredMixin, View):
             messages.error(request, "Error deleting sale")
 
         return redirect("sales:sales_overview")
+
+
+class AddCart(LoginRequiredMixin, View):
+    def get(self, request, sale_id):
+        sale = get_sale_by_id(sale_id=sale_id)
+        if sale is None:
+            messages.error(request, "Sale not found")
+            return redirect("sales:sales_overview")
+
+        form = AddServiceForm(sale=sale)
+        return render(request, "sales/add_services.html", {"form": form, "sale_id": sale_id})

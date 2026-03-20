@@ -1,12 +1,13 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from .models import Sale
-from core.models import CalendarEvent, VehicleBrand, VehicleType, Subscriber, Employee, Location
+from core.models import Location, ServiceType
 from core.selectors import (
     get_vehicle_brands,
     get_vehicle_types,
     get_employees_by_location_and_position,
     get_subscribers_by_location,
+    get_services_by_location_and_vehicle_type,
 )
 
 
@@ -61,10 +62,34 @@ class AddSaleForm(forms.ModelForm):
             "subscriber": forms.Select(attrs={"class": "form-select"}),
         }
         labels = {
-        "vehicle_brand": _("Brand"),
-        "vehicle_type": _("Vehicle Type"),
-        "reg_number": _("Reg. Number"),
-        "manager": _("Manager"),
-        "worker": _("Worker"),
-        "subscriber": _("Subscriber"),
+            "vehicle_brand": _("Brand"),
+            "vehicle_type": _("Vehicle Type"),
+            "reg_number": _("Reg. Number"),
+            "manager": _("Manager"),
+            "worker": _("Worker"),
+            "subscriber": _("Subscriber"),
         }
+
+
+class AddServiceForm(forms.Form):
+    def __init__(self, *args, sale: Sale, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        vehicle_type = sale.vehicle_type
+        location = sale.date.location
+        services = get_services_by_location_and_vehicle_type(location=location, vehicle_type=vehicle_type)
+        service_types = ServiceType.objects.filter(services__in=services).distinct().order_by("order")
+
+        for st in service_types:
+            field_name = f"service_type_{st.pk}"
+            self.fields[field_name] = forms.ModelMultipleChoiceField(
+                queryset=services.filter(service_type=st),
+                required=False,
+                label=st.name,
+                widget=forms.SelectMultiple(
+                    attrs={
+                        "class": "form-select",
+                        "data-selectivity": st.selectivity,
+                    }
+                ),
+            )
