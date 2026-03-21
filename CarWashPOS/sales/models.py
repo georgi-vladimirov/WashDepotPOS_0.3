@@ -23,14 +23,14 @@ class PaymentStatus(models.TextChoices):
 class Sale(BaseModel):
     payment_status = models.CharField(max_length=10, choices=PaymentStatus.choices, default=PaymentStatus.UNPAID)
     date = models.ForeignKey(CalendarEvent, on_delete=models.CASCADE, related_name="sales")
-    vehicle_brand = models.ForeignKey(VehicleBrand, on_delete=models.CASCADE)
-    vehicle_type = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
+    vehicle_brand = models.ForeignKey(VehicleBrand, on_delete=models.PROTECT)
+    vehicle_type = models.ForeignKey(VehicleType, on_delete=models.PROTECT)
     reg_number = models.CharField(max_length=15)
-    manager = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="manager_sales")
-    worker = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="worker_sales")
+    manager = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="manager_sales")
+    worker = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="worker_sales")
     subscriber = models.ForeignKey(
         Subscriber,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
         related_name="sales",
@@ -52,7 +52,12 @@ class Cart(BaseModel):
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0))
     final_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0))
     sale = models.OneToOneField(Sale, on_delete=models.CASCADE, related_name="cart")
-    services = models.ManyToManyField(Service, related_name="carts", blank=True)
+    services = models.ManyToManyField(
+        "core.Service",
+        through="CartItem",
+        related_name="carts",
+        blank=True,
+    )
 
 
 class CartItem(BaseModel):

@@ -5,12 +5,12 @@
 {% block content %}
   <div class="d-flex flex-column mb-3">
     <div class="border shadow-sm p-2 mt-3 mx-2 bg-body-tertiary rounded">
-      <a class="btn btn-primary"
+      <a class="btn btn-primary open-popup"
          type="button"
          role="button"
          href="{% url 'sales:add_sale' %}"
-         onclick="window.open(this.href, '_blank', 'width=500, height=600, toolbar=no, menubar=no, scrollbars=yes'); return false;">
-      {% translate "New Car" %}</a>
+         data-width="500"
+         data-height="600">{% translate "New Car" %}</a>
     </div>
     <div class="border shadow-sm p-2 mt-3 mx-2 bg-body-tertiary rounded">
       <table class="table table-sm">
@@ -97,29 +97,41 @@
                         <tr>
                           <th>{% translate "Service" %}</th>
                           <th>{% translate "Type" %}</th>
+                          <th class="text-end">{% translate "Amount" %}</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {% for service in sale.cart.services.all %}
+                        {% for item in sale.cart.items.all %}
                           <tr>
-                            <td>{{ service.name }}</td>
-                            <td>{{ service.service_type.name }}</td>
-                            <td>{{ service.service_prices.amount }}</td>
+                            <td>{{ item.service.name }}</td>
+                            <td>{{ item.service.service_type.name }}</td>
+                            <td class="text-end">{{ item.amount }}</td>
                           </tr>
                         {% empty %}
                           <tr>
-                            <td colspan="2" class="text-center text-muted">{% translate "No services" %}</td>
+                            <td colspan="3" class="text-center text-muted">{% translate "No services" %}</td>
                           </tr>
                         {% endfor %}
                       </tbody>
                       <tfoot class="table-light">
                         <tr>
-                          <td class="text-end fw-semibold" colspan="2">
-                            {% translate "Total" %}: {{ sale.cart.total_amount }}
-                            &nbsp;|&nbsp;
-                            {% translate "Discount" %}: {{ sale.cart.discount }}%
-                            &nbsp;|&nbsp;
-                            {% translate "Final Amount" %}: {{ sale.cart.final_amount }}
+                          <td colspan="3">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <a href="#"
+                                 class="btn btn-danger btn-sm"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#cartDeleteModal"
+                                 data-cart-delete-url="{% url 'sales:cart-delete' cart_id=sale.cart.id %}">
+                                <i class="bi bi-trash3-fill"></i> {% translate "Delete Cart" %}
+                              </a>
+                              <span class="fw-semibold">
+                                {% translate "Total" %}: {{ sale.cart.total_amount }}
+                                |
+                                {% translate "Discount" %}: {{ sale.cart.discount }}%
+                                |
+                                {% translate "Final Amount" %}: {{ sale.cart.final_amount }}
+                              </span>
+                            </div>
                           </td>
                         </tr>
                       </tfoot>
@@ -136,6 +148,9 @@
   {% translate "Are you sure you want to delete?" as the_message %}
   {% include "delete_confirm_modal.html" with title="Delete Confirmation" message=the_message %}
 
+  {% translate "Are you sure you want to delete the cart and all its services?" as cart_delete_message %}
+  {% include "delete_confirm_modal.html" with title="Delete Cart" message=cart_delete_message modal_id="cartDeleteModal" confirm_btn_id="confirmCartDeleteBtn" %}
+
   <script>
     const deleteModal = document.getElementById('deleteApprovalModal');
     deleteModal.addEventListener('show.bs.modal', function(event) {
@@ -143,6 +158,19 @@
       const deleteUrl = button.getAttribute('data-sale-delete-url');
       const deleteBtn = document.getElementById('confirmDeleteBtn');
       deleteBtn.href = deleteUrl;
+    });
+
+    const cartDeleteModal = document.getElementById('cartDeleteModal');
+    cartDeleteModal.addEventListener('show.bs.modal', function(event) {
+      const button = event.relatedTarget;
+      const deleteUrl = button.getAttribute('data-cart-delete-url');
+      document.getElementById('confirmCartDeleteBtn').href = deleteUrl;
+    });
+
+    document.querySelectorAll('.open-popup').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.open(this.href, '_blank', `width=${this.dataset.width},height=${this.dataset.height},toolbar=no,menubar=no,scrollbars=yes`);});
     });
   </script>
 {% endblock content %}

@@ -1,4 +1,4 @@
-from .models import Sale
+from .models import Sale, Cart
 from core.models import CalendarEvent, Subscriber
 from django.db.models import QuerySet
 from decimal import Decimal
@@ -22,3 +22,8 @@ def get_discount_for_subscriber_from_sale(*, sale: Sale) -> Decimal:
     if subscriber is None:
         return Decimal(0)
     return subscriber.discount_percentage
+
+
+def get_cart_by_id(*, cart_id: int) -> Cart | None:
+    """Return a Cart by primary key, or None if not found."""
+    return Cart.objects.filter(pk=cart_id).first()

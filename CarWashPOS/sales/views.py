@@ -9,8 +9,8 @@ from decimal import Decimal
 
 from core.selectors import get_cal_event_by_id
 from .forms import AddSaleForm, AddServiceForm
-from .selectors import get_sales_by_cal_event, get_sale_by_id, get_discount_for_subscriber_from_sale
-from .services import create_sale, delete_sale, select_services_for_sale, create_cart_for_sale
+from .selectors import get_sales_by_cal_event, get_sale_by_id, get_discount_for_subscriber_from_sale, get_cart_by_id
+from .services import create_sale, delete_sale, select_services_for_sale, create_cart_for_sale, cart_delete
 
 logger = logging.getLogger("sales.services")
 
@@ -84,7 +84,7 @@ class AddCart(LoginRequiredMixin, View):
             messages.error(request, "Sale not found")
             return redirect("sales:sales_overview")
 
-        if sale.cart is not None:  # type: ignore
+        if hasattr(sale, "cart"):
             messages.error(request, "Cart already exists for this sale")
             return redirect("sales:sales_overview")
 
@@ -116,3 +116,18 @@ class AddCart(LoginRequiredMixin, View):
         )
 
         return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
+
+
+class DeleteCart(LoginRequiredMixin, View):
+    def get(self, request, cart_id):
+        cart = get_cart_by_id(cart_id=cart_id)
+        if cart is None:
+            messages.error(request, "Cart not found")
+            return redirect("sales:sales_overview")
+
+        if cart_delete(cart=cart):
+            messages.success(request, "Cart deleted successfully")
+        else:
+            messages.error(request, "Error deleting cart")
+
+        return redirect("sales:sales_overview")
