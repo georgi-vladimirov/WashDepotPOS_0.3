@@ -82,7 +82,7 @@ class AddServiceForm(forms.Form):
 
         for st in service_types:
             field_name = f"service_type_{st.pk}"
-            self.fields[field_name] = forms.ModelMultipleChoiceField(
+            field = forms.ModelMultipleChoiceField(
                 queryset=services.filter(service_type=st),
                 required=False,
                 label=st.name,
@@ -93,3 +93,5 @@ class AddServiceForm(forms.Form):
                     }
                 ),
             )
+            field.label_from_instance = lambda obj: obj.name # type: ignore
+            self.fields[field_name] = field

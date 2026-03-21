@@ -25,7 +25,7 @@ class ServiceType(BaseModel):
     order = models.IntegerField(default=1)
 
     def __str__(self) -> str:
-        return f"{self.name} | Active: {self.is_active}"  # This will display the service type in the admin
+        return self.name
 
 
 class Service(BaseModel):
@@ -39,8 +39,8 @@ class Service(BaseModel):
     )
     description = models.TextField(blank=True)
 
-    def __str__(self) -> str:
-        return f"{self.name} | Active: {self.is_active}"  # This will display the service name in the admin
+    # def __str__(self) -> str:
+    #     return f"{self.name} | Active: {self.is_active}"  # This will display the service name in the admin
 
 
 class ServicePrice(BaseModel):
