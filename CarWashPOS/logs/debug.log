@@ -56,3 +56,8 @@ INFO 2026-03-21 17:38:58,091 sales.services New sale recorded: Sale on 2026-03-1
 INFO 2026-03-21 17:39:06,889 sales.services Cart created for sale 6 with services: ['114', '106', '69']
 INFO 2026-03-21 17:45:17,943 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 9887 | Active: True
 INFO 2026-03-21 17:46:22,552 sales.services Cart created for sale 7 with services: ['112', '69', '115']
+INFO 2026-03-21 20:51:05,661 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 789789 | Active: True
+INFO 2026-03-21 20:54:59,136 sales.services Cart created for sale 8 with services: ['112', '125']
+INFO 2026-03-21 20:55:12,508 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 789789 | Active: True
+INFO 2026-03-21 20:55:19,783 sales.services Cart created for sale 9 with services: ['76', '113', '125']
+INFO 2026-03-21 21:33:49,540 sales.services Cart deleted: Cart object (None)
