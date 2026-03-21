@@ -1,14 +1,16 @@
 <!-- Modal -->
 {% load i18n %}
+
 <div class="modal fade"
-     id="deleteApprovalModal"
+     id="{{ modal_id|default:'deleteApprovalModal' }}"
      tabindex="-1"
-     aria-labelledby="deleteApprovalLabel"
+     aria-labelledby="{{ modal_id|default:'deleteApprovalModal' }}Label"
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="deleteApprovalLabel">{{ title }}</h1>
+        <h1 class="modal-title fs-5"
+            id="{{ modal_id|default:'deleteApprovalModal' }}Label">{{ title }}</h1>
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
@@ -17,7 +19,10 @@
       <div class="modal-body">{{ message }}</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "No" %}</button>
-        <a class="btn btn-danger" id="confirmDeleteBtn" href="" role="button">{% translate "Yes" %}</a>
+        <a class="btn btn-danger"
+           id="{{ confirm_btn_id|default:'confirmDeleteBtn' }}"
+           href=""
+           role="button">{% translate "Yes" %}</a>
       </div>
     </div>
   </div>
