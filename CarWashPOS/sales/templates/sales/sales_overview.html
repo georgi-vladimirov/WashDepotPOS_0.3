@@ -16,6 +16,7 @@
       <table class="table table-sm">
         <thead>
           <tr>
+            <th scope="col" class="text-center"></th>
             <th scope="col" class="text-center">Reg.#</th>
             <th scope="col" class="text-center">Payment</th>
             <th scope="col" class="text-center">Type</th>
@@ -33,6 +34,18 @@
         <tbody class="table-group-divider">
           {% for sale in sales %}
             <tr>
+              <td class="text-center">
+                {% if sale.cart %}
+                  <button class="btn btn-link btn-sm p-0 me-1 text-secondary"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#cart-{{ sale.id }}"
+                          aria-expanded="false"
+                          aria-controls="cart-{{ sale.id }}">
+                    <i class="bi bi-chevron-down"></i>
+                  </button>
+                {% endif %}
+              </td>
               <td class="text-center">{{ sale.reg_number }}</td>
               <td class="text-center">
                 <span class="badge text bg-
@@ -54,11 +67,17 @@
               <td class="text-center">{{ sale.worker.employee_id }}</td>
               <td class="text-center">{{ sale.manager.employee_id }}</td>
               <td class="text-center me-2">
-                <a href="{% url 'sales:add_cart' sale_id=sale.id %}"
-                   class="btn btn-info btn-sm"
-                   onclick="window.open(this.href, '_blank', 'width=1200, height=780, toolbar=no, menubar=no, scrollbars=yes'); return false;">
-                  <i class="bi bi-cart-plus-fill"></i> {% translate "Add Services" %}
-                </a>
+                {% if sale.cart %}
+                  <button class="btn btn-info btn-sm" disabled>
+                    <i class="bi bi-cart-check-fill"></i> {% translate "Add Services" %}
+                  </button>
+                {% else %}
+                  <a href="{% url 'sales:add_cart' sale_id=sale.id %}"
+                     class="btn btn-info btn-sm"
+                     onclick="window.open(this.href, '_blank', 'width=1200, height=780, toolbar=no, menubar=no, scrollbars=yes'); return false;">
+                    <i class="bi bi-cart-plus-fill"></i> {% translate "Add Services" %}
+                  </a>
+                {% endif %}
                 <a href="{% url 'sales:delete_sale' sale_id=sale.id %}"
                    class="btn btn-danger btn-sm ms-3"
                    data-bs-toggle="modal"
@@ -69,6 +88,46 @@
                 </a>
               </td>
             </tr>
+            {% if sale.cart %}
+              <tr class="collapse" id="cart-{{ sale.id }}">
+                <td colspan="12" class="p-0 border-0">
+                  <div class="px-4 py-2 bg-body-secondary">
+                    <table class="table table-sm table-bordered mb-1">
+                      <thead class="table-light">
+                        <tr>
+                          <th>{% translate "Service" %}</th>
+                          <th>{% translate "Type" %}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for service in sale.cart.services.all %}
+                          <tr>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.service_type.name }}</td>
+                            <td>{{ service.service_prices.amount }}</td>
+                          </tr>
+                        {% empty %}
+                          <tr>
+                            <td colspan="2" class="text-center text-muted">{% translate "No services" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                      <tfoot class="table-light">
+                        <tr>
+                          <td class="text-end fw-semibold" colspan="2">
+                            {% translate "Total" %}: {{ sale.cart.total_amount }}
+                            &nbsp;|&nbsp;
+                            {% translate "Discount" %}: {{ sale.cart.discount }}%
+                            &nbsp;|&nbsp;
+                            {% translate "Final Amount" %}: {{ sale.cart.final_amount }}
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            {% endif %}
           {% endfor %}
         </tbody>
       </table>

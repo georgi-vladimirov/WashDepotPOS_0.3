@@ -84,6 +84,10 @@ class AddCart(LoginRequiredMixin, View):
             messages.error(request, "Sale not found")
             return redirect("sales:sales_overview")
 
+        if sale.cart is not None:  # type: ignore
+            messages.error(request, "Cart already exists for this sale")
+            return redirect("sales:sales_overview")
+
         services_by_type = select_services_for_sale(sale=sale)
         discount = get_discount_for_subscriber_from_sale(sale=sale)
 

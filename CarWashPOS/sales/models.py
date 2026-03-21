@@ -55,12 +55,15 @@ class Cart(BaseModel):
     services = models.ManyToManyField(Service, related_name="carts", blank=True)
 
 
-# class CartItem(BaseModel):
-#     name = models.CharField(max_length=200, default="")
-#     service_type = models.CharField(max_length=50)
-#     vehicle_type = models.CharField(max_length=20)
-#     amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
+class CartItem(BaseModel):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service_price = models.ForeignKey(
+        "core.ServicePrice",
+        on_delete=models.PROTECT,  # prevent deleting a price that was charged
+        related_name="cart_items",
+    )
+    amount = models.DecimalField(max_digits=10, decimal_places=2)  # snapshot at time of sale
 
-#     def __str__(self) -> str:
-#         return f"{self.name} - {self.service_type} ({self.vehicle_type}): {self.amount} | Active: {self.is_active}"
+    class Meta:
+        unique_together = ("cart", "service")
