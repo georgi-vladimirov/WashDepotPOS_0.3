@@ -1,6 +1,6 @@
 from .models import CalendarEvent, Location, ServicePrice, VehicleBrand, VehicleType, Employee, Service, Subscriber
 from django.contrib.auth.models import AbstractUser
-from django.db.models import QuerySet
+from django.db.models import Prefetch, QuerySet
 import calendar
 from datetime import date
 
@@ -80,6 +80,10 @@ def get_services_by_location_and_vehicle_type(*, location: Location, vehicle_typ
             service_prices__vehicle_type=vehicle_type,
         )
         .select_related("service_type")
-        .distinct()
         .order_by("service_type__order", "name")
     )
+
+
+def get_services_by_ids(*, service_ids: list[str]) -> QuerySet[Service]:
+    """Return Services matching the given list of IDs."""
+    return Service.objects.filter(pk__in=service_ids, is_active=True).prefetch_related("service_prices")

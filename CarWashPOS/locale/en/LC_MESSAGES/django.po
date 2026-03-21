@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-20 16:07+0200\n"
+"POT-Creation-Date: 2026-03-21 15:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:145
+#: .\CarWashPOS\settings.py:149
 msgid "English"
 msgstr ""
 
-#: .\CarWashPOS\settings.py:146
+#: .\CarWashPOS\settings.py:150
 msgid "Bulgarian"
 msgstr "Bulgarian"
 
@@ -129,27 +129,27 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: .\sales\forms.py:64
+#: .\sales\forms.py:65
 msgid "Brand"
 msgstr ""
 
-#: .\sales\forms.py:65
+#: .\sales\forms.py:66
 msgid "Vehicle Type"
 msgstr ""
 
-#: .\sales\forms.py:66
+#: .\sales\forms.py:67
 msgid "Reg. Number"
 msgstr ""
 
-#: .\sales\forms.py:67
+#: .\sales\forms.py:68
 msgid "Manager"
 msgstr ""
 
-#: .\sales\forms.py:68
+#: .\sales\forms.py:69
 msgid "Worker"
 msgstr ""
 
-#: .\sales\forms.py:69
+#: .\sales\forms.py:70
 msgid "Subscriber"
 msgstr ""
 
@@ -165,31 +165,61 @@ msgstr ""
 msgid "Partial"
 msgstr ""
 
+#: .\sales\templates\sales\add_cart.html:7
+#: .\sales\templates\sales\add_services.html:7
+#: .\sales\templates\sales\sales_overview.html:60
+msgid "Add Services"
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:18
+msgid "Filter..."
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:43
+msgid "Selected Services"
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:48
+msgid "No services selected"
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:52
+msgid "Total"
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:60
+msgid "Discount"
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:71
+msgid "Final Amount"
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:81
+#: .\sales\templates\sales\add_sale.html:43
+#: .\sales\templates\sales\add_services.html:27
+msgid "Save"
+msgstr ""
+
+#: .\sales\templates\sales\add_cart.html:82
+#: .\sales\templates\sales\add_sale.html:44
+#: .\sales\templates\sales\add_services.html:28
+msgid "Cancel"
+msgstr ""
+
 #: .\sales\templates\sales\add_sale.html:6
 msgid "Add Sale"
 msgstr ""
 
-#: .\sales\templates\sales\add_sale.html:43
-msgid "Save"
-msgstr ""
-
-#: .\sales\templates\sales\add_sale.html:44
-msgid "Cancel"
-msgstr ""
-
-#: .\sales\templates\sales\sales_overview.html:12
+#: .\sales\templates\sales\sales_overview.html:13
 msgid "New Car"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:57
-msgid "Add Services"
-msgstr ""
-
-#: .\sales\templates\sales\sales_overview.html:65
+#: .\sales\templates\sales\sales_overview.html:68
 msgid "Delete"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:74
+#: .\sales\templates\sales\sales_overview.html:77
 msgid "Are you sure you want to delete?"
 msgstr ""
 

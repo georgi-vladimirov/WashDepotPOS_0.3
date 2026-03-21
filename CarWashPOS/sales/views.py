@@ -5,11 +5,12 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from decimal import Decimal
 
 from core.selectors import get_cal_event_by_id
 from .forms import AddSaleForm, AddServiceForm
-from .selectors import get_sales_by_cal_event, get_sale_by_id
-from .services import create_sale, delete_sale
+from .selectors import get_sales_by_cal_event, get_sale_by_id, get_discount_for_subscriber_from_sale
+from .services import create_sale, delete_sale, select_services_for_sale, create_cart_for_sale
 
 logger = logging.getLogger("sales.services")
 
@@ -83,5 +84,31 @@ class AddCart(LoginRequiredMixin, View):
             messages.error(request, "Sale not found")
             return redirect("sales:sales_overview")
 
-        form = AddServiceForm(sale=sale)
-        return render(request, "sales/add_services.html", {"form": form, "sale_id": sale_id})
+        services_by_type = select_services_for_sale(sale=sale)
+        discount = get_discount_for_subscriber_from_sale(sale=sale)
+
+        return render(
+            request,
+            "sales/add_cart.html",
+            {"sale_id": sale_id, "services_by_type": services_by_type, "discount": discount},
+        )
+
+    def post(self, request, sale_id):
+        sale = get_sale_by_id(sale_id=sale_id)
+        if sale is None:
+            messages.error(request, "Sale not found")
+            return redirect("sales:sales_overview")
+
+        total_amount = Decimal(request.POST.get("total_amount"))
+        discount_per = Decimal(request.POST.get("discount"))
+        final_amount = Decimal(request.POST.get("final_amount"))
+        service_ids = request.POST.getlist("services")  # ["3", "7", "12"]
+        create_cart_for_sale(
+            sale=sale,
+            service_ids=service_ids,
+            total_amount=total_amount,
+            discount_per=discount_per,
+            final_amount=final_amount,
+        )
+
+        return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")

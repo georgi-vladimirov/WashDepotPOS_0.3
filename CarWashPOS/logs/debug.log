@@ -42,3 +42,17 @@ INFO 2026-03-21 10:49:10,838 accounts.services user: admin logged out.
 WARNING 2026-03-21 10:49:20,287 accounts.selectors Failed authentication attempt for username: bps
 INFO 2026-03-21 10:49:29,757 accounts.selectors user: bps authenticated.
 INFO 2026-03-21 10:49:29,758 accounts.services user: bps logged in.
+INFO 2026-03-21 16:01:51,546 accounts.services user: admin logged out.
+INFO 2026-03-21 16:01:59,241 accounts.selectors user: bps authenticated.
+INFO 2026-03-21 16:01:59,241 accounts.services user: bps logged in.
+INFO 2026-03-21 17:07:45,973 sales.services Cart created for sale 2 with services: ['112', '66', '117']
+ERROR 2026-03-21 17:31:59,012 sales.services Cart amounts do not match expected values for sale 4
+INFO 2026-03-21 17:35:03,389 accounts.services user: admin logged out.
+INFO 2026-03-21 17:35:11,755 accounts.selectors user: bps authenticated.
+INFO 2026-03-21 17:35:11,755 accounts.services user: bps logged in.
+INFO 2026-03-21 17:35:25,110 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+ERROR 2026-03-21 17:35:33,972 sales.services Cart amounts do not match expected values for sale 5
+INFO 2026-03-21 17:38:58,091 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 13 | Active: True
+INFO 2026-03-21 17:39:06,889 sales.services Cart created for sale 6 with services: ['114', '106', '69']
+INFO 2026-03-21 17:45:17,943 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 9887 | Active: True
+INFO 2026-03-21 17:46:22,552 sales.services Cart created for sale 7 with services: ['112', '69', '115']

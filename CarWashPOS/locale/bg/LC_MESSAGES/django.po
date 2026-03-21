@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-20 16:07+0200\n"
+"POT-Creation-Date: 2026-03-21 15:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:145
+#: .\CarWashPOS\settings.py:149
 msgid "English"
 msgstr "Английски"
 
-#: .\CarWashPOS\settings.py:146
+#: .\CarWashPOS\settings.py:150
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -129,27 +129,27 @@ msgstr "Потребител"
 msgid "Logout"
 msgstr "Изход"
 
-#: .\sales\forms.py:64
+#: .\sales\forms.py:65
 msgid "Brand"
 msgstr "Марка"
 
-#: .\sales\forms.py:65
+#: .\sales\forms.py:66
 msgid "Vehicle Type"
 msgstr "Вид автомобил"
 
-#: .\sales\forms.py:66
+#: .\sales\forms.py:67
 msgid "Reg. Number"
 msgstr "Рег. Номер"
 
-#: .\sales\forms.py:67
+#: .\sales\forms.py:68
 msgid "Manager"
 msgstr "Управител"
 
-#: .\sales\forms.py:68
+#: .\sales\forms.py:69
 msgid "Worker"
 msgstr "Работник"
 
-#: .\sales\forms.py:69
+#: .\sales\forms.py:70
 msgid "Subscriber"
 msgstr "Абонат"
 
@@ -165,33 +165,63 @@ msgstr "Неплатено"
 msgid "Partial"
 msgstr "Частично"
 
-#: .\sales\templates\sales\add_sale.html:6
-msgid "Add Sale"
-msgstr "Добавяне на продажба"
-
-#: .\sales\templates\sales\add_sale.html:43
-msgid "Save"
-msgstr "Запазване"
-
-#: .\sales\templates\sales\add_sale.html:44
-msgid "Cancel"
-msgstr "Отказ"
-
-#: .\sales\templates\sales\sales_overview.html:12
-msgid "New Car"
-msgstr "Нов автомобил"
-
-#: .\sales\templates\sales\sales_overview.html:57
+#: .\sales\templates\sales\add_cart.html:7
+#: .\sales\templates\sales\add_services.html:7
+#: .\sales\templates\sales\sales_overview.html:60
 #, fuzzy
 #| msgid "Add Sale"
 msgid "Add Services"
 msgstr "Добавяне на продажба"
 
-#: .\sales\templates\sales\sales_overview.html:65
+#: .\sales\templates\sales\add_cart.html:18
+msgid "Filter..."
+msgstr "Филтър..."
+
+#: .\sales\templates\sales\add_cart.html:43
+msgid "Selected Services"
+msgstr "Избрани услуги"
+
+#: .\sales\templates\sales\add_cart.html:48
+msgid "No services selected"
+msgstr "Няма избрани услуги"
+
+#: .\sales\templates\sales\add_cart.html:52
+msgid "Total"
+msgstr "Общо"
+
+#: .\sales\templates\sales\add_cart.html:60
+msgid "Discount"
+msgstr "Отстъпка"
+
+#: .\sales\templates\sales\add_cart.html:71
+msgid "Final Amount"
+msgstr "Крайна цена"
+
+#: .\sales\templates\sales\add_cart.html:81
+#: .\sales\templates\sales\add_sale.html:43
+#: .\sales\templates\sales\add_services.html:27
+msgid "Save"
+msgstr "Запазване"
+
+#: .\sales\templates\sales\add_cart.html:82
+#: .\sales\templates\sales\add_sale.html:44
+#: .\sales\templates\sales\add_services.html:28
+msgid "Cancel"
+msgstr "Отказ"
+
+#: .\sales\templates\sales\add_sale.html:6
+msgid "Add Sale"
+msgstr "Добавяне на продажба"
+
+#: .\sales\templates\sales\sales_overview.html:13
+msgid "New Car"
+msgstr "Нов автомобил"
+
+#: .\sales\templates\sales\sales_overview.html:68
 msgid "Delete"
 msgstr "Изтрий"
 
-#: .\sales\templates\sales\sales_overview.html:74
+#: .\sales\templates\sales\sales_overview.html:77
 msgid "Are you sure you want to delete?"
 msgstr "Сигурни ли сте, че искате да изтриете?"
 
