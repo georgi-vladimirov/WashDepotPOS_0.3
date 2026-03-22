@@ -1,0 +1,66 @@
+{% extends "core/home.html" %}
+{% block title %}
+    Payments Overview
+{% endblock title %}
+{% block content %}
+    <div class="row p-4">
+        <div class="col-8 me-4">
+            <div class="row p-4">
+                <div class="container">
+                    <div class="btn-group me-2" role="group">
+                        <a type="button"
+                           class="btn btn-primary"
+                           role="button"
+                           href="{% url 'CashDesk:transactions' %}?tran_type=START&payment_origin=START"
+                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;">
+                            <i class="bi bi-play-fill"></i> START
+                        </a>
+                        <a type="button"
+                           class="btn btn-secondary"
+                           role="button"
+                           href="{% url 'CashDesk:transactions' %}?tran_type=END&payment_origin=END"
+                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;">
+                            <i class="bi bi-stop-fill"></i> END
+                        </a>
+                    </div>
+                    <div class="btn-group me-2" role="group">
+                        <a type="button"
+                           class="btn btn-success"
+                           role="button"
+                           href="{% url 'CashDesk:transactions' %}?tran_type=IN&payment_origin=DEPOSIT"
+                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-plus-circle"></i> CASH IN</a>
+                        <a type="button"
+                           class="btn btn-danger"
+                           role="button"
+                           href="{% url 'CashDesk:transactions' %}?tran_type=OUT&payment_origin=WITHDRAW"
+                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-dash-circle"></i> CASH OUT</a>
+                    </div>
+                    <a type="button"
+                       class="btn btn-primary"
+                       role="button"
+                       href="{% url 'CashDesk:transactions' %}?tran_type=POS&payment_origin=POS"
+                       onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-list-task"></i> POS Balance</a>
+                </div>
+            </div>
+            <div class="row rounded-3 p-4 shadow bg-white">
+                {% include "CashDesk/overview_table.html" with transactions=transactions %}
+            </div>
+        </div>
+        <div class="col-3 rounded-3 p-4 shadow bg-white">
+            <ul class="list-group">
+                {% for key, value in aggregates.items %}
+                    <li class="list-group-item {% if key == "START" %} list-group-item-dark {% elif key == "CASH_AT_HAND" %} list-group-item-dark {% elif key == "END" %} list-group-item-warning {% elif key == "CASH_BALANCE" %} list-group-item-danger {% elif key == "POS_BALANCE" %} list-group-item-danger {% endif %} d-flex justify-content-between align-items-center">
+                        {{ value.label }}
+                        <span class="badge text-bg-{% if value.amount < 0 %}danger{% elif value.amount > 0 %}success{% else %}secondary{% endif %}">
+                            {% if key == "CASH_BALANCE" and value.amount != 0 %}
+                                <h6>
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                </h6>
+                            {% endif %}
+                        {{ value.amount|stringformat:".2f" }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

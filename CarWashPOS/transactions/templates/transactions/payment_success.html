@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ title }}
+{% endblock title %}
+{% block content %}
+  <script>
+      {% if auto_close %}
+      // Close this popup window after 3 seconds
+      setTimeout(function() {
+        if (window.opener) {
+          // Refresh the parent window
+          window.opener.location.reload();
+        }
+        window.close();
+      }, 3000);
+      {% else %}
+      // Close this popup window immediately
+      if (window.opener) {
+        // Refresh the parent window
+        window.opener.location.reload();
+      }
+      window.close();
+      {% endif %}
+  </script>
+{% endblock content %}

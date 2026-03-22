@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+    Payment
+{% endblock title %}
+{% block content %}
+    <div class="container mt-4">
+        <form action="{% url 'CashDesk:transactions' %}?tran_type={{ tran_type }}&payment_origin={{ payment_origin }}&related_id={{ related_id }}"
+              method="post">
+            {% csrf_token %}
+            <div class="row mb-4">
+                {{ form }}
+            </div>
+            <div class="col mb-4">
+                <button type="submit" class="btn btn-primary mb-1">Submit Payment</button>
+                <button class="btn btn-secondary" onclick="window.close()">Cancel</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
