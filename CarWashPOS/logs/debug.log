@@ -61,3 +61,8 @@ INFO 2026-03-21 20:54:59,136 sales.services Cart created for sale 8 with service
 INFO 2026-03-21 20:55:12,508 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 789789 | Active: True
 INFO 2026-03-21 20:55:19,783 sales.services Cart created for sale 9 with services: ['76', '113', '125']
 INFO 2026-03-21 21:33:49,540 sales.services Cart deleted: Cart object (None)
+INFO 2026-03-22 16:23:06,209 accounts.selectors user: admin authenticated.
+INFO 2026-03-22 16:23:06,210 accounts.services user: admin logged in.
+INFO 2026-03-22 16:27:52,379 accounts.services user: admin logged out.
+INFO 2026-03-22 16:27:59,868 accounts.selectors user: bps authenticated.
+INFO 2026-03-22 16:27:59,869 accounts.services user: bps logged in.

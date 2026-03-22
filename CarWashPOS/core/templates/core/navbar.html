@@ -60,7 +60,7 @@
             </li>
             {% if request.user.is_superuser %}
               <li class="nav-item">
-                {% comment %} <a class="nav-link" href="{% url 'admin:index' %}">{% translate "Admin Panel" %}</a> {% endcomment %}
+                  <a class="nav-link" href="{% url 'admin:index' %}">{% translate "Admin Panel" %}</a>
               </li>
             {% endif %}
             <li class="nav-item">

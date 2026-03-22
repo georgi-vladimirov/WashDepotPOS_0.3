@@ -70,5 +70,5 @@ class CartItem(BaseModel):
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2)  # snapshot at time of sale
 
-    class Meta:
+    class Meta(BaseModel.Meta):
         unique_together = ("cart", "service")

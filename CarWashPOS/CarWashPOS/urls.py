@@ -11,4 +11,5 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("", include("core.urls")),
     path("", include("sales.urls")),
+    path("transactions/", include("transactions.urls")),
 )

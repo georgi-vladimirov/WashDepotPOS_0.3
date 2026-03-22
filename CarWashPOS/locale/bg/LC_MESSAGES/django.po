@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-21 21:52+0200\n"
+"POT-Creation-Date: 2026-03-22 17:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:149
+#: .\CarWashPOS\settings.py:150
 msgid "English"
 msgstr "Английски"
 
-#: .\CarWashPOS\settings.py:150
+#: .\CarWashPOS\settings.py:151
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -125,7 +125,11 @@ msgstr "Автомобили"
 msgid "User"
 msgstr "Потребител"
 
-#: .\core\templates\core\navbar.html:71
+#: .\core\templates\core\navbar.html:66
+msgid "Admin Panel"
+msgstr ""
+
+#: .\core\templates\core\navbar.html:70
 msgid "Logout"
 msgstr "Изход"
 
@@ -168,9 +172,8 @@ msgstr "Частично"
 #: .\sales\templates\sales\add_cart.html:7
 #: .\sales\templates\sales\sales_overview.html:72
 #: .\sales\templates\sales\sales_overview.html:78
-#| msgid "Add Sale"
 msgid "Add Services"
-msgstr "Добавяне на продажба"
+msgstr "Добавяне на услуги"
 
 #: .\sales\templates\sales\add_cart.html:30
 msgid "Filter..."
@@ -203,13 +206,11 @@ msgstr "Крайна цена"
 
 #: .\sales\templates\sales\add_cart.html:92
 #: .\sales\templates\sales\add_sale.html:43
-#: .\sales\templates\sales\add_services.html:27
 msgid "Save"
 msgstr "Запазване"
 
 #: .\sales\templates\sales\add_cart.html:93
 #: .\sales\templates\sales\add_sale.html:44
-#: .\sales\templates\sales\add_services.html:28
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -283,6 +284,58 @@ msgstr "НЕ"
 #: .\templates\delete_confirm_modal.html:25
 msgid "Yes"
 msgstr "ДА"
+
+#: .\transactions\models.py:19
+msgid "Income"
+msgstr "Приход"
+
+#: .\transactions\models.py:20
+msgid "Cost"
+msgstr "Разход"
+
+#: .\transactions\models.py:21
+msgid "Salary"
+msgstr "Зарплата"
+
+#: .\transactions\models.py:22
+msgid "Bonus"
+msgstr "Бонус"
+
+#: .\transactions\models.py:23
+msgid "Deposit"
+msgstr "Вноска"
+
+#: .\transactions\models.py:24
+msgid "Withdrawal"
+msgstr "Теглене"
+
+#: .\transactions\models.py:25
+msgid "Balance"
+msgstr "Баланс"
+
+#: .\transactions\models.py:28
+msgid "Cash"
+msgstr "Кеш"
+
+#: .\transactions\models.py:29
+msgid "POS"
+msgstr "ПОС"
+
+#: .\transactions\models.py:30
+msgid "Online"
+msgstr "Онлайн"
+
+#: .\transactions\models.py:31
+msgid "Subscription"
+msgstr "Абонамент"
+
+#: .\transactions\models.py:32
+msgid "Prepaid"
+msgstr "Предиплатено"
+
+#: .\transactions\models.py:33
+msgid "Bank"
+msgstr "Банка"
 
 #~ msgid "Language"
 #~ msgstr "Език"
