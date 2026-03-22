@@ -1,0 +1,56 @@
+{
+  "file_types": {
+    "Django": ["**/templates/**/*.html"],
+  },
+
+  "languages": {
+    "Python": {
+      "language_servers": ["pyright"],
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "ruff",
+          "arguments": ["format", "--stdin-filename", "{buffer_path}", "-"],
+        },
+      },
+    },
+    "Django": {
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "djlint",
+          "arguments": ["--reformat", "-"],
+        },
+      },
+    },
+    "HTML": {
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"],
+        },
+      },
+    },
+  },
+
+  "lsp": {
+    "pyright": {
+      "settings": {
+        "python": {
+          "pythonPath": ".venv/bin/python",
+          "analysis": {
+            "djangoStubs": true,
+            "typeCheckingMode": "basic",
+          },
+        },
+      },
+    },
+  },
+
+  "debugger": {
+    "python": {
+      "adapter": "debugpy",
+    },
+  },
+}
