@@ -191,5 +191,10 @@ LOGGING = {
             "level": "INFO",
             "propagate": False,
         },
+        "transactions": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
     },
 }

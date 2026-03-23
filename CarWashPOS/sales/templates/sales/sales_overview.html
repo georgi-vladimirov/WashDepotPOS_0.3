@@ -1,6 +1,7 @@
 {% extends "core/home.html" %}
 
 {% load i18n %}
+{% load l10n %}
 
 {% block content %}
   <div class="d-flex flex-column mb-3">
@@ -26,6 +27,7 @@
             <th scope="col" class="text-end">{% translate "Discount" %}</th>
             <th scope="col" class="text-end">{% translate "Final" %}</th>
             <th scope="col" class="text-end">{% translate "Paid" %}</th>
+            <th scope="col" class="text-center"><i class="bi bi-piggy-bank-fill"></i></th>
             <th scope="col" class="text-center">{% translate "Worker" %}</th>
             <th scope="col" class="text-center">{% translate "Manager" %}</th>
             <th scope="col" class="text-center me-2">{% translate "UTL" %}</th>
@@ -48,22 +50,30 @@
               </td>
               <td class="text-center">{{ sale.reg_number }}</td>
               <td class="text-center">
-                <span class="badge text bg-
-                             {% if sale.payment_status == 'PAID' %}
-                               success
-                             {% elif sale.payment_status == 'PARTIAL' %}
-                               info
-                             {% else %}
-                               warning
-                             {% endif %}">{{ sale.payment_status }}</span>
+                  <span class="badge text-bg-{% if sale.payment_status == 'PAID' %}success{% elif sale.payment_status == 'PARTIAL' %}info{% else %}warning{%endif %}">
+                      {{ sale.get_payment_status_display }}
+                  </span>
               </td>
               <td class="text-center">{{ sale.vehicle_type.name }}</td>
               <td class="text-center">{{ sale.vehicle_brand.brand }}</td>
               <td class="text-center">{{ sale.subscriber.name }}</td>
-              <td class="text-end">{{ sale.cart.total_amount }}</td>
-              <td class="text-end">{{ sale.cart.discount }}</td>
-              <td class="text-end">{{ sale.cart.final_amount }}</td>
-              <td class="text-end">{{ sale.paid_amount }}</td>
+              <td class="text-end">{{ sale.cart.total_amount |unlocalize }}</td>
+              <td class="text-end">{{ sale.cart.discount |unlocalize }}</td>
+              <td class="text-end">{{ sale.cart.final_amount |unlocalize }}</td>
+              <td class="text-end">{{ sale.paid_amount |unlocalize }}</td>
+              <td class="text-center">
+                {% if sale.payment_status == 'PAID' %}
+                    <button class="btn btn-secondary btn-sm" disabled>
+                        <i class="bi bi-piggy-bank-fill"></i> {% translate "Payment" %}
+                    </button>
+                {% else %}
+                    <a href="{% url 'transactions:tran_sales' sale_id=sale.id %}"
+                        class="btn btn-secondary btn-sm"
+                        onclick="window.open(this.href, '_blank', 'width=500, height=250, toolbar=no, menubar=no, scrollbars=yes'); return false;">
+                            <i class="bi bi-piggy-bank-fill"></i> {% translate "Payment" %}
+                    </a>
+                {% endif %}
+              </td>
               <td class="text-center">{{ sale.worker.employee_id }}</td>
               <td class="text-center">{{ sale.manager.employee_id }}</td>
               <td class="text-center me-2">

@@ -3,7 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from common.models import BaseModel
 from decimal import Decimal
 
-# from CashDesk.models import Transaction
 from core.models import (
     Employee,
     Service,
@@ -39,12 +38,12 @@ class Sale(BaseModel):
     def __str__(self) -> str:
         return f"Sale on {self.date.date} at {self.date.location.name} | Reg#: {self.reg_number} | Active: {self.is_active}"
 
-    # @property
-    # def paid_amount(self) -> Decimal:
-    #     """Calculate total amount paid from all transactions for this sale."""
-    #     transactions = Transaction.objects.filter(sale=self)
-    #     total_paid = transactions.aggregate(total_paid=models.Sum("amount"))["total_paid"] or Decimal(0)
-    #     return total_paid
+    @property
+    def paid_amount(self) -> Decimal:
+        """Calculate total amount paid from all transactions for this sale."""
+        from transactions.selectors import get_trans_amount_by_sale
+        total_paid = get_trans_amount_by_sale(sale = self)
+        return total_paid
 
 
 class Cart(BaseModel):

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <div class="border shadow-sm p-2 m-3 bg-body-tertiary rounded">
+        <form action="{% url 'transactions:transactions' %}?tran_type={{ tran_type }}&payment_origin={{ payment_origin }}&related_id={{ related_id }}"
+            method="post">
+            {% csrf_token %}
+            <div class="row mb-4">
+                {{ form }}
+            </div>
+            <div class="col mb-4">
+                <button type="submit" class="btn btn-primary mb-1">{% translate "Submit Payment" %}</button>
+                <button class="btn btn-secondary" onclick="window.close()">{% translate "Cancel" %}</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

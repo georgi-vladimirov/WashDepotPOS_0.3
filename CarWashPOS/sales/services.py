@@ -1,9 +1,11 @@
 from decimal import Decimal
+from typing_extensions import final
 
 from core.models import CalendarEvent
 from core.selectors import get_services_by_location_and_vehicle_type, get_services_by_ids
 from core.models import ServiceType, Service
 from .models import Sale, Cart, CartItem, PaymentStatus
+from .selectors import get_sale_unpaid_amount, get_cart_final_amount, get_cart_by_sale
 import logging
 
 logger = logging.getLogger("sales.services")
@@ -142,3 +144,21 @@ def select_services_for_sale(*, sale: Sale):
         )
 
     return services_by_type
+
+
+def set_sale_status(*, sale: Sale,) -> Sale:
+    unpaid_amount = get_sale_unpaid_amount(sale=sale)
+    cart = get_cart_by_sale(sale=sale)
+    if cart is None:
+        return sale
+    final_amount = get_cart_final_amount(cart=cart)
+
+    if unpaid_amount == Decimal(0):
+        sale.payment_status = PaymentStatus.PAID
+    elif unpaid_amount == final_amount:
+        sale.payment_status = PaymentStatus.UNPAID
+    else:
+        sale.payment_status = PaymentStatus.PARTIAL
+    sale.save()
+    logger.info("Set status: %s for sale %s", sale.payment_status, sale)
+    return sale

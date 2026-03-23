@@ -1,12 +1,18 @@
 from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
+import logging
 from typing import TypedDict
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
+from sales.models import Sale
+from sales.selectors import get_sale_unpaid_amount
+from core.models import CalendarEvent
 from .models import Transaction
 from .filters import FILTERS
+from .selectors import get_trans_amount_by_sale
 
+logger = logging.getLogger("transactions.services")
 
 
 class AggregateData(TypedDict):
@@ -16,7 +22,7 @@ class AggregateData(TypedDict):
     label: str | Promise
 
 
-def daily_report_calculate(transactions_qs, filters=FILTERS) -> dict[str, AggregateData]:
+def daily_report_calculate(*, transactions_qs, filters=FILTERS) -> dict[str, AggregateData]:
     """Calculate daily report aggregates from transaction queryset."""
 
     # Calculate all aggregates
@@ -41,3 +47,30 @@ def daily_report_calculate(transactions_qs, filters=FILTERS) -> dict[str, Aggreg
     aggregates = dict(sorted(aggregates.items(), key=lambda item: item[1]["order"]))
 
     return aggregates
+
+
+def sale_accepts_transaction(*, sale: Sale, transaction: Transaction) -> bool:
+    sale_unpaid_amount = get_sale_unpaid_amount(sale=sale)
+    trans_amount = get_trans_amount_by_sale(sale=sale)
+    return sale_unpaid_amount >= trans_amount
+
+
+def process_sale_payment(*, sale: Sale, transaction: Transaction) -> bool:
+    if not sale_accepts_transaction(sale=sale, transaction=transaction):
+        logger.warning("Transaction: %s does not cover sale: %s", transaction, sale)
+        return False
+    return True
+
+
+def transaction_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
+    sale: Sale = transaction.sale
+    if sale:
+        if process_sale_payment(sale=sale, transaction=transaction):
+            transaction.save()
+            logger.info("Transaction: %s for sale: %s saved.", transaction, sale)
+            return transaction, True
+        else:
+            return transaction, False
+
+    transaction.save()
+    return transaction, True
