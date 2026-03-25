@@ -58,7 +58,7 @@ def sale_accepts_transaction(*, sale: Sale, transaction: Transaction) -> bool:
 
 def process_sale_payment(*, sale: Sale, transaction: Transaction) -> bool:
     if not sale_accepts_transaction(sale=sale, transaction=transaction):
-        logger.warning("Transaction: %s does not cover sale: %s", transaction, sale)
+        logger.warning("transaction_does_not_cover_sale", extra={"sale": sale, "transaction": transaction})
         return False
     return True
 
@@ -70,7 +70,7 @@ def transaction_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
             transaction.details = f"{sale.reg_number} | {sale.date.date.strftime('%d.%m.%Y')}"
             transaction.save()
             set_sale_status(sale=sale)
-            logger.info("Transaction: %s for sale: %s saved.", transaction, sale)
+            logger.info("sale_payment_saved", extra={"sale": sale, "transaction": transaction})
             return transaction, True
         else:
             return transaction, False

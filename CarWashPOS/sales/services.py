@@ -16,7 +16,7 @@ def create_sale(*, form, cal_event: CalendarEvent) -> Sale:
     sale = form.save(commit=False)
     sale.date = cal_event
     sale.save()
-    logger.info("New sale recorded: %s", sale)
+    logger.info("sale_saved", extra={"sale_id": sale.pk})
     return sale
 
 
@@ -25,10 +25,10 @@ def delete_sale(*, sale_id: int) -> bool:
     try:
         sale = Sale.objects.get(pk=sale_id)
         sale.delete()
-        logger.info("Sale deleted: %s", sale)
+        logger.info("sale_deleted", extra={"sale_id": sale_id})
         return True
     except Sale.DoesNotExist:
-        logger.warning("Attempt to delete non-existent sale with id: %d", sale_id)
+        logger.info("sale_not_found_when_delete", extra={"sale_id": sale_id})
         return False
 
 
@@ -69,10 +69,10 @@ def create_cart_for_sale(
     create_cartItems(sale=sale, service_ids=service_ids, cart=cart)
 
     if not check_cart_amounts(cart=cart, discount_per=discount_per):
-        logger.error("Cart amounts do not match expected values for sale %d", sale.pk)
+        logger.info("cart_amounts_inconsistent", extra={"sale_id": sale.pk})
         return cart  # Cart is still created, but amounts are inconsistent
     cart.save()
-    logger.info("Cart created for sale %d with services: %s", sale.pk, service_ids)
+    logger.info("cart_created", extra={"sale_id": sale, "services": service_ids})
     return cart
 
 
@@ -84,12 +84,12 @@ def cart_delete(*, cart: Cart) -> bool:
     if cart.sale.payment_status == PaymentStatus.UNPAID:
         try:
             cart.delete()
-            logger.info("Cart deleted: %s", cart)
+            logger.info("cart_deleted", extra={"cart_id": cart})
             return True
         except Cart.DoesNotExist:
-            logger.warning("Attempt to delete non-existent cart with id: %d", cart.pk)
+            logger.info("cart_not_found_when_delete", extra={"cart_id": cart.pk})
             return False
-    logger.warning("Attempt to delete cart with id %d that is associated with a paid sale", cart.pk)
+    logger.info("cart_delete_when_paid", extra={"cart_id": cart.pk})
     return False
 
 
@@ -160,5 +160,6 @@ def set_sale_status(*, sale: Sale,) -> Sale:
     else:
         sale.payment_status = PaymentStatus.PARTIAL
     sale.save()
-    logger.info("Set status: %s for sale %s", sale.payment_status, sale)
+    logger.info("sale_status_set", extra={"sale_id": sale.pk, "status": sale.payment_status})
+
     return sale

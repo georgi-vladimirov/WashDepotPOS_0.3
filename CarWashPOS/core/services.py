@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.http import HttpRequest
+from django.http import HttpRequest, Http404
 from typing import cast
 from datetime import datetime
 from .selectors import get_cal_event_by_id, get_last_cal_event_by_user, get_location_by_id
@@ -28,8 +28,11 @@ def sync_cal_event_session(*, request: HttpRequest) -> None:
 def calendar_event_create(date_str: str, location_str: str) -> CalendarEvent:
     """Creates and returns a new CalendarEvent for the given date and location."""
     location = get_location_by_id(location_id=location_str)
+    if not location:
+        raise Http404(f"Location not found: {location_str}")
     date = datetime.strptime(date_str, "%Y-%m-%d").date()
     cal_event = CalendarEvent(date=date, location=location, is_active=True)
     cal_event.save()
-    logger.info("Created new CalendarEvent: %s", cal_event)
+    logger.info("calendar_event_created", extra={"location_id": location.name, "date": date_str})
+
     return cal_event

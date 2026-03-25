@@ -7,10 +7,12 @@ logger = logging.getLogger("accounts.services")
 
 
 def user_login(*, request: HttpRequest, user: AbstractUser) -> None:
-    logger.info("user: %s logged in.", user.username)
+    logger.info("user_logged_in", extra={"user_id": user.get_username()})
+    
     login(request, user)
 
 
 def user_logout(*, request: HttpRequest) -> None:
-    logger.info("user: %s logged out.", request.user.username)
+    logger.info("user_logged_out", extra={"user_id": request.user.get_username()})
     logout(request)
+    

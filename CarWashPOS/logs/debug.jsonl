@@ -1,0 +1,15 @@
+{"timestamp": "2026-03-25T23:24:08", "level": "INFO", "logger": "accounts.services", "message": "user_logged_out", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:24:24", "level": "INFO", "logger": "accounts.selectors", "message": "user_authenticated", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:24:24", "level": "INFO", "logger": "accounts.services", "message": "user_logged_in", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:25:21", "level": "INFO", "logger": "accounts.services", "message": "user_logged_out", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:26:00", "level": "INFO", "logger": "accounts.selectors", "message": "user_authenticated", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:26:00", "level": "INFO", "logger": "accounts.services", "message": "user_logged_in", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:28:10", "level": "INFO", "logger": "sales.services", "message": "New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: \u04104545 | Active: True", "extra": {"taskName": null}}
+{"timestamp": "2026-03-25T23:28:31", "level": "INFO", "logger": "sales.services", "message": "Cart created for sale 13 with services: ['66']", "extra": {"taskName": null}}
+{"timestamp": "2026-03-25T23:28:44", "level": "INFO", "logger": "sales.services", "message": "sale_status_set", "extra": {"taskName": null, "sale_id": 13, "status": "PAID"}}{"timestamp": "2026-03-25T23:46:08", "level": "INFO", "logger": "sales.services", "message": "sale_status_set", "extra": {"taskName": null, "sale_id": 14, "status": "PAID"}}
+{"timestamp": "2026-03-25T23:46:20", "level": "INFO", "logger": "accounts.services", "message": "user_logged_out", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:50:45", "level": "INFO", "logger": "accounts.selectors", "message": "user_authenticated", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:50:45", "level": "INFO", "logger": "accounts.services", "message": "user_logged_in", "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-03-25T23:59:25", "level": "INFO", "logger": "sales.services", "message": "sale_saved", "extra": {"taskName": null, "sale_id": 15}}
+{"timestamp": "2026-03-26T00:01:00", "level": "INFO", "logger": "sales.services", "message": "sale_saved", "extra": {"taskName": null, "sale_id": "Sale on 2026-03-19 at Business Park Sofia | Reg#: 9887 | Active: True"}}
+{"timestamp": "2026-03-26T00:01:40", "level": "INFO", "logger": "sales.services", "message": "sale_deleted", "extra": {"taskName": null, "sale_id": null}}

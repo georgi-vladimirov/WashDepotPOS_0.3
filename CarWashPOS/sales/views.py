@@ -56,7 +56,7 @@ class AddSale(LoginRequiredMixin, View):
             sale = create_sale(form=form, cal_event=cal_event)
             return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
         else:
-            logger.warning("AddSale form submission with invalid data: %s", form.errors)
+            logger.warning("add_sale_form_invalid", extra={"errors": form.errors})
             messages.error(request, "Error recording sale. Please check the form for errors.")
 
         return render(request, "sales/add_sale.html", {"form": form})
