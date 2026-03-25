@@ -35,7 +35,7 @@
                         </div>
                     {% endif %}
                     {% if field.errors %}
-                        {% include "error_snippet.html" with errors=field.errors %}
+                        {% include "message_snippet.html" with errors=field.errors %}
 
                     {% endif %}
                 {% endfor %}

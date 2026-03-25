@@ -67,3 +67,20 @@ INFO 2026-03-22 16:27:52,379 accounts.services user: admin logged out.
 INFO 2026-03-22 16:27:59,868 accounts.selectors user: bps authenticated.
 INFO 2026-03-22 16:27:59,869 accounts.services user: bps logged in.
 INFO 2026-03-23 22:16:24,550 transactions.services Transaction: Transaction object (3) for sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 789789 | Active: True saved.
+INFO 2026-03-25 20:07:30,357 sales.services Cart created for sale 8 with services: ['112']
+INFO 2026-03-25 20:08:01,756 transactions.services Transaction: Transaction object (4) for sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 789789 | Active: True saved.
+INFO 2026-03-25 20:18:15,665 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 13 | Active: True
+INFO 2026-03-25 20:18:19,523 sales.services Cart created for sale 10 with services: ['69', '114']
+INFO 2026-03-25 20:18:22,865 transactions.services Transaction: Transaction object (5) for sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 13 | Active: True saved.
+INFO 2026-03-25 20:21:12,646 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+INFO 2026-03-25 20:21:19,453 sales.services Cart created for sale 11 with services: ['66', '124', '115']
+INFO 2026-03-25 20:21:27,130 sales.services Set status: PAID for sale Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+INFO 2026-03-25 20:21:27,131 transactions.services Transaction: Transaction object (6) for sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True saved.
+INFO 2026-03-25 20:22:15,558 sales.services New sale recorded: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+INFO 2026-03-25 20:22:33,283 sales.services Cart created for sale 12 with services: ['68', '91', '113', '117']
+INFO 2026-03-25 20:22:45,095 sales.services Set status: PARTIAL for sale Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+INFO 2026-03-25 20:22:45,096 transactions.services Transaction: Transaction object (7) for sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True saved.
+WARNING 2026-03-25 20:22:59,500 transactions.services Transaction: Transaction object (None) does not cover sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+WARNING 2026-03-25 20:23:19,660 transactions.services Transaction: Transaction object (None) does not cover sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+INFO 2026-03-25 20:28:05,022 sales.services Set status: PAID for sale Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True
+INFO 2026-03-25 20:28:05,024 transactions.services Transaction: Transaction object (8) for sale: Sale on 2026-03-19 at Business Park Sofia | Reg#: 123 | Active: True saved.

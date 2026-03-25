@@ -7,6 +7,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from sales.models import Sale
 from sales.selectors import get_sale_unpaid_amount
+from sales.services import set_sale_status
 from core.models import CalendarEvent
 from .models import Transaction
 from .filters import FILTERS
@@ -51,7 +52,7 @@ def daily_report_calculate(*, transactions_qs, filters=FILTERS) -> dict[str, Agg
 
 def sale_accepts_transaction(*, sale: Sale, transaction: Transaction) -> bool:
     sale_unpaid_amount = get_sale_unpaid_amount(sale=sale)
-    trans_amount = get_trans_amount_by_sale(sale=sale)
+    trans_amount = transaction.amount
     return sale_unpaid_amount >= trans_amount
 
 
@@ -66,7 +67,9 @@ def transaction_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
     sale: Sale = transaction.sale
     if sale:
         if process_sale_payment(sale=sale, transaction=transaction):
+            transaction.details = f"{sale.reg_number} | {sale.date.date.strftime('%d.%m.%Y')}"
             transaction.save()
+            set_sale_status(sale=sale)
             logger.info("Transaction: %s for sale: %s saved.", transaction, sale)
             return transaction, True
         else:

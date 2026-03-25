@@ -61,3 +61,7 @@ class TranSales(LoginRequiredMixin, View):
             transaction_save(transaction=transaction)
 
         return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
+
+
+class TranDelete(LoginRequiredMixin, View):
+    pass

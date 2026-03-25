@@ -41,6 +41,8 @@ class Transaction(BaseModel):
     ################################
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name="transactions", null=True, blank=True)
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="transactions", null=True, blank=True)
+    ################################
+    details = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         # Convert amount to negative if transaction type is OUT
