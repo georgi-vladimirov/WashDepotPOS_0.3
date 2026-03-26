@@ -6,13 +6,18 @@ from common.models import BaseModel
 class Location(BaseModel):
     name = models.CharField(max_length=100, unique=True)
     short_name = models.CharField(max_length=4, unique=True)
-
+    ################
+    display_fields: list[str] = ["short_name"]
+    ################
     def __str__(self) -> str:
         return f"{self.name} - {self.short_name}"
 
 
 class VehicleType(BaseModel):
     name = models.CharField(max_length=20, unique=True)
+    ################
+    display_fields: list[str] = ["name"]
+    ################
 
     def __str__(self) -> str:
         return self.name
@@ -23,6 +28,9 @@ class ServiceType(BaseModel):
     name_BG = models.CharField(max_length=100, unique=True, default="")
     selectivity = models.IntegerField(default=1)
     order = models.IntegerField(default=1)
+    ################
+    display_fields: list[str] = ["name"]
+    ################
 
     def __str__(self) -> str:
         return self.name
@@ -38,9 +46,11 @@ class Service(BaseModel):
         null=True,
     )
     description = models.TextField(blank=True)
-
-    # def __str__(self) -> str:
-    #     return f"{self.name} | Active: {self.is_active}"  # This will display the service name in the admin
+    ################
+    display_fields: list[str] = ["name"]
+    ################
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 
 class ServicePrice(BaseModel):
@@ -48,7 +58,9 @@ class ServicePrice(BaseModel):
     vehicle_type = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
     service = models.ForeignKey("Service", on_delete=models.CASCADE, related_name="service_prices")
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-
+    ################
+    display_fields: list[str] = ["amount"]
+    ################
     IMMUTABLE_FIELDS = {"vehicle_type_id", "service_id", "amount"}
 
     def save(self, *args, **kwargs):
@@ -65,21 +77,25 @@ class ServicePrice(BaseModel):
 
     def __str__(self) -> str:
         locations = ", ".join([loc.name for loc in self.location.all()])
-        return f"{self.service.name} - {self.vehicle_type.name} @ {locations}: {self.amount} | Active: {self.is_active}"
+        return f"{self.service.name} - {self.vehicle_type.name} @ {locations}: {self.amount}"
 
 
 class VehicleBrand(BaseModel):
     brand = models.CharField(max_length=50, unique=True)
     number_sort = models.IntegerField()
-
+    ################
+    display_fields: list[str] = ["brand"]
+    ################
     def __str__(self) -> str:
-        return f"{self.number_sort}. {self.brand}"
+        return f"{self.brand}"
 
 
 class EmployeePosition(BaseModel):
     position = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True)
-
+    ################
+    display_fields: list[str] = ["position"]
+    ################
     def __str__(self) -> str:
         return f"{self.position} | Active: {self.is_active}"
 
@@ -92,26 +108,32 @@ class Employee(BaseModel):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="employees")
     salary_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal(0))
     bonus_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal(0))
-
+    ################
+    display_fields: list[str] = ["first_name", "last_name", "employee_id", "position"]
+    ################
     def __str__(self) -> str:
-        return f"{self.employee_id} ({self.first_name} {self.last_name}) | {self.position.position} | {self.location.short_name} | Active: {self.is_active}"
+        return f"{self.employee_id} ({self.first_name} {self.last_name})"
 
 
 class Subscriber(BaseModel):
     name = models.CharField(max_length=100, unique=True)
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal(0))
     location = models.ManyToManyField(Location, related_name="subscribers")
-
+    ################
+    display_fields: list[str] = ["name"]
+    ################
     def __str__(self) -> str:
-        return f"{self.name} - {self.discount_percentage}% - Active: {self.is_active}"
+        return f"{self.name}"
 
 
 class CalendarEvent(BaseModel):
     date = models.DateField()
     location = models.ForeignKey(Location, on_delete=models.CASCADE, unique_for_date="date")
-
-    class Meta:
+    ################
+    display_fields: list[str] = ["date", "location"]
+    ################
+    class Meta(BaseModel.Meta):
         unique_together = ("date", "location")
 
     def __str__(self) -> str:
-        return f"{self.date} - {self.location.name} - Active: {self.is_active}"
+        return f"{self.date} - {self.location.name}"

@@ -34,9 +34,11 @@ class Sale(BaseModel):
         null=True,
         related_name="sales",
     )
-
+    ################
+    display_fields: list[str] = ["vehicle_brand", "vehicle_type", "reg_number"]
+    ################
     def __str__(self) -> str:
-        return f"Sale on {self.date.date} at {self.date.location.name} | Reg#: {self.reg_number} | Active: {self.is_active}"
+        return f"{self.date.date} - {self.date.location.name} - {self.reg_number} - {self.vehicle_brand.brand}"
 
     @property
     def paid_amount(self) -> Decimal:
@@ -57,6 +59,13 @@ class Cart(BaseModel):
         related_name="carts",
         blank=True,
     )
+    ################
+    display_fields: list[str] = ["final_amount"]
+    ################
+
+    def __str__(self) -> str:
+        return f"{self.sale.id} - {self.total_amount} - {self.discount} - {self.final_amount}"
+
 
 
 class CartItem(BaseModel):
@@ -68,6 +77,8 @@ class CartItem(BaseModel):
         related_name="cart_items",
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2)  # snapshot at time of sale
-
+    ################
+    display_fields: list[str] = ["service", "service_price"]
+    ################
     class Meta(BaseModel.Meta):
         unique_together = ("cart", "service")

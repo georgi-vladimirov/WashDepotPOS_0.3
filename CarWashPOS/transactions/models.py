@@ -43,7 +43,9 @@ class Transaction(BaseModel):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="transactions", null=True, blank=True)
     ################################
     details = models.TextField(blank=True, null=True)
-
+    ################
+    display_fields: list[str] = ["type", "origin", "amount", "payment_method"]
+    ################
     def save(self, *args, **kwargs):
         # Convert amount to negative if transaction type is OUT
         if self.type == TranType.OUT and self.amount > 0:

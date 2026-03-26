@@ -1,6 +1,13 @@
 import logging
 import json
 import urllib.request
+from common.middleware import get_current_user
+
+def _get_user_info() -> dict:
+    user = get_current_user()
+    if user is None:
+        return {"user_id": None, "username": "anonymous"}
+    return {"user_id": user.id, "username": user.username}
 
 class JSONFormatter(logging.Formatter):
     def format(self, record):
@@ -9,6 +16,7 @@ class JSONFormatter(logging.Formatter):
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),
+            "user": _get_user_info(),
             "extra": {
                 k: v for k, v in record.__dict__.items()
                 if k not in {
@@ -36,6 +44,7 @@ class BetterStackHandler(logging.Handler):
                 "level": record.levelname,
                 "logger": record.name,
                 "timestamp": self._formatter.formatTime(record, "%Y-%m-%dT%H:%M:%S"),
+                "user": _get_user_info(),
                 **{k: v for k, v in record.__dict__.items()
                    if k not in {
                        "args", "asctime", "created", "exc_info", "exc_text",

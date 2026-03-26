@@ -16,7 +16,7 @@ def create_sale(*, form, cal_event: CalendarEvent) -> Sale:
     sale = form.save(commit=False)
     sale.date = cal_event
     sale.save()
-    logger.info("sale_saved", extra={"sale_id": sale.pk})
+    logger.info("sale_saved", extra={"sale": sale.logger_data()})
     return sale
 
 
@@ -69,10 +69,10 @@ def create_cart_for_sale(
     create_cartItems(sale=sale, service_ids=service_ids, cart=cart)
 
     if not check_cart_amounts(cart=cart, discount_per=discount_per):
-        logger.info("cart_amounts_inconsistent", extra={"sale_id": sale.pk})
+        logger.info("cart_amounts_inconsistent", extra={"sale": sale.logger_data(), "cart": cart.logger_data()})
         return cart  # Cart is still created, but amounts are inconsistent
     cart.save()
-    logger.info("cart_created", extra={"sale_id": sale, "services": service_ids})
+    logger.info("cart_created", extra={"sale_id": sale.pk, "services": service_ids})
     return cart
 
 
@@ -84,12 +84,12 @@ def cart_delete(*, cart: Cart) -> bool:
     if cart.sale.payment_status == PaymentStatus.UNPAID:
         try:
             cart.delete()
-            logger.info("cart_deleted", extra={"cart_id": cart})
+            logger.info("cart_deleted", extra={"cart_id": cart.pk})
             return True
         except Cart.DoesNotExist:
             logger.info("cart_not_found_when_delete", extra={"cart_id": cart.pk})
             return False
-    logger.info("cart_delete_when_paid", extra={"cart_id": cart.pk})
+    logger.info("cart_delete_when_paid", extra={"cart": cart.logger_data()})
     return False
 
 

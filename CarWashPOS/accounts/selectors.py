@@ -13,3 +13,4 @@ def get_authenticated_user(*, username: str, password: str) -> AbstractUser | No
         logger.info("user_authentication_failed", extra={"username": username})
 
     return user # type: ignore
+    
