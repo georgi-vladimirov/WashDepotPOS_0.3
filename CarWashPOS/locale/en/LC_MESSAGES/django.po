@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-25 19:59+0200\n"
+"POT-Creation-Date: 2026-03-26 17:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:150
+#: .\CarWashPOS\settings.py:142
 msgid "English"
 msgstr ""
 
-#: .\CarWashPOS\settings.py:151
+#: .\CarWashPOS\settings.py:143
 msgid "Bulgarian"
 msgstr "Bulgarian"
 
@@ -258,7 +258,7 @@ msgstr ""
 msgid "Service"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:110 .\transactions\forms.py:77
+#: .\sales\templates\sales\sales_overview.html:110
 msgid "Amount"
 msgstr ""
 
@@ -326,7 +326,11 @@ msgstr ""
 msgid "POS Receipt"
 msgstr ""
 
-#: .\transactions\forms.py:78
+#: .\transactions\forms.py:90
+msgid "Transaction Amount"
+msgstr ""
+
+#: .\transactions\forms.py:91
 msgid "Payment Method"
 msgstr ""
 
@@ -374,16 +378,33 @@ msgstr ""
 msgid "Bank"
 msgstr ""
 
-#: .\transactions\services.py:42
+#: .\transactions\services.py:43
 msgid "Cash at Hand"
 msgstr ""
 
-#: .\transactions\services.py:43
+#: .\transactions\services.py:44
 msgid "Cash Balance"
 msgstr ""
 
-#: .\transactions\services.py:44
+#: .\transactions\services.py:45
+#: .\transactions\templates\transactions\overview.html:44
 msgid "POS Balance"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview.html:18
+msgid "START"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview.html:25
+msgid "END"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview.html:33
+msgid "CASH IN"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview.html:38
+msgid "CASH OUT"
 msgstr ""
 
 #: .\transactions\templates\transactions\transaction.html:15

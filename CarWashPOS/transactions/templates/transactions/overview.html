@@ -13,35 +13,35 @@
                         <a type="button"
                            class="btn btn-primary"
                            role="button"
-                           href="{% url 'transactions:transactions' %}?tran_type=START&payment_origin=START"
+                           href="{% url 'transactions:transactions' %}?tran_type=START&origin=BALANCE"
                            onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;">
-                            <i class="bi bi-play-fill"></i> START
+                            <i class="bi bi-play-fill"></i> {% translate "START" %}
                         </a>
                         <a type="button"
                            class="btn btn-secondary"
                            role="button"
-                           href="{% url 'transactions:transactions' %}?tran_type=END&payment_origin=END"
+                           href="{% url 'transactions:transactions' %}?tran_type=END&origin=BALANCE"
                            onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;">
-                            <i class="bi bi-stop-fill"></i> END
+                            <i class="bi bi-stop-fill"></i> {% translate "END" %}
                         </a>
                     </div>
                     <div class="btn-group me-2" role="group">
                         <a type="button"
                            class="btn btn-success"
                            role="button"
-                           href="{% url 'transactions:transactions' %}?tran_type=IN&payment_origin=DEPOSIT"
-                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-plus-circle"></i> CASH IN</a>
+                           href="{% url 'transactions:transactions' %}?tran_type=IN&origin=DEPOSIT"
+                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-plus-circle"></i> {% translate "CASH IN" %}</a>
                         <a type="button"
                            class="btn btn-danger"
                            role="button"
-                           href="{% url 'transactions:transactions' %}?tran_type=OUT&payment_origin=WITHDRAW"
-                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-dash-circle"></i> CASH OUT</a>
+                           href="{% url 'transactions:transactions' %}?tran_type=OUT&origin=WITHDRAW"
+                           onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-dash-circle"></i> {% translate "CASH OUT" %}</a>
                     </div>
                     <a type="button"
                        class="btn btn-primary"
                        role="button"
-                       href="{% url 'transactions:transactions' %}?tran_type=POS&payment_origin=POS"
-                       onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-list-task"></i> POS Balance</a>
+                       href="{% url 'transactions:transactions' %}?tran_type=POS&origin=BALANCE"
+                       onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-list-task"></i> {% translate "POS Balance" %}</a>
                 </div>
             </div>
             <div class="row rounded-3 p-4 shadow bg-white">

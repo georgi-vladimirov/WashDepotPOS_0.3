@@ -2,16 +2,16 @@ from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 import logging
-from typing import TypedDict
+from typing import Tuple, TypedDict
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from sales.models import Sale
 from sales.selectors import get_sale_unpaid_amount
 from sales.services import set_sale_status
 from core.models import CalendarEvent
-from .models import Transaction
+from .models import Transaction, TranType
 from .filters import FILTERS
-from .selectors import get_trans_amount_by_sale
+from .selectors import get_trans_amount_by_sale, get_cash_end_from_prev_cal_event
 
 logger = logging.getLogger("transactions.services")
 
@@ -63,6 +63,22 @@ def process_sale_payment(*, sale: Sale, transaction: Transaction) -> bool:
     return True
 
 
+def process_transaction_START(*, transaction: Transaction) -> bool:
+    cal_event = transaction.date
+    last_end_trans = get_cash_end_from_prev_cal_event(cal_event=cal_event)
+    if not last_end_trans:
+        return True
+    if transaction.amount == last_end_trans.amount:
+        return True
+    else:
+        logger.warning("START_does_not_match_last_END", extra={"transaction": transaction.logger_data(), "last_end": last_end_trans.logger_data()})
+        return False
+
+def process_transaction_END(*, transaction: Transaction) -> bool:
+
+        return False
+
+
 def transaction_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
     sale: Sale = transaction.sale
     if sale:
@@ -77,3 +93,18 @@ def transaction_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
 
     transaction.save()
     return transaction, True
+
+
+def transaction_operation_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
+    process_result: tuple[Transaction, bool] = (transaction, False)
+
+    if transaction.type == TranType.START:
+        process_result = transaction, process_transaction_START(transaction=transaction)
+
+    if transaction.type == TranType.END:
+        process_result = transaction, process_transaction_END(transaction=transaction)
+
+    if process_result[1]:
+        transaction.save()
+        return process_result
+    return process_result

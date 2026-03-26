@@ -1,5 +1,5 @@
 from django.db.models import QuerySet, Sum
-from .models import Transaction
+from .models import Transaction, TranType
 from core.models import CalendarEvent
 from decimal import Decimal
 
@@ -17,3 +17,11 @@ def get_trans_amount_by_sale(*, sale) -> Decimal:
     """Return the total amount of all Transactions for the given Sale."""
     transactions: QuerySet[Transaction] = get_trans_by_sale(sale=sale)
     return transactions.aggregate(total=Sum("amount"))["total"] or Decimal(0)
+    
+def get_cash_end_from_prev_cal_event(*, cal_event: CalendarEvent) -> Transaction | None:
+    """Return the cash end amount from the previous CalendarEvent."""
+    prev_cal_event = CalendarEvent.objects.filter(date__lt=cal_event.date).order_by("-date").first()
+    if not prev_cal_event:
+        return None
+    end_trans:Transaction | None = get_trans_by_cal_event(cal_event=prev_cal_event).filter(type = TranType.END).first()
+    return end_trans

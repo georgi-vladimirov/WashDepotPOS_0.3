@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-25 19:59+0200\n"
+"POT-Creation-Date: 2026-03-26 17:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:150
+#: .\CarWashPOS\settings.py:142
 msgid "English"
 msgstr "Английски"
 
-#: .\CarWashPOS\settings.py:151
+#: .\CarWashPOS\settings.py:143
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -258,7 +258,7 @@ msgstr "Изтрий"
 msgid "Service"
 msgstr "Услуги"
 
-#: .\sales\templates\sales\sales_overview.html:110 .\transactions\forms.py:77
+#: .\sales\templates\sales\sales_overview.html:110
 msgid "Amount"
 msgstr "Цена"
 
@@ -316,7 +316,7 @@ msgstr "Бонус"
 
 #: .\transactions\filters.py:70
 msgid "Cash at End"
-msgstr ""
+msgstr "Кеш в края"
 
 #: .\transactions\filters.py:79
 msgid "Income Card"
@@ -326,7 +326,11 @@ msgstr "Приход"
 msgid "POS Receipt"
 msgstr "ПОС Бележка"
 
-#: .\transactions\forms.py:78
+#: .\transactions\forms.py:90
+msgid "Transaction Amount"
+msgstr "Сума"
+
+#: .\transactions\forms.py:91
 msgid "Payment Method"
 msgstr "Начин на плащане"
 
@@ -374,17 +378,34 @@ msgstr "Предиплатено"
 msgid "Bank"
 msgstr "Банка"
 
-#: .\transactions\services.py:42
+#: .\transactions\services.py:43
 msgid "Cash at Hand"
 msgstr "Наличен Кеш"
 
-#: .\transactions\services.py:43
+#: .\transactions\services.py:44
 msgid "Cash Balance"
 msgstr "Баланс"
 
-#: .\transactions\services.py:44
+#: .\transactions\services.py:45
+#: .\transactions\templates\transactions\overview.html:44
 msgid "POS Balance"
 msgstr "ПОС Баланс"
+
+#: .\transactions\templates\transactions\overview.html:18
+msgid "START"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview.html:25
+msgid "END"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview.html:33
+msgid "CASH IN"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview.html:38
+msgid "CASH OUT"
+msgstr ""
 
 #: .\transactions\templates\transactions\transaction.html:15
 msgid "Submit Payment"

@@ -37,13 +37,26 @@ class TransactionForm(forms.ModelForm):
         if employee:
             self.set_for_employee(employee)
 
+        if not sale and not employee and type and origin:
+            self.set_for_operation(amount = amount, type = type, origin = origin)
+
+    def set_for_operation(self, amount:Decimal, type: TranType, origin: Origin):
+        self.amount.initial = amount
+        self.type.initial = type
+        self.type.widget = forms.HiddenInput()
+        self.origin.initial = origin
+        self.origin.widget = forms.HiddenInput()
+        self.payment_method.initial = PaymentMethod.CASH
+        self.payment_method.widget = forms.HiddenInput()
+        self.sale.widget = forms.HiddenInput()
+        self.employee.widget = forms.HiddenInput()
+
     def set_for_employee(self, employee: Employee):
         # Set initial amounts for Employee
         self.type.initial = TranType.OUT
         self.type.widget = forms.HiddenInput()
         self.payment_method.initial = PaymentMethod.CASH
         self.payment_method.widget = forms.HiddenInput()
-
         # use a properly typed reference so static checkers accept label_from_instance
         employee_field = cast(ModelChoiceField, self.employee)
         employee_field.initial = employee
@@ -74,7 +87,7 @@ class TransactionForm(forms.ModelForm):
             'employee': forms.Select(attrs={"class": "form-control"}),
         }
         labels = {
-            'amount': _('Amount'),
+            'amount': _('Transaction Amount'),
             'payment_method': _('Payment Method'),
         }
         error_messages = {
