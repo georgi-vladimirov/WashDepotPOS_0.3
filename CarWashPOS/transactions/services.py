@@ -106,5 +106,6 @@ def transaction_operation_save(*, transaction: Transaction) -> tuple[Transaction
 
     if process_result[1]:
         transaction.save()
+        logger.info("transaction_saved", extra={"transaction": transaction.logger_data()})
         return process_result
     return process_result

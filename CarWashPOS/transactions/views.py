@@ -9,7 +9,7 @@ from core.selectors import get_cal_event_by_id
 from sales.models import Sale
 from sales.selectors import get_sale_by_id, get_sale_unpaid_amount
 from .selectors import get_trans_by_cal_event, get_cash_end_from_prev_cal_event
-from .services import daily_report_calculate, transaction_save
+from .services import daily_report_calculate, transaction_save, transaction_operation_save
 from .forms import TransactionForm
 from .models import PaymentMethod, Transaction, Origin, TranType
 from .filters import FILTERS
@@ -90,7 +90,7 @@ class Transactions(LoginRequiredMixin, View):
 
         if form.is_valid():
             transaction = form.save(commit=False)
-            transaction_save(transaction=transaction)
+            transaction_operation_save(transaction=transaction)
 
         return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
 
