@@ -31,14 +31,9 @@ class TransactionsOverview(LoginRequiredMixin, View):
         return render(request, "transactions/overview.html", {
             "transactions": transactions,
             "aggregates": aggregates,
-<<<<<<< HEAD
             "fields":  ["type", "amount", "payment_method", "origin", "details"],
             "headers": ["Тип", "Сума", "Метод", "Произход", "Детайли"],
             "cal_event": cal_event
-=======
-            "fields": ["type", "amount", "payment_method", "origin", "details"],
-            "headers": ["Вид", "Сума", "Начин на плащане", "Произход", "Детайли"],
->>>>>>> claude/adoring-borg
         })
 
 
