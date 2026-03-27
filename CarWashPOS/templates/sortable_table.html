@@ -25,12 +25,27 @@ See core/templatetags/table_tags.py for full documentation.
       <tr>
         {% for header in table_headers %}
           <th scope="col"
-              class="text-center user-select-none sortable-th"
-              style="cursor:pointer; white-space:nowrap;"
+              class="text-center sortable-th"
+              style="white-space:nowrap;"
               data-col="{{ forloop.counter0 }}"
               data-dir="none">
-            {{ header }}
-            <span class="sort-icon text-secondary ms-1" aria-hidden="true"></span>
+            <span class="me-1">{{ header }}</span>
+            <span class="d-inline-flex flex-column sort-btns" style="vertical-align:middle; line-height:1;">
+              <button type="button"
+                      class="btn btn-link p-0 sort-asc"
+                      style="line-height:0.7; font-size:0.6rem;"
+                      title="Sort ascending"
+                      tabindex="-1">
+                <i class="bi bi-caret-up-fill text-secondary"></i>
+              </button>
+              <button type="button"
+                      class="btn btn-link p-0 sort-desc"
+                      style="line-height:0.7; font-size:0.6rem;"
+                      title="Sort descending"
+                      tabindex="-1">
+                <i class="bi bi-caret-down-fill text-secondary"></i>
+              </button>
+            </span>
           </th>
         {% endfor %}
       </tr>
@@ -60,8 +75,6 @@ See core/templatetags/table_tags.py for full documentation.
   const table = document.getElementById("{{ tid }}");
   if (!table) return;
 
-  const ICONS = { asc: "▲", desc: "▼", none: "" };
-
   function cellValue(tr, colIdx) {
     const td = tr.querySelectorAll("td")[colIdx];
     return td ? td.innerText.trim() : "";
@@ -79,33 +92,42 @@ See core/templatetags/table_tags.py for full documentation.
     return dir === "asc" ? result : -result;
   }
 
+  function sortTable(colIdx, dir) {
+    // Reset all button highlights
+    table.querySelectorAll("th.sortable-th").forEach(function (h) {
+      h.dataset.dir = "none";
+      h.querySelector(".sort-asc i").classList.replace("text-dark", "text-secondary");
+      h.querySelector(".sort-desc i").classList.replace("text-dark", "text-secondary");
+    });
+
+    // Highlight active button
+    const activeTh = table.querySelector('th[data-col="' + colIdx + '"]');
+    activeTh.dataset.dir = dir;
+    const activeBtn = activeTh.querySelector(dir === "asc" ? ".sort-asc i" : ".sort-desc i");
+    activeBtn.classList.replace("text-secondary", "text-dark");
+
+    // Sort rows
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr")).filter(
+      function (r) { return r.querySelectorAll("td").length > 1; }
+    );
+    rows.sort(function (ra, rb) {
+      return compare(cellValue(ra, colIdx), cellValue(rb, colIdx), dir);
+    });
+    rows.forEach(function (r) { tbody.appendChild(r); });
+  }
+
   table.querySelectorAll("th.sortable-th").forEach(function (th) {
-    th.addEventListener("click", function () {
-      const colIdx = parseInt(th.dataset.col, 10);
-      const currentDir = th.dataset.dir;
-      const newDir = currentDir === "asc" ? "desc" : "asc";
+    const colIdx = parseInt(th.dataset.col, 10);
 
-      // Reset all headers
-      table.querySelectorAll("th.sortable-th").forEach(function (h) {
-        h.dataset.dir = "none";
-        h.querySelector(".sort-icon").textContent = ICONS.none;
-      });
+    th.querySelector(".sort-asc").addEventListener("click", function (e) {
+      e.stopPropagation();
+      sortTable(colIdx, "asc");
+    });
 
-      // Set clicked header
-      th.dataset.dir = newDir;
-      th.querySelector(".sort-icon").textContent = ICONS[newDir];
-
-      // Sort body rows
-      const tbody = table.querySelector("tbody");
-      const rows = Array.from(tbody.querySelectorAll("tr")).filter(
-        function (r) { return r.querySelectorAll("td").length > 1; }
-      );
-
-      rows.sort(function (ra, rb) {
-        return compare(cellValue(ra, colIdx), cellValue(rb, colIdx), newDir);
-      });
-
-      rows.forEach(function (r) { tbody.appendChild(r); });
+    th.querySelector(".sort-desc").addEventListener("click", function (e) {
+      e.stopPropagation();
+      sortTable(colIdx, "desc");
     });
   });
 })();
