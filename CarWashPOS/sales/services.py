@@ -1,6 +1,8 @@
 from decimal import Decimal
+from typing import Tuple
 from typing_extensions import final
-
+from django.utils.functional import Promise
+from django.utils.translation import gettext_lazy as _
 from core.models import CalendarEvent
 from core.selectors import get_services_by_location_and_vehicle_type, get_services_by_ids
 from core.models import ServiceType, Service
@@ -20,16 +22,15 @@ def create_sale(*, form, cal_event: CalendarEvent) -> Sale:
     return sale
 
 
-def delete_sale(*, sale_id: int) -> bool:
+def delete_sale(*, sale: Sale) -> Tuple[bool, str]:
     """Delete a Sale by PK. Returns True on success, False if the sale does not exist."""
-    try:
-        sale = Sale.objects.get(pk=sale_id)
-        sale.delete()
-        logger.info("sale_deleted", extra={"sale_id": sale_id})
-        return True
-    except Sale.DoesNotExist:
-        logger.info("sale_not_found_when_delete", extra={"sale_id": sale_id})
-        return False
+    if sale.payment_status != PaymentStatus.UNPAID:
+        return False, str(_("Sale is not unpaid"))
+
+    sale_id = sale.pk
+    sale.delete()
+    logger.info("sale_deleted", extra={"sale_id": sale_id})
+    return True, str(_("Sale is deleted"))
 
 
 def create_cartItems(*, sale: Sale, service_ids: list[str], cart: Cart):

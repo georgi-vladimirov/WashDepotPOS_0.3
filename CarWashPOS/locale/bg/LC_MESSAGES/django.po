@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 17:58+0200\n"
+"POT-Creation-Date: 2026-03-27 15:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,18 +193,18 @@ msgstr "Няма избрани услуги"
 
 #: .\sales\templates\sales\add_cart.html:61
 #: .\sales\templates\sales\sales_overview.html:26
-#: .\sales\templates\sales\sales_overview.html:138
+#: .\sales\templates\sales\sales_overview.html:127
 msgid "Total"
 msgstr "Общо"
 
 #: .\sales\templates\sales\add_cart.html:70
 #: .\sales\templates\sales\sales_overview.html:27
-#: .\sales\templates\sales\sales_overview.html:140
+#: .\sales\templates\sales\sales_overview.html:129
 msgid "Discount"
 msgstr "Отстъпка"
 
 #: .\sales\templates\sales\add_cart.html:81
-#: .\sales\templates\sales\sales_overview.html:142
+#: .\sales\templates\sales\sales_overview.html:131
 msgid "Final Amount"
 msgstr "Крайна цена"
 
@@ -238,8 +238,7 @@ msgid "Payment"
 msgstr "Плащане"
 
 #: .\sales\templates\sales\sales_overview.html:23
-#: .\sales\templates\sales\sales_overview.html:109
-msgid "Type"
+msgid "Car Type"
 msgstr "Вид автомобил"
 
 #: .\sales\templates\sales\sales_overview.html:28
@@ -250,32 +249,26 @@ msgstr "Крайна сума"
 msgid "UTL"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:97
-msgid "Delete"
-msgstr "Изтрий"
-
-#: .\sales\templates\sales\sales_overview.html:108
+#: .\sales\templates\sales\sales_overview.html:102
 msgid "Service"
 msgstr "Услуги"
 
-#: .\sales\templates\sales\sales_overview.html:110
-msgid "Amount"
-msgstr "Цена"
+#: .\sales\templates\sales\sales_overview.html:103
+#: .\transactions\templates\transactions\overview_table.html:6
+msgid "Type"
+msgstr "Вид"
 
-#: .\sales\templates\sales\sales_overview.html:122
+#: .\sales\templates\sales\sales_overview.html:104
+#: .\transactions\templates\transactions\overview_table.html:7
+msgid "Amount"
+msgstr "Сума"
+
+#: .\sales\templates\sales\sales_overview.html:116
 msgid "No services"
 msgstr "Няма избрани услуги"
 
-#: .\sales\templates\sales\sales_overview.html:135
-msgid "Delete Cart"
-msgstr "Изтрий"
-
-#: .\sales\templates\sales\sales_overview.html:158
+#: .\sales\templates\sales\sales_overview.html:147
 msgid "Are you sure you want to delete?"
-msgstr "Сигурни ли сте, че искате да изтриете?"
-
-#: .\sales\templates\sales\sales_overview.html:161
-msgid "Are you sure you want to delete the cart and all its services?"
 msgstr "Сигурни ли сте, че искате да изтриете?"
 
 #: .\templates\delete_confirm_modal.html:21
@@ -288,7 +281,7 @@ msgstr "ДА"
 
 #: .\transactions\filters.py:12
 msgid "Cash at Start"
-msgstr "Начален Кеш"
+msgstr "Каса начало"
 
 #: .\transactions\filters.py:20 .\transactions\models.py:23
 msgid "Deposit"
@@ -296,7 +289,7 @@ msgstr "Вноска"
 
 #: .\transactions\filters.py:29
 msgid "Income Cash"
-msgstr "Приход"
+msgstr "Приход в брой"
 
 #: .\transactions\filters.py:38
 msgid "Withdrawals"
@@ -320,17 +313,18 @@ msgstr "Кеш в края"
 
 #: .\transactions\filters.py:79
 msgid "Income Card"
-msgstr "Приход"
+msgstr "Приход платен с карта"
 
 #: .\transactions\filters.py:84
 msgid "POS Receipt"
 msgstr "ПОС Бележка"
 
-#: .\transactions\forms.py:90
+#: .\transactions\forms.py:94
 msgid "Transaction Amount"
 msgstr "Сума"
 
-#: .\transactions\forms.py:91
+#: .\transactions\forms.py:95
+#: .\transactions\templates\transactions\overview_table.html:8
 msgid "Payment Method"
 msgstr "Начин на плащане"
 
@@ -380,7 +374,7 @@ msgstr "Банка"
 
 #: .\transactions\services.py:43
 msgid "Cash at Hand"
-msgstr "Наличен Кеш"
+msgstr "Наличени пари в брой"
 
 #: .\transactions\services.py:44
 msgid "Cash Balance"
@@ -393,23 +387,40 @@ msgstr "ПОС Баланс"
 
 #: .\transactions\templates\transactions\overview.html:18
 msgid "START"
-msgstr ""
+msgstr "Каса Начало"
 
 #: .\transactions\templates\transactions\overview.html:25
 msgid "END"
-msgstr ""
+msgstr "Каса Край"
 
 #: .\transactions\templates\transactions\overview.html:33
 msgid "CASH IN"
-msgstr ""
+msgstr "Вноска"
 
 #: .\transactions\templates\transactions\overview.html:38
 msgid "CASH OUT"
-msgstr ""
+msgstr "Теглене"
+
+#: .\transactions\templates\transactions\overview_table.html:9
+msgid "Payment Origin"
+msgstr "Произход"
+
+#: .\transactions\templates\transactions\overview_table.html:10
+msgid "Details"
+msgstr "Детайли"
 
 #: .\transactions\templates\transactions\transaction.html:15
 msgid "Submit Payment"
 msgstr "Плащане"
+
+#~ msgid "Delete"
+#~ msgstr "Изтрий"
+
+#~ msgid "Delete Cart"
+#~ msgstr "Изтрий Услугите"
+
+#~ msgid "Are you sure you want to delete the cart and all its services?"
+#~ msgstr "Сигурни ли сте, че искате да изтриете?"
 
 #~ msgid "Language"
 #~ msgstr "Език"

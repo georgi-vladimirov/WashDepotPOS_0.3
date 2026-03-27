@@ -3,15 +3,15 @@ from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 import logging
 from typing import Tuple, TypedDict
-from django.db.models import Sum
+from django.db.models import Sum, aggregates
 from django.db.models.functions import Coalesce
 from sales.models import Sale
 from sales.selectors import get_sale_unpaid_amount
 from sales.services import set_sale_status
 from core.models import CalendarEvent
-from .models import Transaction, TranType
+from .models import Transaction, TranType, Origin
 from .filters import FILTERS
-from .selectors import get_trans_amount_by_sale, get_cash_end_from_prev_cal_event
+from .selectors import get_cash_end_from_prev_cal_event, get_trans_by_cal_event
 
 logger = logging.getLogger("transactions.services")
 
@@ -41,7 +41,7 @@ def daily_report_calculate(*, transactions_qs, filters=FILTERS) -> dict[str, Agg
     pos_balance = aggregates["INCOME_CARD"]["amount"] - aggregates["POS_RECEIPT"]["amount"]
 
     aggregates["CASH_AT_HAND"] = {"amount": cash_at_hand, "order": 9, "label": _("Cash at Hand")}
-    aggregates["CASH_BALANCE"] = {"amount": cash_balance, "order": 11, "label": _("Cash Balance")}
+    aggregates["CASH_BALANCE"] = {"amount": cash_balance, "order": 10, "label": _("Cash Balance")}
     aggregates["POS_BALANCE"] = {"amount": pos_balance, "order": 13, "label": _("POS Balance")}
 
     # Sort aggregates by order
@@ -74,8 +74,20 @@ def process_transaction_START(*, transaction: Transaction) -> bool:
         logger.warning("START_does_not_match_last_END", extra={"transaction": transaction.logger_data(), "last_end": last_end_trans.logger_data()})
         return False
 
-def process_transaction_END(*, transaction: Transaction) -> bool:
 
+def calculate_cash_balance(*, cal_event: CalendarEvent) -> Decimal:
+    transactions_for_day = get_trans_by_cal_event(cal_event=cal_event)
+    aggregates = daily_report_calculate(transactions_qs=transactions_for_day)
+    cash_balance:Decimal = aggregates["CASH_BALANCE"]["amount"]
+    return cash_balance
+
+
+def process_transaction_END(*, transaction: Transaction) -> bool:
+    cash_balance: Decimal = calculate_cash_balance(cal_event=transaction.date)
+    if transaction.amount == cash_balance:
+        return True
+    else:
+        logger.warning("END_does_not_match_cash_balance", extra={"transaction": transaction.logger_data(), "cash_balance": cash_balance})
         return False
 
 
@@ -104,8 +116,23 @@ def transaction_operation_save(*, transaction: Transaction) -> tuple[Transaction
     if transaction.type == TranType.END:
         process_result = transaction, process_transaction_END(transaction=transaction)
 
+    if transaction.type == TranType.IN and transaction.origin == Origin.DEPOSIT:
+        process_result = transaction, True
+
+    if transaction.type == TranType.OUT and transaction.origin == Origin.WITHDRAW:
+        process_result = transaction, True
+
+    if transaction.type == TranType.POS and transaction.origin == Origin.BALANCE:
+        process_result = transaction, True
+
     if process_result[1]:
         transaction.save()
         logger.info("transaction_saved", extra={"transaction": transaction.logger_data()})
         return process_result
     return process_result
+
+
+def transaction_delete(*, transaction: Transaction) -> bool:
+    transaction.delete()
+    logger.info("transaction_deleted", extra={"transaction": transaction.logger_data()})
+    return True

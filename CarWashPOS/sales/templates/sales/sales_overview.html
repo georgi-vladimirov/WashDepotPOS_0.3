@@ -20,7 +20,7 @@
             <th scope="col" class="text-center"></th>
             <th scope="col" class="text-center">{% translate "Reg.#" %}</th>
             <th scope="col" class="text-center">{% translate "Payment" %}</th>
-            <th scope="col" class="text-center">{% translate "Type" %}</th>
+            <th scope="col" class="text-center">{% translate "Car Type" %}</th>
             <th scope="col" class="text-center">{% translate "Brand" %}</th>
             <th scope="col" class="text-center">{% translate "Subscriber" %}</th>
             <th scope="col" class="text-end">{% translate "Total" %}</th>
@@ -88,14 +88,8 @@
                     <i class="bi bi-cart-plus-fill"></i> {% translate "Add Services" %}
                   </a>
                 {% endif %}
-                <a href="{% url 'sales:delete_sale' sale_id=sale.id %}"
-                   class="btn btn-danger btn-sm ms-3"
-                   data-bs-toggle="modal"
-                   data-bs-target="#deleteApprovalModal"
-                   data-sale-delete-url="{% url 'sales:delete_sale' sale_id=sale.id %}"
-                   onclick="event.preventDefault();">
-                  <i class="bi bi-trash3-fill"></i> {% translate "Delete" %}
-                </a>
+                {% url 'sales:delete_sale' sale_id=sale.id as delete_sale_url %}
+                {% include "delete_button.html" with delete_url=delete_sale_url label="Delete" %}
               </td>
             </tr>
             {% if sale.cart %}
@@ -127,13 +121,8 @@
                         <tr>
                           <td colspan="3">
                             <div class="d-flex justify-content-between align-items-center">
-                              <a href="#"
-                                 class="btn btn-danger btn-sm"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#cartDeleteModal"
-                                 data-cart-delete-url="{% url 'sales:cart-delete' cart_id=sale.cart.id %}">
-                                <i class="bi bi-trash3-fill"></i> {% translate "Delete Cart" %}
-                              </a>
+                                {% url 'sales:cart-delete' cart_id=sale.cart.id as delete_cart_url %}
+                                {% include "delete_button.html" with delete_url=delete_cart_url label="Delete" %}
                               <span class="fw-semibold">
                                 {% translate "Total" %}: {{ sale.cart.total_amount }}
                                 |
@@ -158,25 +147,7 @@
   {% translate "Are you sure you want to delete?" as the_message %}
   {% include "delete_confirm_modal.html" with title="Delete Confirmation" message=the_message %}
 
-  {% translate "Are you sure you want to delete the cart and all its services?" as cart_delete_message %}
-  {% include "delete_confirm_modal.html" with title="Delete Cart" message=cart_delete_message modal_id="cartDeleteModal" confirm_btn_id="confirmCartDeleteBtn" %}
-
   <script>
-    const deleteModal = document.getElementById('deleteApprovalModal');
-    deleteModal.addEventListener('show.bs.modal', function(event) {
-      const button = event.relatedTarget;
-      const deleteUrl = button.getAttribute('data-sale-delete-url');
-      const deleteBtn = document.getElementById('confirmDeleteBtn');
-      deleteBtn.href = deleteUrl;
-    });
-
-    const cartDeleteModal = document.getElementById('cartDeleteModal');
-    cartDeleteModal.addEventListener('show.bs.modal', function(event) {
-      const button = event.relatedTarget;
-      const deleteUrl = button.getAttribute('data-cart-delete-url');
-      document.getElementById('confirmCartDeleteBtn').href = deleteUrl;
-    });
-
     document.querySelectorAll('.open-popup').forEach(link => {
     link.addEventListener('click', function (e) {
       e.preventDefault();

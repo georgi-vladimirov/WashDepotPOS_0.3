@@ -30,6 +30,7 @@ class TransactionForm(forms.ModelForm):
         self.payment_method = self.fields["payment_method"]
         self.sale = self.fields["sale"]
         self.employee = self.fields["employee"]
+        self.details = self.fields["details"]
 
         if sale:
             self.set_for_sale(amount, sale)
@@ -57,6 +58,7 @@ class TransactionForm(forms.ModelForm):
         self.type.widget = forms.HiddenInput()
         self.payment_method.initial = PaymentMethod.CASH
         self.payment_method.widget = forms.HiddenInput()
+        self.details.widget = forms.HiddenInput()
         # use a properly typed reference so static checkers accept label_from_instance
         employee_field = cast(ModelChoiceField, self.employee)
         employee_field.initial = employee
@@ -74,10 +76,11 @@ class TransactionForm(forms.ModelForm):
         self.sale.initial = sale
         self.sale.widget = forms.HiddenInput()
         self.employee.widget = forms.HiddenInput()
+        self.details.widget = forms.HiddenInput()
 
     class Meta:
         model = Transaction
-        fields = ['date', 'amount', 'type', 'origin', 'payment_method', 'sale', 'employee']
+        fields = ['date', 'amount', 'type', 'origin', 'payment_method', 'sale', 'employee', 'details']
         widgets = {
             'amount': forms.NumberInput(attrs={"class": "form-control", 'step': '0.01'}),
             'type': forms.Select(attrs={"class": "form-control"}),
@@ -85,6 +88,7 @@ class TransactionForm(forms.ModelForm):
             'payment_method': forms.Select(attrs={"class": "form-control"}),
             'sale': forms.Select(attrs={"class": "form-control"}),
             'employee': forms.Select(attrs={"class": "form-control"}),
+            'details': forms.Textarea(attrs={"class": "form-control"}),
         }
         labels = {
             'amount': _('Transaction Amount'),

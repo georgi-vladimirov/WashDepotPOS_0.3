@@ -75,7 +75,7 @@ FILTERS = {
             "origin": Origin.INCOME,
             "payment_method": PaymentMethod.POS,
         },
-        "order": 10,
+        "order": 11,
         "label": _("Income Card"),
     },
     "POS_RECEIPT": {

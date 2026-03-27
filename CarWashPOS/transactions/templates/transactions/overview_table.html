@@ -1,13 +1,13 @@
-{% load i18n %}
 {% load l10n %}
+{% load i18n %}
 <table class="table table-sm">
             <thead>
                 <tr>
-                    <th scope="col" class="text-center">Type</th>
-                    <th scope="col" class="text-center">Amount</th>
-                    <th scope="col" class="text-center">Payment Method</th>
-                    <th scope="col" class="text-center">Payment Origin</th>
-                    <th scope="col" class="text-center w-50">Details</th>
+                    <th scope="col" class="text-center">{% translate "Type" %}</th>
+                    <th scope="col" class="text-center">{% translate "Amount" %}</th>
+                        <th scope="col" class="text-center">{% translate "Payment Method" %}</th>
+                        <th scope="col" class="text-center">{% translate "Payment Origin" %}</th>
+                        <th scope="col" class="text-center w-50">{% translate "Details" %}</th>
                     <th scope="col" class="text-center">
                         <i class="bi bi-trash3-fill"></i>
                     </th>

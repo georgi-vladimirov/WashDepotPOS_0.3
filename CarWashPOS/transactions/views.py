@@ -8,10 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from core.selectors import get_cal_event_by_id
 from sales.models import Sale
 from sales.selectors import get_sale_by_id, get_sale_unpaid_amount
-from .selectors import get_trans_by_cal_event, get_cash_end_from_prev_cal_event
-from .services import daily_report_calculate, transaction_save, transaction_operation_save
+from .selectors import get_trans_by_cal_event, get_cash_end_from_prev_cal_event, get_tran_by_id
+from .services import daily_report_calculate, transaction_save, transaction_operation_save, calculate_cash_balance, transaction_delete
 from .forms import TransactionForm
-from .models import PaymentMethod, Transaction, Origin, TranType
+from .models import Origin, TranType
 from .filters import FILTERS
 
 
@@ -53,8 +53,8 @@ class TranSales(LoginRequiredMixin, View):
         return TransactionForm(amount=amount, sale=sale)
 
     def post(self, request):
+        print("hello")
         form: TransactionForm = TransactionForm(request.POST)
-
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction_save(transaction=transaction)
@@ -78,8 +78,12 @@ class Transactions(LoginRequiredMixin, View):
         if not tran_type or not origin:
             return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
 
-        last_end_trans = get_cash_end_from_prev_cal_event(cal_event=cal_event)
-        amount: Decimal = last_end_trans.amount if last_end_trans else Decimal("0.00")
+        amount: Decimal = Decimal("0.00")
+        if tran_type == TranType.START:
+            last_end_trans = get_cash_end_from_prev_cal_event(cal_event=cal_event)
+            amount: Decimal = last_end_trans.amount if last_end_trans else Decimal("0.00")
+        if tran_type == TranType.END:
+            amount: Decimal = calculate_cash_balance(cal_event=cal_event)
 
         form = TransactionForm(amount = amount, type=tran_type, origin=origin)
         form.date.initial = cal_event
@@ -95,6 +99,9 @@ class Transactions(LoginRequiredMixin, View):
         return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
 
 
-
 class TranDelete(LoginRequiredMixin, View):
-    pass
+    def get(self, request, pk):
+        transaction = get_tran_by_id(pk=pk)
+        if transaction:
+            transaction_delete(transaction=transaction)
+        return redirect("transactions:trans_overview")

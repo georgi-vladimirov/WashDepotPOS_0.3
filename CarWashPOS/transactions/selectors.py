@@ -4,7 +4,7 @@ from core.models import CalendarEvent
 from decimal import Decimal
 
 
-def get_trans_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet:
+def get_trans_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet[Transaction]:
     """Return all Transactions for the given CalendarEvent."""
     return Transaction.objects.filter(date=cal_event).select_related("sale", "employee", "date")
 
@@ -25,3 +25,8 @@ def get_cash_end_from_prev_cal_event(*, cal_event: CalendarEvent) -> Transaction
         return None
     end_trans:Transaction | None = get_trans_by_cal_event(cal_event=prev_cal_event).filter(type = TranType.END).first()
     return end_trans
+    
+    
+def get_tran_by_id(*, pk: int) -> Transaction | None:
+    """Return the Transaction with the given primary key."""
+    return Transaction.objects.filter(pk=pk).first()

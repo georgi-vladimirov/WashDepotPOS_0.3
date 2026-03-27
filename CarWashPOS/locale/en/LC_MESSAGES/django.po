@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 17:58+0200\n"
+"POT-Creation-Date: 2026-03-27 15:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,18 +193,18 @@ msgstr ""
 
 #: .\sales\templates\sales\add_cart.html:61
 #: .\sales\templates\sales\sales_overview.html:26
-#: .\sales\templates\sales\sales_overview.html:138
+#: .\sales\templates\sales\sales_overview.html:127
 msgid "Total"
 msgstr ""
 
 #: .\sales\templates\sales\add_cart.html:70
 #: .\sales\templates\sales\sales_overview.html:27
-#: .\sales\templates\sales\sales_overview.html:140
+#: .\sales\templates\sales\sales_overview.html:129
 msgid "Discount"
 msgstr ""
 
 #: .\sales\templates\sales\add_cart.html:81
-#: .\sales\templates\sales\sales_overview.html:142
+#: .\sales\templates\sales\sales_overview.html:131
 msgid "Final Amount"
 msgstr ""
 
@@ -238,8 +238,7 @@ msgid "Payment"
 msgstr ""
 
 #: .\sales\templates\sales\sales_overview.html:23
-#: .\sales\templates\sales\sales_overview.html:109
-msgid "Type"
+msgid "Car Type"
 msgstr ""
 
 #: .\sales\templates\sales\sales_overview.html:28
@@ -250,32 +249,26 @@ msgstr ""
 msgid "UTL"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:97
-msgid "Delete"
-msgstr ""
-
-#: .\sales\templates\sales\sales_overview.html:108
+#: .\sales\templates\sales\sales_overview.html:102
 msgid "Service"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:110
+#: .\sales\templates\sales\sales_overview.html:103
+#: .\transactions\templates\transactions\overview_table.html:6
+msgid "Type"
+msgstr ""
+
+#: .\sales\templates\sales\sales_overview.html:104
+#: .\transactions\templates\transactions\overview_table.html:7
 msgid "Amount"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:122
+#: .\sales\templates\sales\sales_overview.html:116
 msgid "No services"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:135
-msgid "Delete Cart"
-msgstr ""
-
-#: .\sales\templates\sales\sales_overview.html:158
+#: .\sales\templates\sales\sales_overview.html:147
 msgid "Are you sure you want to delete?"
-msgstr ""
-
-#: .\sales\templates\sales\sales_overview.html:161
-msgid "Are you sure you want to delete the cart and all its services?"
 msgstr ""
 
 #: .\templates\delete_confirm_modal.html:21
@@ -326,11 +319,12 @@ msgstr ""
 msgid "POS Receipt"
 msgstr ""
 
-#: .\transactions\forms.py:90
+#: .\transactions\forms.py:94
 msgid "Transaction Amount"
 msgstr ""
 
-#: .\transactions\forms.py:91
+#: .\transactions\forms.py:95
+#: .\transactions\templates\transactions\overview_table.html:8
 msgid "Payment Method"
 msgstr ""
 
@@ -405,6 +399,14 @@ msgstr ""
 
 #: .\transactions\templates\transactions\overview.html:38
 msgid "CASH OUT"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview_table.html:9
+msgid "Payment Origin"
+msgstr ""
+
+#: .\transactions\templates\transactions\overview_table.html:10
+msgid "Details"
 msgstr ""
 
 #: .\transactions\templates\transactions\transaction.html:15

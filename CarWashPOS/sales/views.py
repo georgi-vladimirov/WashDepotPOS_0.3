@@ -1,5 +1,6 @@
 import http
 import logging
+from typing_extensions import Tuple
 from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -69,10 +70,11 @@ class DeleteSale(LoginRequiredMixin, View):
             messages.error(request, "Sale not found")
             return redirect("sales:sales_overview")
 
-        if delete_sale(sale_id=sale_id):
-            messages.success(request, "Sale deleted successfully")
+        confirm, message = delete_sale(sale=sale)
+        if confirm:
+            messages.success(request, message)
         else:
-            messages.error(request, "Error deleting sale")
+            messages.error(request, message)
 
         return redirect("sales:sales_overview")
 
