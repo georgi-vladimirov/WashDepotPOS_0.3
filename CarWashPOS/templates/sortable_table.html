@@ -1,0 +1,126 @@
+{% comment %}
+Reusable sortable table — include with `{% include "sortable_table.html" with ... %}`
+
+Required parameters:
+  table_headers  — list of strings: column header labels
+  table_rows     — list of lists: each inner list holds the cell values for one row
+
+Optional parameters:
+  table_date     — date/string displayed as a subtitle above the table
+  table_caption  — string shown as a <caption> inside the table
+  table_id       — unique HTML id attribute (default: "sortable-table")
+                   REQUIRED when including more than one table on the same page
+
+Example:
+  {% include "sortable_table.html" with
+      table_headers=headers
+      table_rows=rows
+      table_date=selected_date
+      table_id="transactions-table"
+  %}
+{% endcomment %}
+
+{% with tid=table_id|default:"sortable-table" %}
+<div class="table-responsive">
+  {% if table_date %}
+    <p class="text-muted small mb-1">
+      <i class="bi bi-calendar3"></i> {{ table_date }}
+    </p>
+  {% endif %}
+
+  <table id="{{ tid }}" class="table table-sm table-hover align-middle w-100">
+
+    {% if table_caption %}
+      <caption class="caption-top fw-semibold">{{ table_caption }}</caption>
+    {% endif %}
+
+    <thead class="table-light">
+      <tr>
+        {% for header in table_headers %}
+          <th scope="col"
+              class="text-center user-select-none sortable-th"
+              style="cursor:pointer; white-space:nowrap;"
+              data-col="{{ forloop.counter0 }}"
+              data-dir="none">
+            {{ header }}
+            <span class="sort-icon text-secondary ms-1" aria-hidden="true"></span>
+          </th>
+        {% endfor %}
+      </tr>
+    </thead>
+
+    <tbody class="table-group-divider">
+      {% for row in table_rows %}
+        <tr>
+          {% for cell in row %}
+            <td class="text-center">{{ cell }}</td>
+          {% endfor %}
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="{{ table_headers|length }}" class="text-center text-muted py-3">
+            <i class="bi bi-inbox"></i> —
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+</div>
+
+<script>
+(function () {
+  const table = document.getElementById("{{ tid }}");
+  if (!table) return;
+
+  const ICONS = { asc: "▲", desc: "▼", none: "" };
+
+  function cellValue(tr, colIdx) {
+    const td = tr.querySelectorAll("td")[colIdx];
+    return td ? td.innerText.trim() : "";
+  }
+
+  function compare(a, b, dir) {
+    const numA = parseFloat(a.replace(/[^0-9.\-]/g, ""));
+    const numB = parseFloat(b.replace(/[^0-9.\-]/g, ""));
+    let result;
+    if (!isNaN(numA) && !isNaN(numB)) {
+      result = numA - numB;
+    } else {
+      result = a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+    }
+    return dir === "asc" ? result : -result;
+  }
+
+  table.querySelectorAll("th.sortable-th").forEach(function (th) {
+    th.addEventListener("click", function () {
+      const colIdx = parseInt(th.dataset.col, 10);
+      const currentDir = th.dataset.dir;
+      const newDir = currentDir === "asc" ? "desc" : "asc";
+
+      // Reset all headers
+      table.querySelectorAll("th.sortable-th").forEach(function (h) {
+        h.dataset.dir = "none";
+        h.querySelector(".sort-icon").textContent = ICONS.none;
+      });
+
+      // Set clicked header
+      th.dataset.dir = newDir;
+      th.querySelector(".sort-icon").textContent = ICONS[newDir];
+
+      // Sort body rows
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr")).filter(
+        function (r) { return r.querySelectorAll("td").length > 1; }
+      );
+
+      rows.sort(function (ra, rb) {
+        return compare(cellValue(ra, colIdx), cellValue(rb, colIdx), newDir);
+      });
+
+      rows.forEach(function (r) { tbody.appendChild(r); });
+    });
+  });
+})();
+</script>
+{% endwith %}
