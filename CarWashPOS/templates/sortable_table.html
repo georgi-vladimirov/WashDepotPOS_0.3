@@ -1,23 +1,10 @@
 {% comment %}
-Reusable sortable table — include with `{% include "sortable_table.html" with ... %}`
+Rendered by the `sortable_table` inclusion tag — do not include directly.
 
-Required parameters:
-  table_headers  — list of strings: column header labels
-  table_rows     — list of lists: each inner list holds the cell values for one row
+  {% load table_tags %}
+  {% sortable_table queryset fields headers table_date=date table_id="my-table" %}
 
-Optional parameters:
-  table_date     — date/string displayed as a subtitle above the table
-  table_caption  — string shown as a <caption> inside the table
-  table_id       — unique HTML id attribute (default: "sortable-table")
-                   REQUIRED when including more than one table on the same page
-
-Example:
-  {% include "sortable_table.html" with
-      table_headers=headers
-      table_rows=rows
-      table_date=selected_date
-      table_id="transactions-table"
-  %}
+See core/templatetags/table_tags.py for full documentation.
 {% endcomment %}
 
 {% with tid=table_id|default:"sortable-table" %}
