@@ -1,5 +1,6 @@
 {% extends "core/home.html" %}
 {% load i18n %}
+{% load table_tags %}
 
 {% block title %}
     Payments Overview
@@ -46,6 +47,13 @@
             </div>
             <div class="row rounded-3 p-4 shadow bg-white">
                 {% include "transactions/overview_table.html" with transactions=transactions %}
+                {% sortable_table
+                    transactions
+                    fields
+                    headers
+                    table_date=cal_event
+                    table_id="transactions-table"
+                %}
             </div>
         </div>
         <div class="col-3 rounded-3 p-4 shadow bg-white">

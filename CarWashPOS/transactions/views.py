@@ -28,7 +28,13 @@ class TransactionsOverview(LoginRequiredMixin, View):
         transactions = get_trans_by_cal_event(cal_event=cal_event)
         aggregates = daily_report_calculate(transactions_qs=transactions, filters=FILTERS)
 
-        return render(request, "transactions/overview.html", {"transactions": transactions, "aggregates": aggregates})
+        return render(request, "transactions/overview.html", {
+            "transactions": transactions,
+            "aggregates": aggregates,
+            "fields":  ["type", "amount", "payment_method", "origin", "details"],
+            "headers": ["Тип", "Сума", "Метод", "Произход", "Детайли"],
+            "cal_event": cal_event
+        })
 
 
 class TranSales(LoginRequiredMixin, View):
