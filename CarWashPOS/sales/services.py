@@ -25,6 +25,7 @@ def create_sale(*, form, cal_event: CalendarEvent) -> Sale:
 def delete_sale(*, sale: Sale) -> Tuple[bool, str]:
     """Delete a Sale by PK. Returns True on success, False if the sale does not exist."""
     if sale.payment_status != PaymentStatus.UNPAID:
+        logger.warning("sale_not_unpaid", extra={"sale": sale.logger_data()})
         return False, str(_("Sale is not unpaid"))
 
     sale_id = sale.pk

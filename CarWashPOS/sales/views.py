@@ -1,6 +1,5 @@
 import http
 import logging
-from typing_extensions import Tuple
 from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect

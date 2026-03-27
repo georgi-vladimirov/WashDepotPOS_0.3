@@ -5,7 +5,7 @@
 {% endblock title %}
 {% block content %}
     <div class="border shadow-sm p-2 m-3 bg-body-tertiary rounded">
-        <form action="{% url 'transactions:transactions' %}?tran_type={{ tran_type }}&payment_origin={{ payment_origin }}&related_id={{ related_id }}"
+        <form action="{{ form_action }}"
             method="post">
             {% csrf_token %}
             <div class="row mb-4">

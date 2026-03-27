@@ -1,6 +1,7 @@
 from logging import lastResort
 from django.views import View
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.http import HttpResponse
 from decimal import Decimal
 from django.contrib import messages
@@ -41,7 +42,9 @@ class TranSales(LoginRequiredMixin, View):
         if form is None:
             return redirect("sales:sales_overview")
         form.date.initial = cal_event
-        return render(request, "transactions/transaction.html", {"form": form})
+
+        form_action = reverse('transactions:tran_sales', kwargs={"sale_id": sale_id})
+        return render(request, "transactions/transaction.html", {"form": form, "form_action": form_action})
 
     def get_form_for_sale(self, sale_id: int | None) -> TransactionForm | None:
         if not sale_id:
@@ -52,7 +55,7 @@ class TranSales(LoginRequiredMixin, View):
         amount: Decimal = get_sale_unpaid_amount(sale=sale)
         return TransactionForm(amount=amount, sale=sale)
 
-    def post(self, request):
+    def post(self, request, sale_id):
         print("hello")
         form: TransactionForm = TransactionForm(request.POST)
         if form.is_valid():
@@ -87,7 +90,9 @@ class Transactions(LoginRequiredMixin, View):
 
         form = TransactionForm(amount = amount, type=tran_type, origin=origin)
         form.date.initial = cal_event
-        return render(request, "transactions/transaction.html", {"form": form})
+
+        form_action = reverse('transactions:transactions')
+        return render(request, "transactions/transaction.html", {"form": form, "form_action": form_action})
 
     def post(self, request):
         form: TransactionForm = TransactionForm(request.POST)

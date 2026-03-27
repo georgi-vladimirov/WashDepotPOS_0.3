@@ -35,7 +35,7 @@ class Sale(BaseModel):
         related_name="sales",
     )
     ################
-    display_fields: list[str] = ["vehicle_brand", "vehicle_type", "reg_number"]
+    display_fields: list[str] = ["vehicle_brand", "vehicle_type", "reg_number", "payment_status"]
     ################
     def __str__(self) -> str:
         return f"{self.date.date} - {self.date.location.name} - {self.reg_number} - {self.vehicle_brand.brand}"
