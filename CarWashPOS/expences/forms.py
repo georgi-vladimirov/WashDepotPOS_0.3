@@ -10,6 +10,7 @@ class AddExpenceForm(forms.ModelForm):
         # Initialize fields
         self.date = self.fields["date"]
         self.date.initial = date
+        self.date.widget = forms.HiddenInput()
 
     class Meta:
         model = Expence

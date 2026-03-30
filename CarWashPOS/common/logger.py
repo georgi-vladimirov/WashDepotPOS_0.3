@@ -28,11 +28,11 @@ def _make_serializable(obj: Any, _seen: set | None = None) -> Any:
             return "<circular>"
         _seen.add(obj_id)
         return [_make_serializable(i, _seen) for i in obj]
-    if hasattr(obj, 'hex'):
+    if not isinstance(obj, type) and hasattr(obj, 'hex'):
         return str(obj)
-    if hasattr(obj, 'quantize'):
+    if not isinstance(obj, type) and hasattr(obj, 'quantize'):
         return float(obj)
-    if hasattr(obj, 'isoformat'):
+    if not isinstance(obj, type) and hasattr(obj, 'isoformat'):
         return obj.isoformat()
     if hasattr(obj, '_meta'):
         if obj_id in _seen:
