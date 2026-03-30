@@ -14,11 +14,20 @@ EXCLUDED_FIELDS = {
 }
 
 
-def _make_serializable(obj: Any) -> Any:
+def _make_serializable(obj: Any, _seen: set | None = None) -> Any:
+    if _seen is None:
+        _seen = set()
+    obj_id = id(obj)
     if isinstance(obj, dict):
-        return {k: _make_serializable(v) for k, v in obj.items()}
+        if obj_id in _seen:
+            return "<circular>"
+        _seen.add(obj_id)
+        return {k: _make_serializable(v, _seen) for k, v in obj.items()}
     if isinstance(obj, (list, tuple)):
-        return [_make_serializable(i) for i in obj]
+        if obj_id in _seen:
+            return "<circular>"
+        _seen.add(obj_id)
+        return [_make_serializable(i, _seen) for i in obj]
     if hasattr(obj, 'hex'):
         return str(obj)
     if hasattr(obj, 'quantize'):
@@ -26,12 +35,18 @@ def _make_serializable(obj: Any) -> Any:
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
     if hasattr(obj, '_meta'):
-        return _make_serializable({
-            k: v for k, v in obj.__dict__.items()
-            if not k.startswith('_')
-        })
+        if obj_id in _seen:
+            return "<circular>"
+        _seen.add(obj_id)
+        return _make_serializable(
+            {k: v for k, v in obj.__dict__.items() if not k.startswith('_')},
+            _seen,
+        )
     if hasattr(obj, '__dict__'):
-        return _make_serializable(obj.__dict__)
+        if obj_id in _seen:
+            return "<circular>"
+        _seen.add(obj_id)
+        return _make_serializable(obj.__dict__, _seen)
     try:
         json.dumps(obj)
         return obj

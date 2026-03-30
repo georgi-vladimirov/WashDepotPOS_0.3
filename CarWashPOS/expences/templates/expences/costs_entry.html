@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+    Payment
+{% endblock title %}
+{% block content %}
+    <div class="container mt-4">
+        <form action="{% url 'expences:add' %}" method="post">
+            {% csrf_token %}
+            <dir class="row mb-4">
+                {{ form }}
+            </dir>
+            <dir class="col mb-4">
+                <button type="submit mb-1" class="btn btn-primary">Submit Cost</button>
+                <button class="btn btn-secondary" onclick="window.close()">Cancel</button>
+            </dir>
+        </form>
+    </div>
+{% endblock content %}

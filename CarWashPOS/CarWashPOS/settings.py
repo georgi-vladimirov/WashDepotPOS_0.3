@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "accounts",
     "sales",
     "transactions",
+    "expences",
     "import_export",
     "django.contrib.admin",
     "django.contrib.auth",

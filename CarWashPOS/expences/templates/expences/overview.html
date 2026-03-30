@@ -1,0 +1,20 @@
+{% extends "core/home.html" %}
+{% load i18n %}
+
+{% block title %}
+    Expences Overview
+{% endblock title %}
+{% block content %}
+    <div class="container p-0 mt-4">
+        <div class="row mb-3">
+            <a type="button"
+               class="btn btn-primary w-25"
+               role="button"
+               href="{% url 'expences:add' %}"
+               onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-cash-stack"></i> Add Expence</a>
+        </div>
+        <div class="row rounded-3 p-4 shadow bg-white w-75">
+            {% include "expences/overview_table.html" with transactions=transactions %}
+        </div>
+    </div>
+{% endblock content %}
