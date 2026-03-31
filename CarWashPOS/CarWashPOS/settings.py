@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "sales",
     "transactions",
     "expences",
+    "salaries",
     "import_export",
     "rosetta",
     "django.contrib.admin",

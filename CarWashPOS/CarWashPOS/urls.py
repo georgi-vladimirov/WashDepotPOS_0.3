@@ -15,6 +15,7 @@ urlpatterns += i18n_patterns(
     path("", include("sales.urls")),
     path("transactions/", include("transactions.urls")),
     path("expences/", include("expences.urls")),
+    path("salaries/", include("salaries.urls")),
 )
 
 
