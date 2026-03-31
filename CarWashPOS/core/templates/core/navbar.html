@@ -51,7 +51,14 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'expences:overview' %}">
+          <a class="nav-link
+              {% if request.resolver_match.url_name == 'overview' %}active{% endif %}"
+       aria-current="{% if request.resolver_match.url_name == 'overview' %}
+                       page
+                     {% else %}
+                       false
+                     {% endif %}"
+              href="{% url 'expences:overview' %}">
             <i class="bi bi-cart3"></i> {% translate "Costs" %}
           </a>
         </li>
