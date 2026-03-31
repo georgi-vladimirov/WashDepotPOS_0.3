@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-27 17:17+0200\n"
+"POT-Creation-Date: 2026-03-31 12:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:142
+#: .\CarWashPOS\settings.py:143
 msgid "English"
 msgstr "Английски"
 
-#: .\CarWashPOS\settings.py:143
+#: .\CarWashPOS\settings.py:144
 msgid "Bulgarian"
 msgstr "Български"
 
@@ -121,21 +121,66 @@ msgstr "Календар"
 msgid "Cars"
 msgstr "Автомобили"
 
-#: .\core\templates\core\navbar.html:43
+#: .\core\templates\core\navbar.html:50
 msgid "Transactions"
 msgstr "Каса"
 
-#: .\core\templates\core\navbar.html:61
+#: .\core\templates\core\navbar.html:55 .\transactions\filters.py:47
+msgid "Costs"
+msgstr "Разходи"
+
+#: .\core\templates\core\navbar.html:67
 msgid "User"
 msgstr "Потребител"
 
-#: .\core\templates\core\navbar.html:65
+#: .\core\templates\core\navbar.html:71
 msgid "Admin Panel"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:69
+#: .\core\templates\core\navbar.html:75
 msgid "Logout"
 msgstr "Изход"
+
+#: .\expences\forms.py:25 .\expences\templates\expences\overview_table.html:7
+msgid "Name"
+msgstr "Наименование"
+
+#: .\expences\forms.py:26 .\expences\templates\expences\overview_table.html:6
+#: .\sales\templates\sales\sales_overview.html:104
+#: .\transactions\templates\transactions\overview_table.html:7
+msgid "Amount"
+msgstr "Сума"
+
+#: .\expences\forms.py:27 .\expences\templates\expences\overview_table.html:8
+#: .\transactions\templates\transactions\overview_table.html:10
+msgid "Details"
+msgstr "Детайли"
+
+#: .\expences\templates\expences\costs_entry.html:4
+#: .\sales\templates\sales\sales_overview.html:22
+#: .\sales\templates\sales\sales_overview.html:67
+#: .\sales\templates\sales\sales_overview.html:73
+msgid "Payment"
+msgstr "Плащане"
+
+#: .\expences\templates\expences\costs_entry.html:14
+msgid "Submit Cost"
+msgstr "Приемане"
+
+#: .\expences\templates\expences\costs_entry.html:15
+#: .\sales\templates\sales\add_cart.html:93
+#: .\sales\templates\sales\add_sale.html:44
+#: .\transactions\templates\transactions\transaction.html:16
+msgid "Cancel"
+msgstr "Отказ"
+
+#: .\expences\templates\expences\overview.html:5
+msgid "Expences Overview"
+msgstr "Разходи"
+
+#: .\expences\templates\expences\overview.html:14
+msgid "Add Expence"
+msgstr "Добавяне на разход"
 
 #: .\sales\forms.py:65 .\sales\templates\sales\sales_overview.html:24
 msgid "Brand"
@@ -173,11 +218,11 @@ msgstr "Неплатено"
 msgid "Partial"
 msgstr "Частично"
 
-#: .\sales\services.py:28
+#: .\sales\services.py:29
 msgid "Sale is not unpaid"
 msgstr "Има плащане на продажбата"
 
-#: .\sales\services.py:33
+#: .\sales\services.py:34
 msgid "Sale is deleted"
 msgstr "Продажбата е изтрита"
 
@@ -221,12 +266,6 @@ msgstr "Крайна цена"
 msgid "Save"
 msgstr "Запазване"
 
-#: .\sales\templates\sales\add_cart.html:93
-#: .\sales\templates\sales\add_sale.html:44
-#: .\transactions\templates\transactions\transaction.html:16
-msgid "Cancel"
-msgstr "Отказ"
-
 #: .\sales\templates\sales\add_sale.html:6
 msgid "Add Sale"
 msgstr "Добавяне на продажба"
@@ -238,12 +277,6 @@ msgstr "Нов автомобил"
 #: .\sales\templates\sales\sales_overview.html:21
 msgid "Reg.#"
 msgstr "Рег.№"
-
-#: .\sales\templates\sales\sales_overview.html:22
-#: .\sales\templates\sales\sales_overview.html:67
-#: .\sales\templates\sales\sales_overview.html:73
-msgid "Payment"
-msgstr "Плащане"
 
 #: .\sales\templates\sales\sales_overview.html:23
 msgid "Car Type"
@@ -265,11 +298,6 @@ msgstr "Услуги"
 #: .\transactions\templates\transactions\overview_table.html:6
 msgid "Type"
 msgstr "Вид"
-
-#: .\sales\templates\sales\sales_overview.html:104
-#: .\transactions\templates\transactions\overview_table.html:7
-msgid "Amount"
-msgstr "Сума"
 
 #: .\sales\templates\sales\sales_overview.html:116
 msgid "No services"
@@ -302,10 +330,6 @@ msgstr "Приход в брой"
 #: .\transactions\filters.py:38
 msgid "Withdrawals"
 msgstr "Теглене"
-
-#: .\transactions\filters.py:47
-msgid "Costs"
-msgstr "Разходи"
 
 #: .\transactions\filters.py:56
 msgid "Salaries"
@@ -412,10 +436,6 @@ msgstr "Теглене"
 #: .\transactions\templates\transactions\overview_table.html:9
 msgid "Payment Origin"
 msgstr "Произход"
-
-#: .\transactions\templates\transactions\overview_table.html:10
-msgid "Details"
-msgstr "Детайли"
 
 #: .\transactions\templates\transactions\transaction.html:15
 msgid "Submit Payment"

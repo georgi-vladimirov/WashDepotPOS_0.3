@@ -9,6 +9,6 @@ class Expence(BaseModel):
     name = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     details = models.TextField(blank=True, null=True)
-    transaction = models.ForeignKey(Transaction, on_delete=models.DO_NOTHING, related_name="expences")
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="expences")
 
     display_fields: list[str] = ["name", "amount"]

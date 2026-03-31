@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}
-    Payment
+    {% translate "Payment" %}
 {% endblock title %}
 {% block content %}
     <div class="container mt-4">
@@ -10,8 +11,8 @@
                 {{ form }}
             </dir>
             <dir class="col mb-4">
-                <button type="submit mb-1" class="btn btn-primary">Submit Cost</button>
-                <button class="btn btn-secondary" onclick="window.close()">Cancel</button>
+                <button type="submit mb-1" class="btn btn-primary">{% translate "Submit Cost" %}</button>
+                <button class="btn btn-secondary" onclick="window.close()">{% translate "Cancel" %} </button>
             </dir>
         </form>
     </div>

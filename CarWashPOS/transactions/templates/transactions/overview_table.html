@@ -1,36 +1,35 @@
 {% load l10n %}
 {% load i18n %}
 <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-center">{% translate "Type" %}</th>
-                    <th scope="col" class="text-center">{% translate "Amount" %}</th>
-                        <th scope="col" class="text-center">{% translate "Payment Method" %}</th>
-                        <th scope="col" class="text-center">{% translate "Payment Origin" %}</th>
-                        <th scope="col" class="text-center w-50">{% translate "Details" %}</th>
-                    <th scope="col" class="text-center">
-                        <i class="bi bi-trash3-fill"></i>
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                {% for transaction in transactions %}
-                    <tr>
-                        <td class="text-center">
-                            <span class="badge {% if transaction.type == 'IN' %}text-bg-success {% elif transaction.type == 'OUT' %}text-bg-danger {% else %} text-bg-primary {% endif %} ">{{ transaction.type }}</span>
-                        </td>
-                        <td class="text-end">{{ transaction.amount|unlocalize }}</td>
-                        <td class="text-center">{{ transaction.payment_method }}</td>
-                        <td class="text-center">{{ transaction.origin }}</td>
-                        <td class="text-center">{{ transaction.details }}</td>
-                        <td class="text-center">
-                            <a type="button"
-                               class="btn btn-danger btn-sm"
-                               role="button"
-                               href="{% url 'transactions:tran_delete' transaction.id %}">
-                                <i class="bi bi-trash3-fill"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">{% translate "Type" %}</th>
+            <th scope="col" class="text-center">{% translate "Amount" %}</th>
+                <th scope="col" class="text-center">{% translate "Payment Method" %}</th>
+                <th scope="col" class="text-center">{% translate "Payment Origin" %}</th>
+                <th scope="col" class="text-center w-50">{% translate "Details" %}</th>
+            <th scope="col" class="text-center">
+                <i class="bi bi-trash3-fill"></i>
+            </th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% for transaction in transactions %}
+            <tr>
+                <td class="text-center">
+                    <span class="badge {% if transaction.type == 'IN' %}text-bg-success {% elif transaction.type == 'OUT' %}text-bg-danger {% else %} text-bg-primary {% endif %} ">{{ transaction.type }}</span>
+                </td>
+                <td class="text-end">{{ transaction.amount|unlocalize }}</td>
+                <td class="text-center">{{ transaction.payment_method }}</td>
+                <td class="text-center">{{ transaction.origin }}</td>
+                <td class="text-center">{{ transaction.details }}</td>
+                <td class="text-center">
+                    {% url 'transactions:tran_delete' transaction.id as delete_cart_url %}
+                    {% include "delete_button.html" with delete_url=delete_cart_url label="" %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% translate "Are you sure you want to delete?" as the_message %}
+{% include "delete_confirm_modal.html" with title="Delete Confirmation" message=the_message %}

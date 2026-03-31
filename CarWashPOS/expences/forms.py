@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 from .models import Expence
 from core.models import CalendarEvent
 
@@ -20,6 +21,12 @@ class AddExpenceForm(forms.ModelForm):
             "amount": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
             "details": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
+        labels = {
+            "name": _("Name"),
+            "amount": _("Amount"),
+            "details": _("Details"),
+        }
+        
         error_messages = {
             "amount": {
                 "required": "Please enter an amount.",

@@ -9,7 +9,7 @@ from sales.models import Sale
 from sales.selectors import get_sale_unpaid_amount
 from sales.services import set_sale_status
 from core.models import CalendarEvent
-from .models import Transaction, TranType, Origin
+from .models import Transaction, TranType, Origin, PaymentMethod
 from .filters import FILTERS
 from .selectors import get_cash_end_from_prev_cal_event, get_trans_by_cal_event
 
@@ -136,3 +136,14 @@ def transaction_delete(*, transaction: Transaction) -> bool:
     transaction.delete()
     logger.info("transaction_deleted", extra={"transaction": transaction.logger_data()})
     return True
+    
+def create_tran_for_expence(*, date: CalendarEvent, amount: Decimal, details: str) -> Transaction:
+    trasaction: Transaction = Transaction.objects.create(
+        date=date,
+        type=TranType.OUT,
+        origin = Origin.COST,
+        amount=amount,
+        payment_method=PaymentMethod.CASH,
+        details=details,
+    )
+    return trasaction

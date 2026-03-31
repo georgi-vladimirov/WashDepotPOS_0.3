@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block title %}
-    Expences Overview
+    {% translate "Expences Overview" %}
 {% endblock title %}
 {% block content %}
     <div class="container p-0 mt-4">
@@ -11,10 +11,10 @@
                class="btn btn-primary w-25"
                role="button"
                href="{% url 'expences:add' %}"
-               onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-cash-stack"></i> Add Expence</a>
+               onclick="window.open(this.href, '_blank', 'width=500,height=470,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-cash-stack"></i> {% translate "Add Expence" %}</a>
         </div>
         <div class="row rounded-3 p-4 shadow bg-white w-75">
-            {% include "expences/overview_table.html" with transactions=transactions %}
+            {% include "expences/overview_table.html" with expences=expences %}
         </div>
     </div>
 {% endblock content %}

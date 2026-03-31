@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "transactions",
     "expences",
     "import_export",
+    "rosetta",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
