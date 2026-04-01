@@ -18,12 +18,15 @@ logger = logging.getLogger("transactions.services")
 
 class AggregateData(TypedDict):
     """Type definition for aggregate data structure used in cash desk operations."""
+
     amount: Decimal
     order: int
     label: str | Promise
 
 
-def daily_report_calculate(*, transactions_qs, filters=FILTERS) -> dict[str, AggregateData]:
+def daily_report_calculate(
+    *, transactions_qs, filters=FILTERS
+) -> dict[str, AggregateData]:
     """Calculate daily report aggregates from transaction queryset."""
 
     # Calculate all aggregates
@@ -32,17 +35,46 @@ def daily_report_calculate(*, transactions_qs, filters=FILTERS) -> dict[str, Agg
     cash_balance = Decimal(0)
     pos_balance = Decimal(0)
     for key, defn in filters.items():
-        result = transactions_qs.filter(**defn["filter_kwargs"]).aggregate(total=Coalesce(Sum("amount"), Decimal(0)))
-        aggregates[key] = {"amount": result["total"], "order": defn["order"], "label": defn["label"]}
-        if key in ["START", "DEPOSIT", "INCOME_CASH", "WITHDRAW", "COSTS", "SALARIES", "BONUS", "ADVANCES"]:
+        result = transactions_qs.filter(**defn["filter_kwargs"]).aggregate(
+            total=Coalesce(Sum("amount"), Decimal(0))
+        )
+        aggregates[key] = {
+            "amount": result["total"],
+            "order": defn["order"],
+            "label": defn["label"],
+        }
+        if key in [
+            "START",
+            "DEPOSIT",
+            "INCOME_CASH",
+            "WITHDRAW",
+            "COSTS",
+            "SALARIES",
+            "BONUS",
+            "ADVANCES",
+        ]:
             cash_at_hand += result["total"]
 
     cash_balance = cash_at_hand - aggregates["END"]["amount"]
-    pos_balance = aggregates["INCOME_CARD"]["amount"] - aggregates["POS_RECEIPT"]["amount"]
+    pos_balance = (
+        aggregates["INCOME_CARD"]["amount"] - aggregates["POS_RECEIPT"]["amount"]
+    )
 
-    aggregates["CASH_AT_HAND"] = {"amount": cash_at_hand, "order": 9, "label": _("Cash at Hand")}
-    aggregates["CASH_BALANCE"] = {"amount": cash_balance, "order": 10, "label": _("Cash Balance")}
-    aggregates["POS_BALANCE"] = {"amount": pos_balance, "order": 13, "label": _("POS Balance")}
+    aggregates["CASH_AT_HAND"] = {
+        "amount": cash_at_hand,
+        "order": 9,
+        "label": _("Cash at Hand"),
+    }
+    aggregates["CASH_BALANCE"] = {
+        "amount": cash_balance,
+        "order": 10,
+        "label": _("Cash Balance"),
+    }
+    aggregates["POS_BALANCE"] = {
+        "amount": pos_balance,
+        "order": 13,
+        "label": _("POS Balance"),
+    }
 
     # Sort aggregates by order
     aggregates = dict(sorted(aggregates.items(), key=lambda item: item[1]["order"]))
@@ -58,7 +90,13 @@ def sale_accepts_transaction(*, sale: Sale, transaction: Transaction) -> bool:
 
 def process_sale_payment(*, sale: Sale, transaction: Transaction) -> bool:
     if not sale_accepts_transaction(sale=sale, transaction=transaction):
-        logger.warning("transaction_does_not_cover_sale", extra={"sale": sale.logger_data(), "transaction": transaction.logger_data()})
+        logger.warning(
+            "transaction_does_not_cover_sale",
+            extra={
+                "sale": sale.logger_data(),
+                "transaction": transaction.logger_data(),
+            },
+        )
         return False
     return True
 
@@ -71,14 +109,20 @@ def process_transaction_START(*, transaction: Transaction) -> bool:
     if transaction.amount == last_end_trans.amount:
         return True
     else:
-        logger.warning("START_does_not_match_last_END", extra={"transaction": transaction.logger_data(), "last_end": last_end_trans.logger_data()})
+        logger.warning(
+            "START_does_not_match_last_END",
+            extra={
+                "transaction": transaction.logger_data(),
+                "last_end": last_end_trans.logger_data(),
+            },
+        )
         return False
 
 
 def calculate_cash_balance(*, cal_event: CalendarEvent) -> Decimal:
     transactions_for_day = get_trans_by_cal_event(cal_event=cal_event)
     aggregates = daily_report_calculate(transactions_qs=transactions_for_day)
-    cash_balance:Decimal = aggregates["CASH_BALANCE"]["amount"]
+    cash_balance: Decimal = aggregates["CASH_BALANCE"]["amount"]
     return cash_balance
 
 
@@ -87,7 +131,13 @@ def process_transaction_END(*, transaction: Transaction) -> bool:
     if transaction.amount == cash_balance:
         return True
     else:
-        logger.warning("END_does_not_match_cash_balance", extra={"transaction": transaction.logger_data(), "cash_balance": cash_balance})
+        logger.warning(
+            "END_does_not_match_cash_balance",
+            extra={
+                "transaction": transaction.logger_data(),
+                "cash_balance": cash_balance,
+            },
+        )
         return False
 
 
@@ -95,10 +145,18 @@ def transaction_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
     sale: Sale = transaction.sale
     if sale:
         if process_sale_payment(sale=sale, transaction=transaction):
-            transaction.details = f"{sale.reg_number} | {sale.date.date.strftime('%d.%m.%Y')}"
+            transaction.details = (
+                f"{sale.reg_number} | {sale.date.date.strftime('%d.%m.%Y')}"
+            )
             transaction.save()
             set_sale_status(sale=sale)
-            logger.info("sale_payment_saved", extra={"sale": sale.logger_data(), "transaction": transaction.logger_data()})
+            logger.info(
+                "sale_payment_saved",
+                extra={
+                    "sale": sale.logger_data(),
+                    "transaction": transaction.logger_data(),
+                },
+            )
             return transaction, True
         else:
             return transaction, False
@@ -127,21 +185,29 @@ def transaction_operation_save(*, transaction: Transaction) -> tuple[Transaction
 
     if process_result[1]:
         transaction.save()
-        logger.info("transaction_saved", extra={"transaction": transaction.logger_data()})
+        logger.info(
+            "transaction_saved", extra={"transaction": transaction.logger_data()}
+        )
         return process_result
     return process_result
 
 
 def transaction_delete(*, transaction: Transaction) -> bool:
+    sale = transaction.sale
     transaction.delete()
+    if sale:
+        set_sale_status(sale=sale)
     logger.info("transaction_deleted", extra={"transaction": transaction.logger_data()})
     return True
-    
-def create_tran_for_expence(*, date: CalendarEvent, amount: Decimal, details: str) -> Transaction:
+
+
+def create_tran_for_expence(
+    *, date: CalendarEvent, amount: Decimal, details: str
+) -> Transaction:
     trasaction: Transaction = Transaction.objects.create(
         date=date,
         type=TranType.OUT,
-        origin = Origin.COST,
+        origin=Origin.COST,
         amount=amount,
         payment_method=PaymentMethod.CASH,
         details=details,

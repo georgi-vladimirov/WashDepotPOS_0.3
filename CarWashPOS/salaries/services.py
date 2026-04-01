@@ -9,7 +9,6 @@ def create_salary(sale: Sale) -> list[Salary]:
     employees: list[Employee] = [sale.worker, sale.manager]
     sale_amount: Decimal = sale.cart.final_amount  # type: ignore
 
-
     for employee in employees:
         if employee.salary_percentage > 0:
             amount: Decimal = round((employee.salary_percentage / Decimal(100)) * sale_amount, 2)

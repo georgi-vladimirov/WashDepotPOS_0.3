@@ -62,7 +62,7 @@
               <td class="text-end">{{ sale.cart.final_amount |unlocalize }}</td>
               <td class="text-end">{{ sale.paid_amount |unlocalize }}</td>
               <td class="text-center">
-                {% if sale.payment_status == 'PAID' %}
+                {% if sale.payment_status == 'PAID' or not sale.cart %}
                     <button class="btn btn-secondary btn-sm" disabled>
                         <i class="bi bi-piggy-bank-fill"></i> {% translate "Payment" %}
                     </button>

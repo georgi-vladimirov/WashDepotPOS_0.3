@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from core.models import CalendarEvent
 from core.selectors import get_services_by_location_and_vehicle_type, get_services_by_ids
 from core.models import ServiceType, Service
+from salaries.services import create_salary
 from .models import Sale, Cart, CartItem, PaymentStatus
 from .selectors import get_sale_unpaid_amount, get_cart_final_amount, get_cart_by_sale
 import logging
@@ -75,6 +76,7 @@ def create_cart_for_sale(
         return cart  # Cart is still created, but amounts are inconsistent
     cart.save()
     logger.info("cart_created", extra={"sale_id": sale.pk, "services": service_ids})
+    create_salary(sale=sale)
     return cart
 
 
