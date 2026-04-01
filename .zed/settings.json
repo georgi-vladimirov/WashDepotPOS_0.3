@@ -12,11 +12,9 @@
       "format_on_save": "on",
       "formatter": {
         "external": {
-          "command": "ruff",
+          "command": "E:\\Web Dev\\WashDepotPOS_0.3\\.venv\\Scripts\\ruff.exe",
           "arguments": [
             "format",
-            "--stdin-filename",
-            "{buffer_path}",
             "-"
           ]
         }

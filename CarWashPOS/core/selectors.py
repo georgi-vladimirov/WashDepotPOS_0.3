@@ -1,6 +1,15 @@
-from .models import CalendarEvent, Location, ServicePrice, VehicleBrand, VehicleType, Employee, Service, Subscriber
+from .models import (
+    CalendarEvent,
+    Location,
+    ServicePrice,
+    VehicleBrand,
+    VehicleType,
+    Employee,
+    Service,
+    Subscriber,
+)
 from django.contrib.auth.models import AbstractUser
-from django.db.models import Prefetch, QuerySet
+from django.db.models import Prefetch, QuerySet, Q
 import calendar
 from datetime import date
 
@@ -39,7 +48,9 @@ def get_cal_events_for_month(*, location: Location, year: int, month: int) -> di
     """Return a dict mapping day number to event info for the given location and month."""
     first_day = date(year, month, 1)
     last_day = date(year, month, calendar.monthrange(year, month)[1])
-    cal_events = CalendarEvent.objects.filter(date__range=(first_day, last_day), location=location)
+    cal_events = CalendarEvent.objects.filter(
+        date__range=(first_day, last_day), location=location
+    )
     return {
         event.date.day: {
             "id": event.pk,
@@ -60,17 +71,25 @@ def get_vehicle_types(is_active: bool = True) -> QuerySet:
     return VehicleType.objects.filter(is_active=is_active).order_by("name")
 
 
-def get_employees_by_location_and_position(*, is_active: bool = True, location: Location, position: str) -> QuerySet:
+def get_employees_by_location_and_position(
+    *, is_active: bool = True, location: Location, position: str
+) -> QuerySet:
     """Return a QuerySet of active Employees with the given position for the given location."""
-    return Employee.objects.filter(is_active=is_active, position__position=position, location=location)
+    return Employee.objects.filter(
+        is_active=is_active, position__position=position, location=location
+    )
 
 
-def get_subscribers_by_location(*, is_active: bool = True, location: Location) -> QuerySet:
+def get_subscribers_by_location(
+    *, is_active: bool = True, location: Location
+) -> QuerySet:
     """Return a QuerySet of active Subscribers for the given location."""
     return Subscriber.objects.filter(is_active=is_active, location=location)
 
 
-def get_services_by_location_and_vehicle_type(*, location: Location, vehicle_type: VehicleType) -> QuerySet[Service]:
+def get_services_by_location_and_vehicle_type(
+    *, location: Location, vehicle_type: VehicleType
+) -> QuerySet[Service]:
     """Return active Services that have an active ServicePrice for the given location and vehicle type."""
     return (
         Service.objects.filter(
@@ -86,4 +105,27 @@ def get_services_by_location_and_vehicle_type(*, location: Location, vehicle_typ
 
 def get_services_by_ids(*, service_ids: list[str]) -> QuerySet[Service]:
     """Return Services matching the given list of IDs."""
-    return Service.objects.filter(pk__in=service_ids, is_active=True).prefetch_related("service_prices")
+    return Service.objects.filter(pk__in=service_ids, is_active=True).prefetch_related(
+        "service_prices"
+    )
+
+
+def get_cal_events_for_period(*, cal_event: CalendarEvent) -> QuerySet[CalendarEvent]:
+    first_day: date = cal_event.date.replace(day=1)
+    last_day: date = cal_event.date.replace(
+        day=calendar.monthrange(cal_event.date.year, cal_event.date.month)[1]
+    )
+    return CalendarEvent.objects.filter(
+        date__range=(first_day, last_day), location=cal_event.location
+    ).order_by("date")
+
+
+def get_employees_for_location(
+    *, location: Location, is_active: bool = True
+) -> QuerySet[Employee]:
+    return (
+        Employee.objects.filter(location=location, is_active=is_active)
+        .distinct()
+        .select_related("position")
+        .order_by("position__position", "employee_id")
+    )

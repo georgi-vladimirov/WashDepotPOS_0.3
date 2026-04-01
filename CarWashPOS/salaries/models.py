@@ -3,6 +3,7 @@ from common.models import BaseModel
 from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 from core.models import CalendarEvent, Employee
+from core.selectors import get_cal_events_for_month
 from sales.models import Sale
 
 
