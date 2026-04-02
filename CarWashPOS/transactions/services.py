@@ -213,3 +213,10 @@ def create_tran_for_expence(
         details=details,
     )
     return trasaction
+
+
+def transaction_salary_save(*, transaction: Transaction) -> tuple[Transaction, bool]:
+    transaction.details = f"{transaction.employee.employee_id}"
+    transaction.save()
+    logger.info("transaction_saved", extra={"transaction": transaction.logger_data()})
+    return transaction, True

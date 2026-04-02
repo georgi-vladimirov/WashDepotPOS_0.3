@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 12:42+0300\n"
+"POT-Creation-Date: 2026-04-02 23:26+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:143
+#: .\CarWashPOS\settings.py:145
 msgid "English"
 msgstr ""
 
-#: .\CarWashPOS\settings.py:144
+#: .\CarWashPOS\settings.py:146
 msgid "Bulgarian"
 msgstr "Bulgarian"
 
@@ -125,19 +125,23 @@ msgstr ""
 msgid "Transactions"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:55 .\transactions\filters.py:47
+#: .\core\templates\core\navbar.html:62 .\transactions\filters.py:47
 msgid "Costs"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:67
+#: .\core\templates\core\navbar.html:67 .\transactions\filters.py:56
+msgid "Salaries"
+msgstr ""
+
+#: .\core\templates\core\navbar.html:73
 msgid "User"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:71
+#: .\core\templates\core\navbar.html:77
 msgid "Admin Panel"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:75
+#: .\core\templates\core\navbar.html:81
 msgid "Logout"
 msgstr ""
 
@@ -146,6 +150,7 @@ msgid "Name"
 msgstr ""
 
 #: .\expences\forms.py:26 .\expences\templates\expences\overview_table.html:6
+#: .\salaries\templates\salaries\penalty_overview.html:8
 #: .\sales\templates\sales\sales_overview.html:104
 #: .\transactions\templates\transactions\overview_table.html:7
 msgid "Amount"
@@ -154,6 +159,18 @@ msgstr ""
 #: .\expences\forms.py:27 .\expences\templates\expences\overview_table.html:8
 #: .\transactions\templates\transactions\overview_table.html:10
 msgid "Details"
+msgstr ""
+
+#: .\expences\services.py:18
+msgid "Expence saved successfully"
+msgstr ""
+
+#: .\expences\services.py:24
+msgid "Expence deleted successfully"
+msgstr ""
+
+#: .\expences\services.py:27
+msgid "Expence not deleted"
 msgstr ""
 
 #: .\expences\templates\expences\costs_entry.html:4
@@ -168,9 +185,10 @@ msgid "Submit Cost"
 msgstr ""
 
 #: .\expences\templates\expences\costs_entry.html:15
+#: .\salaries\templates\salaries\penalty.html:31
 #: .\sales\templates\sales\add_cart.html:93
 #: .\sales\templates\sales\add_sale.html:44
-#: .\transactions\templates\transactions\transaction.html:16
+#: .\transactions\templates\transactions\transaction.html:17
 msgid "Cancel"
 msgstr ""
 
@@ -180,6 +198,87 @@ msgstr ""
 
 #: .\expences\templates\expences\overview.html:14
 msgid "Add Expence"
+msgstr ""
+
+#: .\expences\templates\expences\overview_table.html:29
+#: .\sales\templates\sales\sales_overview.html:147
+#: .\transactions\templates\transactions\overview_table.html:34
+msgid "Are you sure you want to delete?"
+msgstr ""
+
+#: .\salaries\models.py:11 .\salaries\templates\salaries\overview_table.html:10
+#: .\transactions\filters.py:65 .\transactions\models.py:22
+msgid "Bonus"
+msgstr ""
+
+#: .\salaries\models.py:12 .\salaries\templates\salaries\overview_table.html:9
+#: .\transactions\models.py:21
+msgid "Salary"
+msgstr ""
+
+#: .\salaries\models.py:13 .\salaries\templates\salaries\overview_table.html:11
+#: .\salaries\templates\salaries\penalty.html:4
+#: .\salaries\templates\salaries\penalty.html:8
+msgid "Penalty"
+msgstr ""
+
+#: .\salaries\templates\salaries\overview_table.html:6
+#: .\salaries\templates\salaries\penalty_overview.html:6
+msgid "Employee"
+msgstr ""
+
+#: .\salaries\templates\salaries\overview_table.html:7
+#: .\salaries\templates\salaries\penalty_overview.html:7
+msgid "Position"
+msgstr ""
+
+#: .\salaries\templates\salaries\overview_table.html:8
+msgid "Turnover"
+msgstr ""
+
+#: .\salaries\templates\salaries\overview_table.html:12
+msgid "Paid Salary"
+msgstr ""
+
+#: .\salaries\templates\salaries\overview_table.html:13
+msgid "Paid Bonus"
+msgstr ""
+
+#: .\salaries\templates\salaries\overview_table.html:14
+#: .\transactions\models.py:25
+msgid "Balance"
+msgstr ""
+
+#: .\salaries\templates\salaries\penalty.html:13
+msgid "Select Employee"
+msgstr ""
+
+#: .\salaries\templates\salaries\penalty.html:15
+msgid "Select an employee"
+msgstr ""
+
+#: .\salaries\templates\salaries\penalty.html:18
+msgid "Penalty Amount"
+msgstr ""
+
+#: .\salaries\templates\salaries\penalty.html:25
+msgid "Enter penalty amount"
+msgstr ""
+
+#: .\salaries\templates\salaries\penalty.html:30
+msgid "Submit"
+msgstr ""
+
+#: .\salaries\templates\salaries\salaries_overview.html:13
+msgid "Pay Salary"
+msgstr ""
+
+#: .\salaries\templates\salaries\salaries_overview.html:18
+msgid "Pay Bonus"
+msgstr ""
+
+#: .\salaries\templates\salaries\salaries_overview.html:23
+msgid "Add Penalty"
 msgstr ""
 
 #: .\sales\forms.py:65 .\sales\templates\sales\sales_overview.html:24
@@ -218,11 +317,11 @@ msgstr ""
 msgid "Partial"
 msgstr ""
 
-#: .\sales\services.py:29
+#: .\sales\services.py:30
 msgid "Sale is not unpaid"
 msgstr ""
 
-#: .\sales\services.py:34
+#: .\sales\services.py:35
 msgid "Sale is deleted"
 msgstr ""
 
@@ -303,10 +402,6 @@ msgstr ""
 msgid "No services"
 msgstr ""
 
-#: .\sales\templates\sales\sales_overview.html:147
-msgid "Are you sure you want to delete?"
-msgstr ""
-
 #: .\templates\delete_confirm_modal.html:21
 msgid "No"
 msgstr ""
@@ -331,14 +426,6 @@ msgstr ""
 msgid "Withdrawals"
 msgstr ""
 
-#: .\transactions\filters.py:56
-msgid "Salaries"
-msgstr ""
-
-#: .\transactions\filters.py:65 .\transactions\models.py:22
-msgid "Bonus"
-msgstr ""
-
 #: .\transactions\filters.py:70
 msgid "Cash at End"
 msgstr ""
@@ -351,11 +438,11 @@ msgstr ""
 msgid "POS Receipt"
 msgstr ""
 
-#: .\transactions\forms.py:94
+#: .\transactions\forms.py:112
 msgid "Transaction Amount"
 msgstr ""
 
-#: .\transactions\forms.py:95
+#: .\transactions\forms.py:113
 #: .\transactions\templates\transactions\overview_table.html:8
 msgid "Payment Method"
 msgstr ""
@@ -368,16 +455,8 @@ msgstr ""
 msgid "Cost"
 msgstr ""
 
-#: .\transactions\models.py:21
-msgid "Salary"
-msgstr ""
-
 #: .\transactions\models.py:24
 msgid "Withdrawal"
-msgstr ""
-
-#: .\transactions\models.py:25
-msgid "Balance"
 msgstr ""
 
 #: .\transactions\models.py:28
@@ -404,15 +483,15 @@ msgstr ""
 msgid "Bank"
 msgstr ""
 
-#: .\transactions\services.py:43
+#: .\transactions\services.py:66
 msgid "Cash at Hand"
 msgstr ""
 
-#: .\transactions\services.py:44
+#: .\transactions\services.py:71
 msgid "Cash Balance"
 msgstr ""
 
-#: .\transactions\services.py:45
+#: .\transactions\services.py:76
 #: .\transactions\templates\transactions\overview.html:44
 msgid "POS Balance"
 msgstr ""
@@ -437,6 +516,6 @@ msgstr ""
 msgid "Payment Origin"
 msgstr ""
 
-#: .\transactions\templates\transactions\transaction.html:15
+#: .\transactions\templates\transactions\transaction.html:16
 msgid "Submit Payment"
 msgstr ""

@@ -1,0 +1,42 @@
+{% extends "core/home.html" %}
+{% load i18n %}
+{% block title %}
+    Salaries Overview
+{% endblock title %}
+{% block content %}
+    <div class="container-fluid p-0 mt-4">
+        <div class="row mb-3 mx-5">
+            <a type="button"
+               class="btn btn-primary w-25"
+               role="button"
+               href="{% url 'salaries:payment' %}?origin=SALARY"
+               onclick="window.open(this.href, '_blank', 'width=500,height=300,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-cash-stack"></i> {% translate "Pay Salary" %}</a>
+            <a type="button"
+               class="btn btn-secondary w-25 ms-3"
+               role="button"
+               href="{% url 'salaries:payment' %}?origin=BONUS"
+               onclick="window.open(this.href, '_blank', 'width=500,height=300,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-cash-stack"></i> {% translate "Pay Bonus" %}</a>
+            <a type="button"
+               class="btn btn-danger w-25 ms-5"
+               role="button"
+               href="{% url 'salaries:penalty' %}"
+               onclick="window.open(this.href, '_blank', 'width=500,height=300,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"><i class="bi bi-cash-stack"></i> {% translate "Add Penalty" %}</a>
+        </div>
+        <div class="row mx-5">
+            <div class="col rounded-3 p-4 m-2 shadow bg-white">
+                <h5 class="mb-3">Daily Salaries</h5>
+                {% include "Salaries/overview_table.html" with salary_aggregates=salary_aggregates_daily %}
+            </div>
+            <div class="col rounded-3 p-4 m-2 shadow bg-white">
+                <h5 class="mb-3">Monthly Salaries</h5>
+                {% include "Salaries/overview_table.html" with salary_aggregates=salary_aggregates_monthly %}
+            </div>
+        </div>
+        <div class="row mx-5">
+            <div class="col rounded-3 p-4 m-2 shadow bg-white">
+                <h5 class="mb-3">Penalties</h5>
+                {% include "Salaries/penalty_overview.html" with penalties=penalties %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

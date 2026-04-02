@@ -2,7 +2,7 @@ from decimal import Decimal
 from django import forms
 from django.forms.widgets import Widget
 from django.utils.translation import gettext_lazy as _
-from core.models import Employee, CalendarEvent
+from core.models import Employee, CalendarEvent, Location
 from sales.models import Sale
 from .models import Transaction, PaymentMethod, Origin, TranType
 
@@ -11,13 +11,16 @@ from django.forms import ModelChoiceField
 
 
 class TransactionForm(forms.ModelForm):
-    def __init__(self, *args,
-        amount:Decimal = Decimal("0.00"),
-        type: TranType|None = None,
-        origin: Origin|None = None,
-        sale: Sale|None = None,
-        employee: Employee|None = None,
-        **kwargs
+    def __init__(
+        self,
+        *args,
+        amount: Decimal = Decimal("0.00"),
+        type: TranType | None = None,
+        origin: Origin | None = None,
+        sale: Sale | None = None,
+        is_employee: bool = False,
+        location: Location | None = None,
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
 
@@ -35,13 +38,13 @@ class TransactionForm(forms.ModelForm):
         if sale:
             self.set_for_sale(amount, sale)
 
-        if employee:
-            self.set_for_employee(employee)
+        if is_employee and origin:
+            self.set_for_employee(origin, location=location)
 
-        if not sale and not employee and type and origin:
-            self.set_for_operation(amount = amount, type = type, origin = origin)
+        if not sale and not is_employee and type and origin:
+            self.set_for_operation(amount=amount, type=type, origin=origin)
 
-    def set_for_operation(self, amount:Decimal, type: TranType, origin: Origin):
+    def set_for_operation(self, amount: Decimal, type: TranType, origin: Origin):
         self.amount.initial = amount
         self.type.initial = type
         self.type.widget = forms.HiddenInput()
@@ -52,21 +55,25 @@ class TransactionForm(forms.ModelForm):
         self.sale.widget = forms.HiddenInput()
         self.employee.widget = forms.HiddenInput()
 
-    def set_for_employee(self, employee: Employee):
+    def set_for_employee(self, origin: Origin, location: Location | None = None):
         # Set initial amounts for Employee
         self.type.initial = TranType.OUT
         self.type.widget = forms.HiddenInput()
         self.payment_method.initial = PaymentMethod.CASH
         self.payment_method.widget = forms.HiddenInput()
+        self.origin.initial = origin
+        self.origin.widget = forms.HiddenInput()
         self.details.widget = forms.HiddenInput()
+        self.sale.widget = forms.HiddenInput()
         # use a properly typed reference so static checkers accept label_from_instance
         employee_field = cast(ModelChoiceField, self.employee)
-        employee_field.initial = employee
         employee_field.label_from_instance = lambda obj: f"{obj.employee_id}"
-        employee_field.widget = forms.HiddenInput()
+        if location:
+            employee_field.queryset = Employee.objects.filter(
+                location=location, is_active=True
+            )
 
-
-    def set_for_sale(self, amount:Decimal, sale:Sale):
+    def set_for_sale(self, amount: Decimal, sale: Sale):
         # Set initial amounts for Sales
         self.amount.initial = amount
         self.type.initial = TranType.IN
@@ -80,25 +87,36 @@ class TransactionForm(forms.ModelForm):
 
     class Meta:
         model = Transaction
-        fields = ['date', 'amount', 'type', 'origin', 'payment_method', 'sale', 'employee', 'details']
+        fields = [
+            "date",
+            "amount",
+            "type",
+            "origin",
+            "payment_method",
+            "sale",
+            "employee",
+            "details",
+        ]
         widgets = {
-            'amount': forms.NumberInput(attrs={"class": "form-control", 'step': '0.01'}),
-            'type': forms.Select(attrs={"class": "form-control"}),
-            'origin': forms.Select(attrs={"class": "form-control"}),
-            'payment_method': forms.Select(attrs={"class": "form-control"}),
-            'sale': forms.Select(attrs={"class": "form-control"}),
-            'employee': forms.Select(attrs={"class": "form-control"}),
-            'details': forms.Textarea(attrs={"class": "form-control"}),
+            "amount": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.01"}
+            ),
+            "type": forms.Select(attrs={"class": "form-control"}),
+            "origin": forms.Select(attrs={"class": "form-control"}),
+            "payment_method": forms.Select(attrs={"class": "form-control"}),
+            "sale": forms.Select(attrs={"class": "form-control"}),
+            "employee": forms.Select(attrs={"class": "form-control"}),
+            "details": forms.Textarea(attrs={"class": "form-control"}),
         }
         labels = {
-            'amount': _('Transaction Amount'),
-            'payment_method': _('Payment Method'),
+            "amount": _("Transaction Amount"),
+            "payment_method": _("Payment Method"),
         }
         error_messages = {
-                    "amount": {
-                        "required": "Please enter an amount.",
-                        "invalid": "Enter a valid amount.",
-                    },
-                    "origin": {"required": "Please select a payment origin."},
-                    "payment_method": {"required": "Please select a payment method."},
-                }
+            "amount": {
+                "required": "Please enter an amount.",
+                "invalid": "Enter a valid amount.",
+            },
+            "origin": {"required": "Please select a payment origin."},
+            "payment_method": {"required": "Please select a payment method."},
+        }

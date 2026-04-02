@@ -2,6 +2,9 @@ from .models import Salary, SalaryType
 from sales.models import Sale
 from core.models import Employee
 from decimal import Decimal
+from core.selectors import get_employee_by_id
+from core.models import CalendarEvent
+
 
 def create_salary(sale: Sale) -> list[Salary]:
     """Create and save salary/bonus records for worker and manager using bulk insert."""
@@ -11,7 +14,9 @@ def create_salary(sale: Sale) -> list[Salary]:
 
     for employee in employees:
         if employee.salary_percentage > 0:
-            amount: Decimal = round((employee.salary_percentage / Decimal(100)) * sale_amount, 2)
+            amount: Decimal = round(
+                (employee.salary_percentage / Decimal(100)) * sale_amount, 2
+            )
             salaries_to_create.append(
                 Salary(
                     date=sale.date,
@@ -23,7 +28,9 @@ def create_salary(sale: Sale) -> list[Salary]:
             )
 
         if employee.bonus_percentage > 0:
-            amount: Decimal = round((employee.bonus_percentage / Decimal(100)) * sale_amount, 2)
+            amount: Decimal = round(
+                (employee.bonus_percentage / Decimal(100)) * sale_amount, 2
+            )
             salaries_to_create.append(
                 Salary(
                     date=sale.date,
@@ -37,3 +44,20 @@ def create_salary(sale: Sale) -> list[Salary]:
         salary.full_clean()
 
     return Salary.objects.bulk_create(salaries_to_create)
+
+
+def create_penalty(
+    cal_event: CalendarEvent, employee_id: str, amount: Decimal
+) -> Salary:
+    employee = get_employee_by_id(employee_id=employee_id)
+    if amount > 0:
+        amount = -amount
+    salary = Salary(
+        date=cal_event,
+        employee=employee,
+        amount=amount,
+        type=SalaryType.PENALTY,
+    )
+    salary.full_clean()
+    salary.save()
+    return salary

@@ -20,8 +20,8 @@
                     <span class="badge {% if transaction.type == 'IN' %}text-bg-success {% elif transaction.type == 'OUT' %}text-bg-danger {% else %} text-bg-primary {% endif %} ">{{ transaction.type }}</span>
                 </td>
                 <td class="text-end">{{ transaction.amount|unlocalize }}</td>
-                <td class="text-center">{{ transaction.payment_method }}</td>
-                <td class="text-center">{{ transaction.origin }}</td>
+                <td class="text-center">{{ transaction.get_payment_method_display }}</td>
+                <td class="text-center">{{ transaction.get_origin_display }}</td>
                 <td class="text-center">{{ transaction.details }}</td>
                 <td class="text-center">
                     {% url 'transactions:tran_delete' transaction.id as delete_cart_url %}

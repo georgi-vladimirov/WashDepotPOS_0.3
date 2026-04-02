@@ -100,8 +100,9 @@ def salary_calculate_total_by_employee_date(
     # Iterates over the input employees queryset so every employee appears
     # in the result, even those with no salaries or transactions (all zeros).
     result = []
-    for emp in employees.values("employee_id"):
+    for emp in employees.values("employee_id", "position__position"):
         emp_id = emp["employee_id"]
+        position = emp.get("position__position", "")
         s = salary_by_employee.get(emp_id, {})
         t = transaction_by_employee.get(emp_id, {})
 
@@ -115,6 +116,7 @@ def salary_calculate_total_by_employee_date(
         result.append(
             {
                 "employee_id": emp_id,
+                "position": position,
                 "salary_amount": salary_amount,
                 "bonus_amount": bonus_amount,
                 "penalty_amount": penalty_amount,
@@ -132,3 +134,7 @@ def salary_calculate_total_by_employee_date(
         )
 
     return result
+
+
+def get_penalties_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet[Salary]:
+    return Salary.objects.filter(date=cal_event, type=SalaryType.PENALTY)

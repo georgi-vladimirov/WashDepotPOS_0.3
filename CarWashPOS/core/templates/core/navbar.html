@@ -14,7 +14,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item">
+        <li class="nav-item me-3">
           <a class="nav-link
                     {% if request.resolver_match.url_name == 'calendar' %}active{% endif %}"
              aria-current="{% if request.resolver_match.url_name == 'calendar' %}
@@ -26,7 +26,7 @@
             <i class="bi bi-calendar3"></i> {% translate "Calendar" %}
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item me-3">
           <a class="nav-link
                     {% if request.resolver_match.url_name == 'sales_overview' %}active{% endif %}"
              aria-current="{% if request.resolver_match.url_name == 'sales_overview' %}
@@ -38,7 +38,7 @@
             <i class="bi bi-car-front"></i> {% translate "Cars" %}
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item me-3">
           <a class="nav-link
                     {% if request.resolver_match.url_name == 'trans_overview' %}active{% endif %}"
              aria-current="{% if request.resolver_match.url_name == 'trans_overview' %}
@@ -50,7 +50,7 @@
             <i class="bi bi-cash-stack"></i> {% translate "Transactions" %}
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item me-3">
           <a class="nav-link
               {% if request.resolver_match.url_name == 'overview' %}active{% endif %}"
        aria-current="{% if request.resolver_match.url_name == 'overview' %}
@@ -62,10 +62,10 @@
             <i class="bi bi-cart3"></i> {% translate "Costs" %}
           </a>
         </li>
-        <li class="nav-item">
-          {% comment %} <a class="nav-link" href="{% url 'Salaries:salaries_overview' %}">
+        <li class="nav-item me-3">
+          <a class="nav-link" href="{% url 'salaries:salaries_overview' %}">
             <i class="bi bi-wallet2"></i> {% translate "Salaries" %}
-          </a> {% endcomment %}
+          </a>
         </li>
         {% if request.user.is_authenticated %}
           <div class="border list-group list-group-horizontal rounded-pill px-2">

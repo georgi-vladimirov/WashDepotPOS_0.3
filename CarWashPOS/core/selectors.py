@@ -129,3 +129,9 @@ def get_employees_for_location(
         .select_related("position")
         .order_by("position__position", "employee_id")
     )
+
+
+def get_employee_by_id(*, employee_id: str) -> Employee:
+    return Employee.objects.get(pk=employee_id)
+
+

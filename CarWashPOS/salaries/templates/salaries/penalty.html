@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {% translate "Penalty" %}
+{% endblock title %}
+{% block content %}
+    <div class="border shadow-sm p-2 m-3 bg-body-tertiary rounded">
+        <h2>{% translate "Penalty" %}</h2>
+        <form action="{% url 'salaries:penalty' %}" method="post">
+            {% csrf_token %}
+            <div class="row mb-4">
+                <div class="col">
+                    <label for="employee" class="form-label">{% translate "Select Employee" %}:</label>
+                    <select class="form-select" id="employee" name="employee_id" required>
+                        <option value="" disabled selected>{% translate "Select an employee" %}</option>
+                        {% for employee in employees %}<option value="{{ employee.id }}">{{ employee.employee_id }}</option>{% endfor %}
+                    </select>
+                    <label for="amount" class="form-label">{% translate "Penalty Amount" %}:</label>
+                    <input type="number"
+                           class="form-control"
+                           id="amount"
+                           name="amount"
+                           step="0.01"
+                           min="0"
+                           placeholder="{% translate "Enter penalty amount" %}"
+                           required>
+                </div>
+            </div>
+            <div class="col mb-4">
+                <button type="submit" class="btn btn-primary">{% translate "Submit" %}</button>
+                <button class="btn btn-secondary" onclick="window.close()">{% translate "Cancel" %}</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

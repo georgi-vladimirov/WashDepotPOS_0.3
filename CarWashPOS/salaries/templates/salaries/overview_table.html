@@ -1,0 +1,32 @@
+{% load l10n %}
+{% load i18n %}
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">{% translate "Employee" %}</th>
+            <th scope="col" class="text-center">{% translate "Position" %}</th>
+            <th scope="col" class="text-center">{% translate "Turnover" %}</th>
+            <th scope="col" class="text-center">{% translate "Salary" %}</th>
+            <th scope="col" class="text-center">{% translate "Bonus" %}</th>
+            <th scope="col" class="text-center">{% translate "Penalty" %}</th>
+            <th scope="col" class="text-center">{% translate "Paid Salary" %}</th>
+            <th scope="col" class="text-center">{% translate "Paid Bonus" %}</th>
+            <th scope="col" class="text-center">{% translate "Balance" %}</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% for agg in salary_aggregates %}
+            <tr>
+                <td class="text-center">{{ agg.employee_id }}</td>
+                <td class="text-center">{% translate agg.position %}</td>
+                <td class="text-end">{{ agg.turnover_amount|unlocalize }}</td>
+                <td class="text-end">{{ agg.salary_amount|unlocalize }}</td>
+                <td class="text-end">{{ agg.bonus_amount|unlocalize }}</td>
+                <td class="text-end">{{ agg.penalty_amount|unlocalize }}</td>
+                <td class="text-end">{{ agg.paid_salary|unlocalize }}</td>
+                <td class="text-end">{{ agg.paid_bonus|unlocalize }}</td>
+                <td class="text-end">{{ agg.balance|unlocalize }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

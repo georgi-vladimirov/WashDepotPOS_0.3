@@ -5,6 +5,7 @@
 {% endblock title %}
 {% block content %}
     <div class="border shadow-sm p-2 m-3 bg-body-tertiary rounded">
+    <h1>{{ title }}</h1>
         <form action="{{ form_action }}"
             method="post">
             {% csrf_token %}

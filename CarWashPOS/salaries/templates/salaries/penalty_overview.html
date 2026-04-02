@@ -1,0 +1,30 @@
+{% load l10n %}
+{% load i18n %}
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">{% translate "Employee" %}</th>
+            <th scope="col" class="text-center">{% translate "Position" %}</th>
+            <th scope="col" class="text-center">{% translate "Amount" %}</th>
+            <th scope="col" class="text-center">
+                <i class="bi bi-trash3-fill"></i>
+            </th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% for penalty in penalties %}
+            <tr>
+                <td class="text-center">{{ penalty.employee.employee_id }}</td>
+                <td class="text-center">{% translate penalty.employee.position.position %}</td>
+                <td class="text-center">{{ penalty.amount|unlocalize }}</td>
+                <td class="text-center">
+                    <a type="button"
+                       class="btn btn-danger btn-sm"
+                       role="button"
+                       href="#">
+                        <i class="bi bi-trash3-fill"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
