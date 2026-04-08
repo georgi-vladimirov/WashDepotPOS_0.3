@@ -547,7 +547,7 @@ msgstr "Абонамент"
 
 #: .\transactions\models.py:32
 msgid "Prepaid"
-msgstr "Предиплатено"
+msgstr "Предплатено"
 
 #: .\transactions\models.py:33
 msgid "Bank"
