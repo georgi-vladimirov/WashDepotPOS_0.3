@@ -3,6 +3,7 @@
 <table class="table table-sm">
     <thead>
         <tr>
+            <th scope="col" class="text-center">{% translate "Date" %}</th>
             <th scope="col" class="text-center">{% translate "Employee" %}</th>
             <th scope="col" class="text-center">{% translate "Position" %}</th>
             <th scope="col" class="text-center">{% translate "Amount" %}</th>
@@ -14,6 +15,7 @@
     <tbody class="table-group-divider">
         {% for penalty in penalties %}
             <tr>
+                <td class="text-center">{{ penalty.date.date }}</td>
                 <td class="text-center">{{ penalty.employee.employee_id }}</td>
                 <td class="text-center">{% translate penalty.employee.position.position %}</td>
                 <td class="text-center">{{ penalty.amount|unlocalize }}</td>

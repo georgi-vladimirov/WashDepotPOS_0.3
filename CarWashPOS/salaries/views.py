@@ -11,6 +11,7 @@ from transactions.forms import TransactionForm
 from .selectors import (
     salary_calculate_total_by_employee_date,
     get_penalties_by_cal_event,
+    get_penalties_by_month
 )
 from .services import create_penalty
 from decimal import Decimal
@@ -31,7 +32,8 @@ class SalariesOverview(LoginRequiredMixin, View):
         salary_aggregates_monthly = salary_calculate_total_by_employee_date(
             employees=employees, cal_event=cal_event, period="monthly"
         )
-        penalties = get_penalties_by_cal_event(cal_event=cal_event)
+        penalties_daily = get_penalties_by_cal_event(cal_event=cal_event)
+        penalties_monthly = get_penalties_by_month(cal_event=cal_event)
 
         return render(
             request,
@@ -39,7 +41,8 @@ class SalariesOverview(LoginRequiredMixin, View):
             {
                 "salary_aggregates_daily": salary_aggregates_daily,
                 "salary_aggregates_monthly": salary_aggregates_monthly,
-                "penalties": penalties,
+                "penalties_daily": penalties_daily,
+                "penalties_monthly": penalties_monthly,
             },
         )
 
