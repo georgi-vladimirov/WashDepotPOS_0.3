@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-02 23:26+0300\n"
+"POT-Creation-Date: 2026-04-08 19:28+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\CarWashPOS\settings.py:145
+#: .\CarWashPOS\settings.py:146
 msgid "English"
 msgstr ""
 
-#: .\CarWashPOS\settings.py:146
+#: .\CarWashPOS\settings.py:147
 msgid "Bulgarian"
 msgstr "Bulgarian"
 
@@ -31,10 +31,12 @@ msgid "Calendar View"
 msgstr ""
 
 #: .\core\templates\core\calendar.html:26
+#: .\reporting\templates\reporting\overview.html:27
 msgid "Month"
 msgstr ""
 
 #: .\core\templates\core\calendar.html:38
+#: .\reporting\templates\reporting\overview.html:44
 msgid "Year"
 msgstr ""
 
@@ -118,6 +120,7 @@ msgid "Calendar"
 msgstr ""
 
 #: .\core\templates\core\navbar.html:38
+#: .\reporting\templates\reporting\montly_report_table.html:27
 msgid "Cars"
 msgstr ""
 
@@ -125,23 +128,31 @@ msgstr ""
 msgid "Transactions"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:62 .\transactions\filters.py:47
+#: .\core\templates\core\navbar.html:62
+#: .\reporting\templates\reporting\montly_report_table.html:84
+#: .\transactions\filters.py:47
 msgid "Costs"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:67 .\transactions\filters.py:56
+#: .\core\templates\core\navbar.html:74
+#: .\reporting\templates\reporting\montly_report_table.html:85
+#: .\transactions\filters.py:56
 msgid "Salaries"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:73
+#: .\core\templates\core\navbar.html:86
+msgid "Report"
+msgstr ""
+
+#: .\core\templates\core\navbar.html:92
 msgid "User"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:77
+#: .\core\templates\core\navbar.html:96
 msgid "Admin Panel"
 msgstr ""
 
-#: .\core\templates\core\navbar.html:81
+#: .\core\templates\core\navbar.html:100
 msgid "Logout"
 msgstr ""
 
@@ -150,7 +161,7 @@ msgid "Name"
 msgstr ""
 
 #: .\expences\forms.py:26 .\expences\templates\expences\overview_table.html:6
-#: .\salaries\templates\salaries\penalty_overview.html:8
+#: .\salaries\templates\salaries\penalty_overview.html:9
 #: .\sales\templates\sales\sales_overview.html:104
 #: .\transactions\templates\transactions\overview_table.html:7
 msgid "Amount"
@@ -161,19 +172,20 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: .\expences\services.py:18
+#: .\expences\services.py:21
 msgid "Expence saved successfully"
 msgstr ""
 
-#: .\expences\services.py:24
+#: .\expences\services.py:30
 msgid "Expence deleted successfully"
 msgstr ""
 
-#: .\expences\services.py:27
+#: .\expences\services.py:33
 msgid "Expence not deleted"
 msgstr ""
 
 #: .\expences\templates\expences\costs_entry.html:4
+#: .\reporting\templates\reporting\montly_report_table.html:44
 #: .\sales\templates\sales\sales_overview.html:22
 #: .\sales\templates\sales\sales_overview.html:67
 #: .\sales\templates\sales\sales_overview.html:73
@@ -206,9 +218,54 @@ msgstr ""
 msgid "Are you sure you want to delete?"
 msgstr ""
 
+#: .\reporting\templates\reporting\montly_report_table.html:23
+#: .\salaries\templates\salaries\penalty_overview.html:6
+msgid "Date"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:32
+#: .\sales\forms.py:66
+msgid "Vehicle Type"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:38
+msgid "Service Revenue"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:49
+msgid "Expenses"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:54
+msgid "Cash Desk"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:63
+#: .\reporting\templates\reporting\montly_report_table.html:74
+#: .\reporting\templates\reporting\montly_report_table.html:81
+#: .\sales\templates\sales\add_cart.html:61
+#: .\sales\templates\sales\sales_overview.html:26
+#: .\sales\templates\sales\sales_overview.html:127
+msgid "Total"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:64
+msgid "Subs"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:86
 #: .\salaries\models.py:11 .\salaries\templates\salaries\overview_table.html:10
 #: .\transactions\filters.py:65 .\transactions\models.py:22
 msgid "Bonus"
+msgstr ""
+
+#: .\reporting\templates\reporting\montly_report_table.html:232
+msgid "No data available for this period."
+msgstr ""
+
+#: .\reporting\templates\reporting\overview.html:4
+#: .\reporting\templates\reporting\overview.html:18
+msgid "Monthly Report"
 msgstr ""
 
 #: .\salaries\models.py:12 .\salaries\templates\salaries\overview_table.html:9
@@ -223,12 +280,12 @@ msgid "Penalty"
 msgstr ""
 
 #: .\salaries\templates\salaries\overview_table.html:6
-#: .\salaries\templates\salaries\penalty_overview.html:6
+#: .\salaries\templates\salaries\penalty_overview.html:7
 msgid "Employee"
 msgstr ""
 
 #: .\salaries\templates\salaries\overview_table.html:7
-#: .\salaries\templates\salaries\penalty_overview.html:7
+#: .\salaries\templates\salaries\penalty_overview.html:8
 msgid "Position"
 msgstr ""
 
@@ -281,12 +338,16 @@ msgstr ""
 msgid "Add Penalty"
 msgstr ""
 
-#: .\sales\forms.py:65 .\sales\templates\sales\sales_overview.html:24
-msgid "Brand"
+#: .\salaries\templates\salaries\salaries_overview.html:27
+msgid "Daily Salaries"
 msgstr ""
 
-#: .\sales\forms.py:66
-msgid "Vehicle Type"
+#: .\salaries\templates\salaries\salaries_overview.html:31
+msgid "Monthly Salaries"
+msgstr ""
+
+#: .\sales\forms.py:65 .\sales\templates\sales\sales_overview.html:24
+msgid "Brand"
 msgstr ""
 
 #: .\sales\forms.py:67
@@ -341,12 +402,6 @@ msgstr ""
 
 #: .\sales\templates\sales\add_cart.html:57
 msgid "No services selected"
-msgstr ""
-
-#: .\sales\templates\sales\add_cart.html:61
-#: .\sales\templates\sales\sales_overview.html:26
-#: .\sales\templates\sales\sales_overview.html:127
-msgid "Total"
 msgstr ""
 
 #: .\sales\templates\sales\add_cart.html:70

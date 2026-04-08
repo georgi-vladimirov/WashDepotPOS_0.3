@@ -8,6 +8,19 @@
 {% endblock navbar %}
 
 {% block content %}
+
+{# ── Loading overlay ── #}
+<div id="report-loading-overlay"
+     class="position-fixed top-0 start-0 w-100 h-100 align-items-center justify-content-center d-none"
+     style="background: rgba(255, 255, 255, 0.75); z-index: 9999;">
+  <div class="text-center">
+    <div class="spinner-border text-dark mb-3" style="width: 3rem; height: 3rem;" role="status">
+      <span class="visually-hidden">{% translate "Loading..." %}</span>
+    </div>
+    <div class="fw-semibold text-dark">{% translate "Loading report, please wait…" %}</div>
+  </div>
+</div>
+
 <div class="container-fluid mt-3">
 
   {# ── Header row ── #}
@@ -20,7 +33,7 @@
     </div>
 
     <div class="col-auto ms-auto">
-      <form method="get" class="row g-2 align-items-center">
+      <form id="report-filter-form" method="get" class="row g-2 align-items-center">
 
         <div class="col-auto">
           <label class="col-form-label col-form-label-sm fw-semibold">
@@ -28,9 +41,7 @@
           </label>
         </div>
         <div class="col-auto">
-          <select name="month"
-                  class="form-select form-select-sm"
-                  onchange="this.form.submit()">
+          <select name="month" id="select-month" class="form-select form-select-sm">
             {% for num, name in months %}
             <option value="{{ num }}" {% if num == selected_month %}selected{% endif %}>
               {{ name }}
@@ -45,9 +56,7 @@
           </label>
         </div>
         <div class="col-auto">
-          <select name="year"
-                  class="form-select form-select-sm"
-                  onchange="this.form.submit()">
+          <select name="year" id="select-year" class="form-select form-select-sm">
             {% for year in years %}
             <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>
               {{ year }}
@@ -64,4 +73,21 @@
   {% include "reporting/montly_report_table.html" %}
 
 </div>
+
+<script>
+  (function () {
+    const form    = document.getElementById('report-filter-form');
+    const overlay = document.getElementById('report-loading-overlay');
+
+    function showOverlayAndSubmit() {
+      overlay.classList.remove('d-none');
+      overlay.classList.add('d-flex');
+      form.submit();
+    }
+
+    document.getElementById('select-month').addEventListener('change', showOverlayAndSubmit);
+    document.getElementById('select-year').addEventListener('change', showOverlayAndSubmit);
+  })();
+</script>
+
 {% endblock content %}
