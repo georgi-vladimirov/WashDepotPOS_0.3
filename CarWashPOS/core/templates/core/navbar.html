@@ -63,8 +63,27 @@
           </a>
         </li>
         <li class="nav-item me-3">
-          <a class="nav-link" href="{% url 'salaries:salaries_overview' %}">
+          <a class="nav-link
+                    {% if request.resolver_match.url_name == 'salaries_overview' %}active{% endif %}"
+             aria-current="{% if request.resolver_match.url_name == 'salaries_overview' %}
+                             page
+                           {% else %}
+                             false
+                           {% endif %}"
+             href="{% url 'salaries:salaries_overview' %}">
             <i class="bi bi-wallet2"></i> {% translate "Salaries" %}
+          </a>
+        </li>
+        <li class="nav-item me-3">
+          <a class="nav-link
+                    {% if request.resolver_match.url_name == 'monthly_report' %}active{% endif %}"
+             aria-current="{% if request.resolver_match.url_name == 'monthly_report' %}
+                             page
+                           {% else %}
+                             false
+                           {% endif %}"
+             href="{% url 'reporting:monthly_report' %}">
+            <i class="bi bi-wallet2"></i> {% translate "Report" %}
           </a>
         </li>
         {% if request.user.is_authenticated %}
@@ -87,24 +106,24 @@
   </div>
   <div class="container-fluid">
     <span class="navbar-text">{{ request.session.location }} | {{ request.session.date|parse_date|date:"d F Y" }}</span>
+    <form id="lang-switch-form"
+          action="{% url 'set_language' %}"
+          method="post"
+          class="mx-5">
+      {% csrf_token %}
+      {% get_current_language as LANGUAGE_CODE %}
+      <input type="hidden" name="language" id="lang-switch-value" value="">
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <div class="form-check form-switch d-flex align-items-center gap-2 mb-0">
+        <span class="form-check-label">EN</span>
+        <input class="form-check-input mx-2"
+               type="checkbox"
+               role="switch"
+               id="langSwitch"
+               {% if LANGUAGE_CODE == 'bg' %}checked{% endif %}
+               onchange="document.getElementById('lang-switch-value').value = this.checked ? 'bg' : 'en'; document.getElementById('lang-switch-form').submit();">
+        <span class="form-check-label">BG</span>
+      </div>
+    </form>
   </div>
-  <form id="lang-switch-form"
-        action="{% url 'set_language' %}"
-        method="post"
-        class="mx-5">
-    {% csrf_token %}
-    {% get_current_language as LANGUAGE_CODE %}
-    <input type="hidden" name="language" id="lang-switch-value" value="">
-    <input type="hidden" name="next" value="{{ request.get_full_path }}">
-    <div class="form-check form-switch d-flex align-items-center gap-2 mb-0">
-      <span class="form-check-label">EN</span>
-      <input class="form-check-input mx-2"
-             type="checkbox"
-             role="switch"
-             id="langSwitch"
-             {% if LANGUAGE_CODE == 'bg' %}checked{% endif %}
-             onchange="document.getElementById('lang-switch-value').value = this.checked ? 'bg' : 'en'; document.getElementById('lang-switch-form').submit();">
-      <span class="form-check-label">BG</span>
-    </div>
-  </form>
 </nav>

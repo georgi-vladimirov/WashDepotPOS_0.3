@@ -1,8 +1,9 @@
-from .models import Sale, Cart, PaymentStatus
+from .models import Sale, Cart, PaymentStatus, CartItem
 from core.models import CalendarEvent, Subscriber
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from decimal import Decimal
 from transactions.selectors import get_trans_amount_by_sale
+from core.selectors import get_cal_events_for_period
 
 
 def get_sales_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet[Sale]:
@@ -10,6 +11,29 @@ def get_sales_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet[Sale]:
     return Sale.objects.filter(date=cal_event).select_related(
         "vehicle_type", "vehicle_brand", "subscriber", "cart", "worker", "manager"
     )
+
+
+def get_sales_for_period(*, cal_event: CalendarEvent) -> QuerySet[Sale]:
+    """Return a QuerySet of Sale objects for the given CalendarEvent."""
+    cal_events = get_cal_events_for_period(cal_event=cal_event)
+    period_q = Q(date__in=cal_events)
+    return Sale.objects.filter(period_q).select_related(
+        "vehicle_type", "vehicle_brand", "subscriber", "cart"
+    )
+
+
+def get_carts_for_period(*, cal_event: CalendarEvent) -> QuerySet[Cart]:
+    """Return a QuerySet of Cart objects for the given CalendarEvent."""
+    cal_events = get_cal_events_for_period(cal_event=cal_event)
+    period_q = Q(sale__date__in=cal_events)
+    return Cart.objects.filter(period_q).select_related("items")
+
+
+def get_cartItems_for_period(*, cal_event: CalendarEvent) -> QuerySet[CartItem]:
+    """Return a QuerySet of CartItem objects for the given CalendarEvent."""
+    carts = get_carts_for_period(cal_event=cal_event)
+    filter = Q(cart__in=carts)
+    return CartItem.objects.filter(filter).select_related("cart", "service")
 
 
 def get_sale_by_id(*, sale_id: int) -> Sale | None:

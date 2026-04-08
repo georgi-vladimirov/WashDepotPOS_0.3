@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Monthly Report" %}{% endblock title %}
+
+{% block navbar %}
+  {% include "core/navbar.html" %}
+{% endblock navbar %}
+
+{% block content %}
+<div class="container-fluid mt-3">
+
+  {# ── Header row ── #}
+  <div class="row align-items-center mb-3">
+    <div class="col-auto">
+      <h5 class="fw-semibold mb-0">
+        <i class="bi bi-bar-chart-line-fill me-2"></i>
+        {% translate "Monthly Report" %}
+      </h5>
+    </div>
+
+    <div class="col-auto ms-auto">
+      <form method="get" class="row g-2 align-items-center">
+
+        <div class="col-auto">
+          <label class="col-form-label col-form-label-sm fw-semibold">
+            {% translate "Month" %}
+          </label>
+        </div>
+        <div class="col-auto">
+          <select name="month"
+                  class="form-select form-select-sm"
+                  onchange="this.form.submit()">
+            {% for num, name in months %}
+            <option value="{{ num }}" {% if num == selected_month %}selected{% endif %}>
+              {{ name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-auto">
+          <label class="col-form-label col-form-label-sm fw-semibold">
+            {% translate "Year" %}
+          </label>
+        </div>
+        <div class="col-auto">
+          <select name="year"
+                  class="form-select form-select-sm"
+                  onchange="this.form.submit()">
+            {% for year in years %}
+            <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>
+              {{ year }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  {# ── Table ── #}
+  {% include "reporting/montly_report_table.html" %}
+
+</div>
+{% endblock content %}

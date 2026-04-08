@@ -1,0 +1,240 @@
+{% load l10n %}
+{% load i18n %}
+{% load reporting_tags %}
+
+<style>
+  .report-table th,
+  .report-table td {
+    padding: 0.1rem 0.35rem !important;
+    font-size: 0.82rem;
+  }
+
+</style>
+
+<div class="table-responsive rounded border shadow-sm">
+  <table class="report-table table table-sm table-bordered table-hover table-striped align-middle mb-0">
+
+    <thead class="table-dark text-center">
+
+      {# ── Row 1 : Group labels ── #}
+      <tr>
+
+        <th rowspan="2" scope="col" class="align-middle border-end border-secondary" style="min-width: 75px;">
+          <i class="bi bi-calendar3 me-1"></i>{% translate "Date" %}
+        </th>
+
+        <th colspan="2" scope="colgroup">
+          <i class="bi bi-car-front-fill me-1"></i>{% translate "Cars" %}
+        </th>
+
+        {% if columns.vehicle_types %}
+        <th colspan="{{ columns.vehicle_types|length }}" scope="colgroup" class="border-start border-secondary">
+          <i class="bi bi-tags-fill me-1"></i>{% translate "Vehicle Type" %}
+        </th>
+        {% endif %}
+
+        {% if columns.service_types %}
+        <th colspan="{{ columns.service_types|length|add:1 }}" scope="colgroup" class="border-start border-secondary">
+          <i class="bi bi-wrench-adjustable me-1"></i>{% translate "Service Revenue" %}
+        </th>
+        {% endif %}
+
+        {% if columns.payment_methods %}
+        <th colspan="{{ columns.payment_methods|length|add:1 }}" scope="colgroup" class="border-start border-secondary">
+          <i class="bi bi-credit-card-fill me-1"></i>{% translate "Payment" %}
+        </th>
+        {% endif %}
+
+        <th colspan="3" scope="colgroup" class="border-start border-secondary">
+          <i class="bi bi-graph-down-arrow me-1"></i>{% translate "Expenses" %}
+        </th>
+
+        {% if columns.cash_balance_columns %}
+        <th colspan="{{ columns.cash_balance_columns|length }}" scope="colgroup" class="border-start border-secondary">
+          <i class="bi bi-cash-stack me-1"></i>{% translate "Cash Desk" %}
+        </th>
+        {% endif %}
+
+      </tr>
+
+      {# ── Row 2 : Individual column names ── #}
+      <tr class="small fw-normal border-top border-secondary">
+
+        <th scope="col">{% translate "Total" %}</th>
+        <th scope="col" class="border-end border-secondary">{% translate "Subs" %}</th>
+
+        {% for vt in columns.vehicle_types %}
+        <th scope="col" class="{% if forloop.last %}border-end border-secondary{% endif %}">{{ vt }}</th>
+        {% endfor %}
+
+        {% for st in columns.service_types %}
+        <th scope="col">{{ st }}</th>
+        {% endfor %}
+        {% if columns.service_types %}
+        <th scope="col" class="table-success border-end border-secondary">{% translate "Total" %}</th>
+        {% endif %}
+
+        {% for pm in columns.payment_methods %}
+        <th scope="col">{{ pm }}</th>
+        {% endfor %}
+        {% if columns.payment_methods %}
+        <th scope="col" class="table-warning border-end border-secondary">{% translate "Total" %}</th>
+        {% endif %}
+
+        <th scope="col">{% translate "Costs" %}</th>
+        <th scope="col">{% translate "Salaries" %}</th>
+        <th scope="col">{% translate "Bonus" %}</th>
+
+        {% for col in columns.cash_balance_columns %}
+        <th scope="col" class="{% if forloop.first %}border-start border-secondary{% endif %} {{ col.bg_class }}">
+          {{ col.label }}
+        </th>
+        {% endfor %}
+
+      </tr>
+
+    </thead>
+
+    <tbody class="table-group-divider">
+
+      {% for row in rows %}
+      <tr class="{% if row.total_cars == 0 %}text-muted opacity-75{% endif %}">
+
+        {# ── Date ── #}
+        <td class="text-center fw-semibold text-nowrap border-end border-secondary-subtle">
+          {{ row.date|date:"d M" }}
+        </td>
+
+        {# ── Total cars ── #}
+        <td class="text-center">
+          {% if row.total_cars %}
+            <span class="badge rounded-pill text-bg-primary">{{ row.total_cars }}</span>
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+
+        {# ── Subscribers ── #}
+        <td class="text-center border-end border-secondary-subtle">
+          {% if row.total_subscribers %}
+            <span class="badge rounded-pill text-bg-secondary">{{ row.total_subscribers }}</span>
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+
+        {# ── Vehicle types — dynamic ── #}
+        {% for vt in columns.vehicle_types %}
+        <td class="text-center {% if forloop.last %}border-end border-secondary-subtle{% endif %}">
+          {% with val=row.vehicle_types|get_item:vt %}
+            {% if val %}
+              {{ val }}
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          {% endwith %}
+        </td>
+        {% endfor %}
+
+        {# ── Service types — dynamic ── #}
+        {% for st in columns.service_types %}
+        <td class="text-end">
+          {% with val=row.service_types|get_item:st %}
+            {% if val %}
+              <span class="text-success fw-semibold">{{ val|unlocalize }}</span>
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          {% endwith %}
+        </td>
+        {% endfor %}
+        {% if columns.service_types %}
+        <td class="text-end fw-bold table-success border-end border-secondary-subtle">
+          {% if row.total_services %}
+            <span class="text-success">{{ row.total_services|unlocalize }}</span>
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+        {% endif %}
+
+        {# ── Payment methods — dynamic ── #}
+        {% for pm in columns.payment_methods %}
+        <td class="text-end">
+          {% with val=row.payment_methods|get_item:pm %}
+            {% if val %}
+              {{ val|unlocalize }}
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          {% endwith %}
+        </td>
+        {% endfor %}
+        {% if columns.payment_methods %}
+        <td class="text-end fw-bold table-warning border-end border-secondary-subtle">
+          {% if row.total_payments %}
+            {{ row.total_payments|unlocalize }}
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+        {% endif %}
+
+        {# ── Costs ── #}
+        <td class="text-end">
+          {% if row.costs %}
+            <span class="text-danger">{{ row.costs|unlocalize }}</span>
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+
+        {# ── Salaries ── #}
+        <td class="text-end">
+          {% if row.salaries %}
+            <span class="text-danger">{{ row.salaries|unlocalize }}</span>
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+
+        {# ── Bonus ── #}
+        <td class="text-end">
+          {% if row.bonus %}
+            <span class="text-success">{{ row.bonus|unlocalize }}</span>
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+
+        {# ── Cash Desk — dynamic ── #}
+        {% for col in columns.cash_balance_columns %}
+        {% with val=row.cash_balance|get_item:col.key %}
+        <td class="text-end {% if forloop.first %}border-start border-secondary-subtle{% endif %} {% if col.highlight %}fw-semibold{% endif %} {{ col.bg_class }}">
+          {% if val.amount %}
+            {% if col.highlight %}
+              <span class="text-danger">{{ val.amount|unlocalize }}</span>
+            {% else %}
+              {{ val.amount|unlocalize }}
+            {% endif %}
+          {% else %}
+            <span class="text-muted">—</span>
+          {% endif %}
+        </td>
+        {% endwith %}
+        {% endfor %}
+
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="100" class="text-center text-muted py-5">
+          <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+          {% translate "No data available for this period." %}
+        </td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+</div>

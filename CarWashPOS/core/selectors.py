@@ -111,6 +111,7 @@ def get_services_by_ids(*, service_ids: list[str]) -> QuerySet[Service]:
 
 
 def get_cal_events_for_period(*, cal_event: CalendarEvent) -> QuerySet[CalendarEvent]:
+    """Return all CalendarEvents for the same month and location as the given event, ordered by date."""
     first_day: date = cal_event.date.replace(day=1)
     last_day: date = cal_event.date.replace(
         day=calendar.monthrange(cal_event.date.year, cal_event.date.month)[1]
@@ -123,6 +124,7 @@ def get_cal_events_for_period(*, cal_event: CalendarEvent) -> QuerySet[CalendarE
 def get_employees_for_location(
     *, location: Location, is_active: bool = True
 ) -> QuerySet[Employee]:
+    """Return all Employees for the given location, ordered by position and employee ID."""
     return (
         Employee.objects.filter(location=location, is_active=is_active)
         .distinct()
@@ -132,6 +134,5 @@ def get_employees_for_location(
 
 
 def get_employee_by_id(*, employee_id: str) -> Employee:
+    """Return an Employee by primary key. Raises Employee.DoesNotExist if not found."""
     return Employee.objects.get(pk=employee_id)
-
-

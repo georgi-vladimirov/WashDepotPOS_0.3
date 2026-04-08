@@ -16,10 +16,9 @@ urlpatterns += i18n_patterns(
     path("transactions/", include("transactions.urls")),
     path("expences/", include("expences.urls")),
     path("salaries/", include("salaries.urls")),
+    path("reporting/", include("reporting.urls")),
 )
 
 
-if 'rosetta' in settings.INSTALLED_APPS:
-    urlpatterns += [
-        re_path(r'^rosetta/', include('rosetta.urls'))
-    ]
+if "rosetta" in settings.INSTALLED_APPS:
+    urlpatterns += [re_path(r"^rosetta/", include("rosetta.urls"))]

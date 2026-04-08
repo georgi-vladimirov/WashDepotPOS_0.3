@@ -144,3 +144,4 @@ def get_penalties_by_month(*, cal_event: CalendarEvent) -> QuerySet[Salary]:
     cal_events = get_cal_events_for_period(cal_event=cal_event)
     period_q = Q(date__in=cal_events)
     return Salary.objects.filter(period_q, type=SalaryType.PENALTY)
+
