@@ -1,8 +1,10 @@
 from pathlib import Path
-import django
 import os
+
+import dj_database_url  # type: ignore[import-untyped]
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
+
 from common.logger import JSONFormatter
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -17,9 +19,9 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False")  # == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 
 # Application definition
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -80,14 +83,15 @@ WSGI_APPLICATION = "CarWashPOS.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
-    }
+    "default": dj_database_url.config(
+        default=(
+            f"postgresql://{os.environ.get('DB_USER')}:{os.environ.get('DB_PASSWORD')}"
+            f"@{os.environ.get('DB_HOST', '127.0.0.1')}:{os.environ.get('DB_PORT', '5432')}"
+            f"/{os.environ.get('DB_NAME')}"
+        ),
+        conn_max_age=600,
+        ssl_require=not DEBUG,
+    )
 }
 
 
@@ -131,7 +135,15 @@ USE_THOUSAND_SEPARATOR = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+_static_dir = BASE_DIR / "static"
+STATICFILES_DIRS = [_static_dir] if _static_dir.exists() else []
 
 
 # Default primary key field type
@@ -150,6 +162,10 @@ LANGUAGES = [
 
 BETTER_STACK_TOKEN = os.environ.get("BETTER_STACK_TOKEN", None)
 
+_log_handlers_default = ["console", "betterstack"]
+if DEBUG:
+    _log_handlers_default = ["console", "file", "betterstack"]
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -165,45 +181,47 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
-        "file": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": BASE_DIR / "logs/debug.jsonl",
-            "formatter": "json",
-            "maxBytes": 10_000_000,
-            "backupCount": 5,
-            "encoding": "utf-8",
-        },
         "betterstack": {
-            "()": "common.logger.BetterStackHandler",  # пътят до класа
+            "()": "common.logger.BetterStackHandler",
             "token": BETTER_STACK_TOKEN,
             "level": "INFO",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers_default,
             "level": "WARNING",
             "propagate": False,
         },
         "accounts": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers_default,
             "level": "INFO",
             "propagate": False,
         },
         "core": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers_default,
             "level": "INFO",
             "propagate": False,
         },
         "sales": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers_default,
             "level": "INFO",
             "propagate": False,
         },
         "transactions": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers_default,
             "level": "INFO",
             "propagate": False,
         },
     },
 }
+
+if DEBUG:
+    LOGGING["handlers"]["file"] = {
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": BASE_DIR / "logs/debug.jsonl",
+        "formatter": "json",
+        "maxBytes": 10_000_000,
+        "backupCount": 5,
+        "encoding": "utf-8",
+    }

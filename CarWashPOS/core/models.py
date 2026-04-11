@@ -115,7 +115,7 @@ class EmployeePosition(BaseModel):
 class Employee(BaseModel):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    employee_id = models.CharField(max_length=15, unique=True)
+    employee_id = models.CharField(max_length=50, unique=True)
     position = models.ForeignKey(
         EmployeePosition, on_delete=models.CASCADE, related_name="employees"
     )
