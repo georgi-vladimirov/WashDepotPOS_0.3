@@ -1,6 +1,6 @@
 from pathlib import Path
-import django
 import os
+import dj_database_url  # type: ignore[import-untyped]
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 from common.logger import JSONFormatter
@@ -10,16 +10,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False")  # == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 
 # Application definition
@@ -45,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -76,23 +74,20 @@ WSGI_APPLICATION = "CarWashPOS.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
-        "PORT": os.environ.get("DB_PORT", "5432"),
-    }
+    "default": dj_database_url.config(
+        default=(
+            f"postgresql://{os.environ.get('DB_USER')}:{os.environ.get('DB_PASSWORD')}"
+            f"@{os.environ.get('DB_HOST', '127.0.0.1')}:{os.environ.get('DB_PORT', '5432')}"
+            f"/{os.environ.get('DB_NAME')}"
+        ),
+        conn_max_age=600,
+        ssl_require=not DEBUG,
+    )
 }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -110,8 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -125,21 +118,25 @@ USE_TZ = True
 USE_THOUSAND_SEPARATOR = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
+# Static files
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+_static_dir = BASE_DIR / "static"
+STATICFILES_DIRS = [_static_dir] if _static_dir.exists() else []
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_URL = "/login/"  # Where to redirect if not logged in
-LOGIN_REDIRECT_URL = "/"  # Where to go after login
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/"
 
 
 LANGUAGES = [
@@ -148,6 +145,10 @@ LANGUAGES = [
 ]
 
 BETTER_STACK_TOKEN = os.environ.get("BETTER_STACK_TOKEN", None)
+
+# Logging — file handler only when running locally (DEBUG=True)
+# Render has an ephemeral filesystem so file logging is skipped in production.
+_log_handlers = ["console", "betterstack"]
 
 LOGGING = {
     "version": 1,
@@ -164,45 +165,49 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
-        "file": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": BASE_DIR / "logs/debug.jsonl",
-            "formatter": "json",
-            "maxBytes": 10_000_000,
-            "backupCount": 5,
-            "encoding": "utf-8",
-        },
         "betterstack": {
-            "()": "common.logger.BetterStackHandler",  # пътят до класа
+            "()": "common.logger.BetterStackHandler",
             "token": BETTER_STACK_TOKEN,
             "level": "INFO",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers,
             "level": "WARNING",
             "propagate": False,
         },
         "accounts": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers,
             "level": "INFO",
             "propagate": False,
         },
         "core": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers,
             "level": "INFO",
             "propagate": False,
         },
         "sales": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers,
             "level": "INFO",
             "propagate": False,
         },
         "transactions": {
-            "handlers": ["console", "file", "betterstack"],
+            "handlers": _log_handlers,
             "level": "INFO",
             "propagate": False,
         },
     },
 }
+
+if DEBUG:
+    LOGGING["handlers"]["file"] = {  # type: ignore[index]
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": BASE_DIR / "logs/debug.jsonl",
+        "formatter": "json",
+        "maxBytes": 10_000_000,
+        "backupCount": 5,
+        "encoding": "utf-8",
+    }
+    for logger in LOGGING["loggers"].values():  # type: ignore[union-attr]
+        logger["handlers"] = ["console", "file", "betterstack"]
