@@ -27,6 +27,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "common",
     "core",
+    "cal_app",
     "accounts",
     "sales",
     "transactions",

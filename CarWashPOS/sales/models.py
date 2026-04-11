@@ -9,8 +9,8 @@ from core.models import (
     Subscriber,
     VehicleType,
     VehicleBrand,
-    CalendarEvent,
 )
+from cal_app.models import CalendarEvent
 
 
 class PaymentStatus(models.TextChoices):
@@ -20,13 +20,21 @@ class PaymentStatus(models.TextChoices):
 
 
 class Sale(BaseModel):
-    payment_status = models.CharField(max_length=10, choices=PaymentStatus.choices, default=PaymentStatus.UNPAID)
-    date = models.ForeignKey(CalendarEvent, on_delete=models.CASCADE, related_name="sales")
+    payment_status = models.CharField(
+        max_length=10, choices=PaymentStatus.choices, default=PaymentStatus.UNPAID
+    )
+    date = models.ForeignKey(
+        CalendarEvent, on_delete=models.CASCADE, related_name="sales"
+    )
     vehicle_brand = models.ForeignKey(VehicleBrand, on_delete=models.PROTECT)
     vehicle_type = models.ForeignKey(VehicleType, on_delete=models.PROTECT)
     reg_number = models.CharField(max_length=15)
-    manager = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="manager_sales")
-    worker = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="worker_sales")
+    manager = models.ForeignKey(
+        Employee, on_delete=models.PROTECT, related_name="manager_sales"
+    )
+    worker = models.ForeignKey(
+        Employee, on_delete=models.PROTECT, related_name="worker_sales"
+    )
     subscriber = models.ForeignKey(
         Subscriber,
         on_delete=models.SET_NULL,
@@ -35,7 +43,13 @@ class Sale(BaseModel):
         related_name="sales",
     )
     ################
-    display_fields: list[str] = ["vehicle_brand", "vehicle_type", "reg_number", "payment_status"]
+    display_fields: list[str] = [
+        "vehicle_brand",
+        "vehicle_type",
+        "reg_number",
+        "payment_status",
+    ]
+
     ################
     def __str__(self) -> str:
         return f"{self.date.date} - {self.date.location.name} - {self.reg_number} - {self.vehicle_brand.brand}"
@@ -44,14 +58,19 @@ class Sale(BaseModel):
     def paid_amount(self) -> Decimal:
         """Calculate total amount paid from all transactions for this sale."""
         from transactions.selectors import get_trans_amount_by_sale
-        total_paid = get_trans_amount_by_sale(sale = self)
+
+        total_paid = get_trans_amount_by_sale(sale=self)
         return total_paid
 
 
 class Cart(BaseModel):
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0))
+    total_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, default=Decimal(0)
+    )
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0))
-    final_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0))
+    final_amount = models.DecimalField(
+        max_digits=10, decimal_places=2, default=Decimal(0)
+    )
     sale = models.OneToOneField(Sale, on_delete=models.CASCADE, related_name="cart")
     services = models.ManyToManyField(
         "core.Service",
@@ -67,7 +86,6 @@ class Cart(BaseModel):
         return f"{self.sale.id} - {self.total_amount} - {self.discount} - {self.final_amount}"
 
 
-
 class CartItem(BaseModel):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
@@ -76,9 +94,12 @@ class CartItem(BaseModel):
         on_delete=models.PROTECT,  # prevent deleting a price that was charged
         related_name="cart_items",
     )
-    amount = models.DecimalField(max_digits=10, decimal_places=2)  # snapshot at time of sale
+    amount = models.DecimalField(
+        max_digits=10, decimal_places=2
+    )  # snapshot at time of sale
     ################
     display_fields: list[str] = ["service", "service_price"]
+
     ################
     class Meta(BaseModel.Meta):
         unique_together = ("cart", "service")

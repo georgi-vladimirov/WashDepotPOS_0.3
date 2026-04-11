@@ -4,14 +4,15 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from core.selectors import get_cal_event_by_id, get_employees_for_location
+from cal_app.selectors import get_cal_event_by_id
+from core.selectors import get_employees_for_location
 from transactions.models import Origin
 from transactions.services import transaction_salary_save
 from transactions.forms import TransactionForm
 from .selectors import (
     salary_calculate_total_by_employee_date,
     get_penalties_by_cal_event,
-    get_penalties_by_month
+    get_penalties_by_month,
 )
 from .services import create_penalty
 from decimal import Decimal

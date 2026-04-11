@@ -3,8 +3,8 @@ from django.db.models import QuerySet, Q, F, Sum, DecimalField
 from django.db.models.functions import Coalesce
 from .models import Salary, SalaryType
 from transactions.models import Transaction, Origin
-from core.models import CalendarEvent
-from core.selectors import get_cal_events_for_period
+from cal_app.models import CalendarEvent
+from cal_app.selectors import get_cal_events_for_period
 from typing import Any, Literal
 
 
@@ -144,4 +144,3 @@ def get_penalties_by_month(*, cal_event: CalendarEvent) -> QuerySet[Salary]:
     cal_events = get_cal_events_for_period(cal_event=cal_event)
     period_q = Q(date__in=cal_events)
     return Salary.objects.filter(period_q, type=SalaryType.PENALTY)
-

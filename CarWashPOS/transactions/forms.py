@@ -2,7 +2,8 @@ from decimal import Decimal
 from django import forms
 from django.forms.widgets import Widget
 from django.utils.translation import gettext_lazy as _
-from core.models import Employee, CalendarEvent, Location
+from core.models import Employee, Location
+from cal_app.models import CalendarEvent
 from sales.models import Sale
 from .models import Transaction, PaymentMethod, Origin, TranType
 

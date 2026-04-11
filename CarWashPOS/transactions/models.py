@@ -3,7 +3,8 @@ from decimal import Decimal
 from django.utils.translation import gettext_lazy as _
 
 from common.models import BaseModel
-from core.models import CalendarEvent, Employee
+from cal_app.models import CalendarEvent
+from core.models import Employee
 from sales.models import Sale
 
 
@@ -24,6 +25,7 @@ class Origin(models.TextChoices):
     WITHDRAW = "WITHDRAW", _("Withdrawal")
     BALANCE = "BALANCE", _("Balance")
 
+
 class PaymentMethod(models.TextChoices):
     CASH = "CASH", _("Cash")
     POS = "POS", _("POS")
@@ -32,19 +34,35 @@ class PaymentMethod(models.TextChoices):
     PREPAID = "PREPAID", _("Prepaid")
     BANK = "BANK", _("Bank")
 
+
 class Transaction(BaseModel):
-    date = models.ForeignKey(CalendarEvent, on_delete=models.CASCADE, related_name="transactions")
+    date = models.ForeignKey(
+        CalendarEvent, on_delete=models.CASCADE, related_name="transactions"
+    )
     type = models.CharField(max_length=15, choices=TranType.choices)
     origin = models.CharField(max_length=15, choices=Origin.choices)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     payment_method = models.CharField(max_length=15, choices=PaymentMethod.choices)
     ################################
-    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name="transactions", null=True, blank=True)
-    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name="transactions", null=True, blank=True)
+    sale = models.ForeignKey(
+        Sale,
+        on_delete=models.CASCADE,
+        related_name="transactions",
+        null=True,
+        blank=True,
+    )
+    employee = models.ForeignKey(
+        Employee,
+        on_delete=models.PROTECT,
+        related_name="transactions",
+        null=True,
+        blank=True,
+    )
     ################################
     details = models.TextField(blank=True, null=True)
     ################
     display_fields: list[str] = ["type", "origin", "amount", "payment_method"]
+
     ################
     def save(self, *args, **kwargs):
         # Convert amount to negative if transaction type is OUT

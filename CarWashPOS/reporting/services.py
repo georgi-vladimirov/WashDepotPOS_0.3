@@ -2,7 +2,8 @@ from sales.models import Sale, CartItem
 from transactions.models import Transaction, Origin
 from transactions.services import daily_report_calculate
 from transactions.selectors import get_trans_for_location_and_date
-from core.models import CalendarEvent, Location
+from core.models import Location
+from cal_app.models import CalendarEvent
 from .dates import get_dates_for_month
 from django.db.models import QuerySet, Count, Sum, F, Q
 from datetime import date

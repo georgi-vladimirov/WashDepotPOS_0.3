@@ -7,7 +7,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from decimal import Decimal
 
-from core.selectors import get_cal_event_by_id
+from cal_app.selectors import get_cal_event_by_id
 from .forms import AddSaleForm
 from .selectors import (
     get_sales_by_cal_event,

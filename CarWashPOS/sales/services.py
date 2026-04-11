@@ -3,8 +3,11 @@ from typing import Tuple
 from typing_extensions import final
 from django.utils.functional import Promise
 from django.utils.translation import gettext_lazy as _
-from core.models import CalendarEvent
-from core.selectors import get_services_by_location_and_vehicle_type, get_services_by_ids
+from cal_app.models import CalendarEvent
+from core.selectors import (
+    get_services_by_location_and_vehicle_type,
+    get_services_by_ids,
+)
 from core.models import ServiceType, Service
 from salaries.services import create_salary
 from .models import Sale, Cart, CartItem, PaymentStatus
@@ -57,7 +60,12 @@ def create_cartItems(*, sale: Sale, service_ids: list[str], cart: Cart):
 
 
 def create_cart_for_sale(
-    *, sale: Sale, service_ids: list[str], total_amount: Decimal, discount_per: Decimal, final_amount: Decimal
+    *,
+    sale: Sale,
+    service_ids: list[str],
+    total_amount: Decimal,
+    discount_per: Decimal,
+    final_amount: Decimal,
 ) -> Cart:
     """
     Create a Cart for the given Sale with the provided amounts and services.
@@ -72,7 +80,10 @@ def create_cart_for_sale(
     create_cartItems(sale=sale, service_ids=service_ids, cart=cart)
 
     if not check_cart_amounts(cart=cart, discount_per=discount_per):
-        logger.info("cart_amounts_inconsistent", extra={"sale": sale.logger_data(), "cart": cart.logger_data()})
+        logger.info(
+            "cart_amounts_inconsistent",
+            extra={"sale": sale.logger_data(), "cart": cart.logger_data()},
+        )
         return cart  # Cart is still created, but amounts are inconsistent
     cart.save()
     logger.info("cart_created", extra={"sale_id": sale.pk, "services": service_ids})
@@ -117,8 +128,12 @@ def select_services_for_sale(*, sale: Sale):
     Return a list of dicts grouping available services by ServiceType for the
     sale's location and vehicle type, each including the current active price.
     """
-    services = get_services_by_location_and_vehicle_type(location=sale.date.location, vehicle_type=sale.vehicle_type)
-    service_types = ServiceType.objects.filter(services__in=services).distinct().order_by("order")
+    services = get_services_by_location_and_vehicle_type(
+        location=sale.date.location, vehicle_type=sale.vehicle_type
+    )
+    service_types = (
+        ServiceType.objects.filter(services__in=services).distinct().order_by("order")
+    )
 
     services_by_type = []
 
@@ -150,7 +165,10 @@ def select_services_for_sale(*, sale: Sale):
     return services_by_type
 
 
-def set_sale_status(*, sale: Sale,) -> Sale:
+def set_sale_status(
+    *,
+    sale: Sale,
+) -> Sale:
     unpaid_amount = get_sale_unpaid_amount(sale=sale)
     cart = get_cart_by_sale(sale=sale)
     if cart is None:
@@ -164,6 +182,8 @@ def set_sale_status(*, sale: Sale,) -> Sale:
     else:
         sale.payment_status = PaymentStatus.PARTIAL
     sale.save()
-    logger.info("sale_status_set", extra={"sale_id": sale.pk, "status": sale.payment_status})
+    logger.info(
+        "sale_status_set", extra={"sale_id": sale.pk, "status": sale.payment_status}
+    )
 
     return sale

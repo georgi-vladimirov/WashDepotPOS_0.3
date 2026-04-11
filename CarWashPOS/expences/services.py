@@ -1,7 +1,7 @@
 from typing import Tuple
 from django.utils.translation import gettext_lazy as _
 from .models import Expence
-from core.models import CalendarEvent
+from cal_app.models import CalendarEvent
 from django.db.models import QuerySet
 from transactions.models import Transaction, TranType, Origin, PaymentMethod
 from transactions.services import create_tran_for_expence, transaction_delete

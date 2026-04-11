@@ -8,7 +8,7 @@ from django.db.models.functions import Coalesce
 from sales.models import Sale
 from sales.selectors import get_sale_unpaid_amount
 from sales.services import set_sale_status
-from core.models import CalendarEvent
+from cal_app.models import CalendarEvent
 from .models import Transaction, TranType, Origin, PaymentMethod
 from .filters import FILTERS
 from .selectors import get_cash_end_from_prev_cal_event, get_trans_by_cal_event

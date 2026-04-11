@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from core.selectors import get_cal_event_by_id
+from cal_app.selectors import get_cal_event_by_id
 from sales.models import Sale
 from sales.selectors import get_sale_by_id, get_sale_unpaid_amount
 from .selectors import (
@@ -124,7 +124,7 @@ class Transactions(LoginRequiredMixin, View):
         if tran_type == TranType.END:
             amount: Decimal = calculate_cash_balance(cal_event=cal_event)
 
-        form = TransactionForm(amount = amount, type=tran_type, origin=origin)
+        form = TransactionForm(amount=amount, type=tran_type, origin=origin)
         form.date.initial = cal_event
 
         form_action = reverse("transactions:transactions")

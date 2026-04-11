@@ -1,9 +1,10 @@
 from .models import Sale, Cart, PaymentStatus, CartItem
-from core.models import CalendarEvent, Subscriber, Location
+from core.models import Subscriber, Location
+from cal_app.models import CalendarEvent
 from django.db.models import QuerySet, Q
 from decimal import Decimal
 from transactions.selectors import get_trans_amount_by_sale
-from core.selectors import get_cal_events_for_period
+from cal_app.selectors import get_cal_events_for_period
 
 
 def get_sales_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet[Sale]:

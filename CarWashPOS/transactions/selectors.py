@@ -1,7 +1,8 @@
 from django.db.models import QuerySet, Sum, Q
 from .models import Transaction, TranType
-from core.models import CalendarEvent, Location
-from core.selectors import get_cal_events_for_period, get_cal_events_for_month
+from core.models import Location
+from cal_app.models import CalendarEvent
+from cal_app.selectors import get_cal_events_for_period, get_cal_events_for_month
 from decimal import Decimal
 from datetime import date
 

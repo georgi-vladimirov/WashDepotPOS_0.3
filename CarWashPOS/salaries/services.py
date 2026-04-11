@@ -3,7 +3,7 @@ from sales.models import Sale
 from core.models import Employee
 from decimal import Decimal
 from core.selectors import get_employee_by_id
-from core.models import CalendarEvent
+from cal_app.models import CalendarEvent
 
 
 def create_salary(sale: Sale) -> list[Salary]:

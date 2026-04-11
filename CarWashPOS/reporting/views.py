@@ -4,7 +4,7 @@ from datetime import date
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
-from core.selectors import get_cal_event_by_id
+from cal_app.selectors import get_cal_event_by_id
 from .services import get_data_for_monthly_report, monthly_report_pivot
 
 

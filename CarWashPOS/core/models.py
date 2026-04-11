@@ -8,6 +8,7 @@ class Location(BaseModel):
     short_name = models.CharField(max_length=4, unique=True)
     ################
     display_fields: list[str] = ["short_name"]
+
     ################
     def __str__(self) -> str:
         return f"{self.name} - {self.short_name}"
@@ -48,6 +49,7 @@ class Service(BaseModel):
     description = models.TextField(blank=True)
     ################
     display_fields: list[str] = ["name"]
+
     ################
     def __str__(self) -> str:
         return f"{self.name}"
@@ -56,7 +58,9 @@ class Service(BaseModel):
 class ServicePrice(BaseModel):
     location = models.ManyToManyField(Location, related_name="service_prices")
     vehicle_type = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
-    service = models.ForeignKey("Service", on_delete=models.CASCADE, related_name="service_prices")
+    service = models.ForeignKey(
+        "Service", on_delete=models.CASCADE, related_name="service_prices"
+    )
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     ################
     display_fields: list[str] = ["amount"]
@@ -66,12 +70,18 @@ class ServicePrice(BaseModel):
     def save(self, *args, **kwargs):
         if self.pk:
             original = ServicePrice.objects.get(pk=self.pk)
-            changed = {f for f in self.IMMUTABLE_FIELDS if getattr(self, f) != getattr(original, f)}
+            changed = {
+                f
+                for f in self.IMMUTABLE_FIELDS
+                if getattr(self, f) != getattr(original, f)
+            }
             if changed:
-                raise ValueError(f"ServicePrice fields {changed} cannot be modified after creation.")
+                raise ValueError(
+                    f"ServicePrice fields {changed} cannot be modified after creation."
+                )
         super().save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
+    def delete(self, *args, **kwargs): # type: ignore
         self.is_active = False
         self.save()
 
@@ -85,6 +95,7 @@ class VehicleBrand(BaseModel):
     number_sort = models.IntegerField()
     ################
     display_fields: list[str] = ["brand"]
+
     ################
     def __str__(self) -> str:
         return f"{self.brand}"
@@ -95,6 +106,7 @@ class EmployeePosition(BaseModel):
     description = models.TextField(blank=True)
     ################
     display_fields: list[str] = ["position"]
+
     ################
     def __str__(self) -> str:
         return f"{self.position} | Active: {self.is_active}"
@@ -104,12 +116,21 @@ class Employee(BaseModel):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     employee_id = models.CharField(max_length=15, unique=True)
-    position = models.ForeignKey(EmployeePosition, on_delete=models.CASCADE, related_name="employees")
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="employees")
-    salary_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal(0))
-    bonus_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal(0))
+    position = models.ForeignKey(
+        EmployeePosition, on_delete=models.CASCADE, related_name="employees"
+    )
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, related_name="employees"
+    )
+    salary_percentage = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal(0)
+    )
+    bonus_percentage = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal(0)
+    )
     ################
     display_fields: list[str] = ["first_name", "last_name", "employee_id", "position"]
+
     ################
     def __str__(self) -> str:
         return f"{self.employee_id} ({self.first_name} {self.last_name})"
@@ -117,23 +138,13 @@ class Employee(BaseModel):
 
 class Subscriber(BaseModel):
     name = models.CharField(max_length=100, unique=True)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal(0))
+    discount_percentage = models.DecimalField(
+        max_digits=5, decimal_places=2, default=Decimal(0)
+    )
     location = models.ManyToManyField(Location, related_name="subscribers")
     ################
     display_fields: list[str] = ["name"]
+
     ################
     def __str__(self) -> str:
         return f"{self.name}"
-
-
-class CalendarEvent(BaseModel):
-    date = models.DateField()
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, unique_for_date="date")
-    ################
-    display_fields: list[str] = ["date", "location"]
-    ################
-    class Meta(BaseModel.Meta):
-        unique_together = ("date", "location")
-
-    def __str__(self) -> str:
-        return f"{self.date} - {self.location.name}"
