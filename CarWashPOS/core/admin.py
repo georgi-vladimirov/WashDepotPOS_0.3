@@ -57,7 +57,7 @@ class ServicePriceResource(resources.ModelResource):
             except VehicleType.DoesNotExist:
                 raise ValueError(f"Vehicle type '{row['vehicle_type']}' not found")
 
-    def after_save_instance(self, instance, row, using_transactions, dry_run, **kwargs): # type: ignore
+    def after_save_instance(self, instance, row, using_transactions, dry_run, **kwargs):  # type: ignore
         if not dry_run:
             # Add all active locations automatically
             active_locations = Location.objects.filter(is_active=True)
@@ -95,7 +95,28 @@ class ServicePriceAdmin(ImportExportModelAdmin):
     def get_locations(self, obj):
         return ", ".join([loc.name for loc in obj.location.all()])
 
-    get_locations.short_description = "Locations" # type: ignore
+    get_locations.short_description = "Locations"  # type: ignore
+
+
+class SubscriberResource(resources.ModelResource):
+    class Meta:
+        model = Subscriber
+        fields = ("name", "discount_percentage", "location", "is_active")
+        export_order = ("name", "discount_percentage", "location", "is_active")
+        skip_unchanged = True
+        report_skipped = True
+
+
+@admin.register(Subscriber)
+class SubscriberAdmin(ImportExportModelAdmin):
+    resource_class = SubscriberResource
+    list_display = ("name", "discount_percentage", "get_locations")
+    search_fields = ("",)
+
+    def get_locations(self, obj):
+        return ", ".join([loc.short_name for loc in obj.location.all()])
+
+    get_locations.short_description = "Locations"  # type: ignore
 
 
 # Register remaining models
@@ -105,4 +126,4 @@ admin.site.register(ServiceType)
 admin.site.register(VehicleBrand)
 admin.site.register(EmployeePosition)
 admin.site.register(Employee)
-admin.site.register(Subscriber)
+# admin.site.register(Subscriber)
