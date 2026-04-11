@@ -42,8 +42,30 @@ class Migration(migrations.Migration):
             ],
             database_operations=[
                 migrations.RunSQL(
-                    sql='ALTER TABLE "core_calendarevent" RENAME TO "cal_app_calendarevent"',
-                    reverse_sql='ALTER TABLE "cal_app_calendarevent" RENAME TO "core_calendarevent"',
+                    sql="""
+                        DO $$
+                        BEGIN
+                            IF EXISTS (
+                                SELECT 1 FROM pg_tables
+                                WHERE schemaname = 'public'
+                                AND tablename = 'core_calendarevent'
+                            ) THEN
+                                ALTER TABLE "core_calendarevent" RENAME TO "cal_app_calendarevent";
+                            END IF;
+                        END $$;
+                    """,
+                    reverse_sql="""
+                        DO $$
+                        BEGIN
+                            IF EXISTS (
+                                SELECT 1 FROM pg_tables
+                                WHERE schemaname = 'public'
+                                AND tablename = 'cal_app_calendarevent'
+                            ) THEN
+                                ALTER TABLE "cal_app_calendarevent" RENAME TO "core_calendarevent";
+                            END IF;
+                        END $$;
+                    """,
                 ),
             ],
         ),
