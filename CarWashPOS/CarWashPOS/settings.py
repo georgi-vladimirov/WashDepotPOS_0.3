@@ -74,17 +74,29 @@ WSGI_APPLICATION = "CarWashPOS.wsgi.application"
 
 
 # Database
-DATABASES = {
-    "default": dj_database_url.config(
-        default=(
-            f"postgresql://{os.environ.get('DB_USER')}:{os.environ.get('DB_PASSWORD')}"
-            f"@{os.environ.get('DB_HOST', '127.0.0.1')}:{os.environ.get('DB_PORT', '5432')}"
-            f"/{os.environ.get('DB_NAME')}"
-        ),
-        conn_max_age=600,
-        ssl_require=not DEBUG,
-    )
-}
+# On Render: DATABASE_URL is set automatically when a PostgreSQL service is attached.
+# Locally: falls back to individual DB_* variables from the .env file.
+_database_url = os.environ.get("DATABASE_URL")
+
+if _database_url:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=_database_url,
+            conn_max_age=600,
+            ssl_require=not DEBUG,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("DB_NAME"),
+            "USER": os.environ.get("DB_USER"),
+            "PASSWORD": os.environ.get("DB_PASSWORD"),
+            "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
+            "PORT": os.environ.get("DB_PORT", "5432"),
+        }
+    }
 
 
 # Password validation
