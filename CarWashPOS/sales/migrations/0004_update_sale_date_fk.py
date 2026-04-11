@@ -5,7 +5,6 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     dependencies = [
         ("cal_app", "0001_initial"),
-        ("core", "0002_remove_calendarevent"),
         ("sales", "0003_alter_sale_manager_alter_sale_subscriber_and_more"),
     ]
 
