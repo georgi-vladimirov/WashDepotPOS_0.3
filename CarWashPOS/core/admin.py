@@ -1,7 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-
 from .models import (
     Location,
     VehicleType,
@@ -12,7 +11,6 @@ from .models import (
     EmployeePosition,
     Employee,
     Subscriber,
-    CalendarEvent,
 )
 
 
@@ -24,6 +22,14 @@ class ServiceResource(resources.ModelResource):
         import_id_fields = ("name",)  # Use name as unique identifier
         skip_unchanged = True
         report_skipped = True
+
+
+@admin.register(Service)
+class ServicesAdmin(ImportExportModelAdmin):
+    resource_class = ServiceResource
+    list_display = ("name", "service_type", "is_active")
+    list_filter = ("service_type", "is_active")
+    search_fields = ("name", "description")
 
 
 class ServicePriceResource(resources.ModelResource):
@@ -58,7 +64,7 @@ class ServicePriceResource(resources.ModelResource):
             except VehicleType.DoesNotExist:
                 raise ValueError(f"Vehicle type '{row['vehicle_type']}' not found")
 
-    def after_save_instance(self, instance, row, using_transactions, dry_run, **kwargs):
+    def after_save_instance(self, instance, row, using_transactions, dry_run, **kwargs):  # type: ignore
         if not dry_run:
             # Add all active locations automatically
             active_locations = Location.objects.filter(is_active=True)
@@ -72,33 +78,132 @@ class ServicePriceResource(resources.ModelResource):
         import_id_fields = []
 
 
-@admin.register(Service)
-class ServicesAdmin(ImportExportModelAdmin):
-    resource_class = ServiceResource
-    list_display = ("name", "service_type", "is_active")
-    list_filter = ("service_type", "is_active")
-    search_fields = ("name", "description")
-
-
 @admin.register(ServicePrice)
 class ServicePriceAdmin(ImportExportModelAdmin):
     resource_class = ServicePriceResource
-    list_display = ("service__name", "vehicle_type__name", "amount", "is_active", "get_locations")
+    list_display = (
+        "service__name",
+        "vehicle_type__name",
+        "amount",
+        "is_active",
+        "get_locations",
+    )
     list_filter = ("location", "vehicle_type", "is_active")
     search_fields = ("service__name",)
 
     def get_locations(self, obj):
         return ", ".join([loc.name for loc in obj.location.all()])
 
-    get_locations.short_description = "Locations"
+    get_locations.short_description = "Locations"  # type: ignore
+
+
+class SubscriberResource(resources.ModelResource):
+    class Meta:
+        model = Subscriber
+        fields = ("name", "discount_percentage", "location", "is_active")
+        import_id_fields = ("name",)  # Use name as unique identifier
+        export_order = ("name", "discount_percentage", "location", "is_active")
+        skip_unchanged = True
+        report_skipped = True
+
+
+@admin.register(Subscriber)
+class SubscriberAdmin(ImportExportModelAdmin):
+    resource_class = SubscriberResource
+    list_display = ("name", "discount_percentage", "get_locations")
+    search_fields = ("",)
+
+    def get_locations(self, obj):
+        return ", ".join([loc.short_name for loc in obj.location.all()])
+
+    get_locations.short_description = "Locations"  # type: ignore
+
+
+class VehicleBrandResource(resources.ModelResource):
+    class Meta:
+        model = VehicleBrand
+        fields = ("brand", "number_sort")
+        import_id_fields = ("brand",)  # Use name as unique identifier
+        export_order = ("brand", "number_sort", "is_active")
+        skip_unchanged = True
+        report_skipped = True
+
+
+@admin.register(VehicleBrand)
+class VehicleBrandAdmin(ImportExportModelAdmin):
+    resource_class = VehicleBrandResource
+    list_display = ("brand", "number_sort")
+
+
+class EmployeeResource(resources.ModelResource):
+    class Meta:
+        model = Employee
+        fields = (
+            "first_name",
+            "last_name",
+            "employee_id",
+            "position",
+            "location",
+            "salary_percentage",
+            "bonus_percentage",
+            "is_active",
+        )
+        import_id_fields = ("employee_id",)  # Use name as unique identifier
+        export_order = (
+            "first_name",
+            "last_name",
+            "employee_id",
+            "position",
+            "location",
+            "salary_percentage",
+            "bonus_percentage",
+            "is_active",
+        )
+        skip_unchanged = True
+        report_skipped = True
+
+
+@admin.register(Employee)
+class EmployeeAdmin(ImportExportModelAdmin):
+    resource_class = EmployeeResource
+    list_display = (
+        "first_name",
+        "last_name",
+        "employee_id",
+        "position__position",
+        "location__short_name",
+        "salary_percentage",
+        "bonus_percentage",
+        "is_active",
+    )
+    search_fields = ("location", "position__position")
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    class Meta:
+        model = Location
+        fields = ("name", "short_name")
+        export_order = ("id", "name", "short_name", "is_active")
+
+    list_display = ("id", "name", "short_name", "is_active")
+
+
+@admin.register(EmployeePosition)
+class EmployeePositionAdmin(admin.ModelAdmin):
+    class Meta:
+        model = EmployeePosition
+        fields = ("position", "description")
+        export_order = ("id", "position", "description", "is_active")
+
+    list_display = ("id", "position", "description", "is_active")
 
 
 # Register remaining models
-admin.site.register(Location)
+# admin.site.register(Location)
 admin.site.register(VehicleType)
 admin.site.register(ServiceType)
-admin.site.register(VehicleBrand)
-admin.site.register(EmployeePosition)
-admin.site.register(Employee)
-admin.site.register(Subscriber)
-admin.site.register(CalendarEvent)
+# admin.site.register(EmployeePosition)
+# admin.site.register(VehicleBrand)
+# admin.site.register(Employee)
+# admin.site.register(Subscriber)
