@@ -12,12 +12,21 @@
          href="{% url 'sales:add_sale' %}"
          data-width="500"
          data-height="600">{% translate "New Car" %}</a>
+      <a class="btn btn-danger ms-5"
+         type="button"
+         role="button"
+         href="{% url 'sales:unpaid_cars' %}"
+         data-width="500"
+         data-height="600">{% translate "Unpaid cars" %}</a>
     </div>
     <div class="border shadow-sm p-2 mt-3 mx-2 bg-body-tertiary rounded">
       <table class="table table-sm">
         <thead>
           <tr>
             <th scope="col" class="text-center"></th>
+            {% if show_date %}
+            <th scope="col" class="text-center">{% translate "Date" %}</th>
+            {% endif %}
             <th scope="col" class="text-center">{% translate "Reg.#" %}</th>
             <th scope="col" class="text-center">{% translate "Payment" %}</th>
             <th scope="col" class="text-center">{% translate "Car Type" %}</th>
@@ -48,6 +57,9 @@
                   </button>
                 {% endif %}
               </td>
+              {% if show_date %}
+              <td class="text-center text-nowrap">{{ sale.date.date|date:"d M Y" }}</td>
+              {% endif %}
               <td class="text-center">{{ sale.reg_number }}</td>
               <td class="text-center">
                   <span class="badge text-bg-{% if sale.payment_status == 'PAID' %}success{% elif sale.payment_status == 'PARTIAL' %}info{% else %}warning{%endif %}">

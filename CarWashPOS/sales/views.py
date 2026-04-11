@@ -9,8 +9,20 @@ from decimal import Decimal
 
 from core.selectors import get_cal_event_by_id
 from .forms import AddSaleForm
-from .selectors import get_sales_by_cal_event, get_sale_by_id, get_discount_for_subscriber_from_sale, get_cart_by_id
-from .services import create_sale, delete_sale, select_services_for_sale, create_cart_for_sale, cart_delete
+from .selectors import (
+    get_sales_by_cal_event,
+    get_sale_by_id,
+    get_discount_for_subscriber_from_sale,
+    get_cart_by_id,
+    get_unpaid_cars,
+)
+from .services import (
+    create_sale,
+    delete_sale,
+    select_services_for_sale,
+    create_cart_for_sale,
+    cart_delete,
+)
 
 logger = logging.getLogger("sales.services")
 
@@ -33,8 +45,12 @@ class AddSale(LoginRequiredMixin, View):
         cal_event_id = request.session.get("cal_event_id")
         cal_event = get_cal_event_by_id(cal_event_id=cal_event_id)
         if cal_event is None:
-            logger.warning("Attempt to access AddSale view without a calendar event in session")
-            return HttpResponse("No calendar event selected", status=http.HTTPStatus.BAD_REQUEST)
+            logger.warning(
+                "Attempt to access AddSale view without a calendar event in session"
+            )
+            return HttpResponse(
+                "No calendar event selected", status=http.HTTPStatus.BAD_REQUEST
+            )
 
         location = cal_event.location
         form = AddSaleForm(location=location)
@@ -46,7 +62,9 @@ class AddSale(LoginRequiredMixin, View):
         cal_event = get_cal_event_by_id(cal_event_id=cal_event_id)
         if cal_event is None:
             messages.error(request, "No calendar event selected")
-            logger.warning("Attempt to submit AddSale form without a calendar event in session")
+            logger.warning(
+                "Attempt to submit AddSale form without a calendar event in session"
+            )
             return redirect("sales:sales_overview")
 
         location = cal_event.location
@@ -54,10 +72,14 @@ class AddSale(LoginRequiredMixin, View):
 
         if form.is_valid():
             sale = create_sale(form=form, cal_event=cal_event)
-            return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
+            return HttpResponse(
+                "<script>window.opener.location.reload(); window.close();</script>"
+            )
         else:
             logger.warning("add_sale_form_invalid", extra={"errors": form.errors})
-            messages.error(request, "Error recording sale. Please check the form for errors.")
+            messages.error(
+                request, "Error recording sale. Please check the form for errors."
+            )
 
         return render(request, "sales/add_sale.html", {"form": form})
 
@@ -95,7 +117,11 @@ class AddCart(LoginRequiredMixin, View):
         return render(
             request,
             "sales/add_cart.html",
-            {"sale_id": sale_id, "services_by_type": services_by_type, "discount": discount},
+            {
+                "sale_id": sale_id,
+                "services_by_type": services_by_type,
+                "discount": discount,
+            },
         )
 
     def post(self, request, sale_id):
@@ -116,7 +142,9 @@ class AddCart(LoginRequiredMixin, View):
             final_amount=final_amount,
         )
 
-        return HttpResponse("<script>window.opener.location.reload(); window.close();</script>")
+        return HttpResponse(
+            "<script>window.opener.location.reload(); window.close();</script>"
+        )
 
 
 class DeleteCart(LoginRequiredMixin, View):
@@ -132,3 +160,18 @@ class DeleteCart(LoginRequiredMixin, View):
             messages.error(request, "Error deleting cart")
 
         return redirect("sales:sales_overview")
+
+
+class UnpaidCars(LoginRequiredMixin, View):
+    def get(self, request):
+        cal_event_id = request.session.get("cal_event_id")
+        cal_event = get_cal_event_by_id(cal_event_id=cal_event_id)
+
+        if cal_event is None:
+            return render(request, "sales/sales_overview.html")
+
+        location = cal_event.location
+        sales = get_unpaid_cars(location=location).select_related("date")
+        return render(
+            request, "sales/sales_overview.html", {"sales": sales, "show_date": True}
+        )

@@ -1,5 +1,5 @@
 from .models import Sale, Cart, PaymentStatus, CartItem
-from core.models import CalendarEvent, Subscriber
+from core.models import CalendarEvent, Subscriber, Location
 from django.db.models import QuerySet, Q
 from decimal import Decimal
 from transactions.selectors import get_trans_amount_by_sale
@@ -9,6 +9,16 @@ from core.selectors import get_cal_events_for_period
 def get_sales_by_cal_event(*, cal_event: CalendarEvent) -> QuerySet[Sale]:
     """Return a QuerySet of Sale objects for the given CalendarEvent."""
     return Sale.objects.filter(date=cal_event).select_related(
+        "vehicle_type", "vehicle_brand", "subscriber", "cart", "worker", "manager"
+    )
+
+
+def get_unpaid_cars(*, location: Location) -> QuerySet[Sale]:
+    """Return a QuerySet of Sale objects for the given location."""
+    return Sale.objects.filter(
+        date__location=location,
+        payment_status__in=[PaymentStatus.UNPAID, PaymentStatus.PARTIAL],
+    ).select_related(
         "vehicle_type", "vehicle_brand", "subscriber", "cart", "worker", "manager"
     )
 
