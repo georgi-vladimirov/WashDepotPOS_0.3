@@ -1,3 +1,6 @@
+# Claude AI worktrees
+.claude/
+
 # Python
 __pycache__/
 *.py[cod]
