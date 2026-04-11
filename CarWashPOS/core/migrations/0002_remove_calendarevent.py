@@ -16,6 +16,11 @@ class Migration(migrations.Migration):
             state_operations=[
                 migrations.DeleteModel(name="CalendarEvent"),
             ],
-            database_operations=[],
+            database_operations=[
+                migrations.RunSQL(
+                    sql='DROP TABLE IF EXISTS "core_calendarevent"',
+                    reverse_sql="",
+                ),
+            ],
         ),
     ]
