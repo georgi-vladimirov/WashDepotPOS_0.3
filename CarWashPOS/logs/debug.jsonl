@@ -276,3 +276,6 @@
 {"timestamp": "2026-04-11T22:46:33", "level": "INFO", "logger": "accounts.selectors", "message": "user_authentication_failed", "user": {"user_id": null, "username": "anonymous"}, "extra": {"taskName": null, "username": "admin"}}
 {"timestamp": "2026-04-11T22:46:52", "level": "INFO", "logger": "accounts.selectors", "message": "user_authenticated", "user": {"user_id": null, "username": "anonymous"}, "extra": {"taskName": null, "user_id": "admin"}}
 {"timestamp": "2026-04-11T22:46:52", "level": "INFO", "logger": "accounts.services", "message": "user_logged_in", "user": {"user_id": null, "username": "anonymous"}, "extra": {"taskName": null, "user_id": "admin"}}
+{"timestamp": "2026-04-11T23:05:42", "level": "INFO", "logger": "accounts.services", "message": "user_logged_out", "user": {"user_id": 1, "username": "admin"}, "extra": {"taskName": null, "user_id": "admin"}}
+{"timestamp": "2026-04-11T23:05:49", "level": "INFO", "logger": "accounts.selectors", "message": "user_authenticated", "user": {"user_id": null, "username": "anonymous"}, "extra": {"taskName": null, "user_id": "bps"}}
+{"timestamp": "2026-04-11T23:05:50", "level": "INFO", "logger": "accounts.services", "message": "user_logged_in", "user": {"user_id": null, "username": "anonymous"}, "extra": {"taskName": null, "user_id": "bps"}}
