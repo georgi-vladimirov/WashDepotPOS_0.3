@@ -1,9 +1,14 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from django.db.models import QuerySet
 from .models import Salary, SalaryType
-from sales.models import Sale
 from core.models import Employee
 from decimal import Decimal
 from core.selectors import get_employee_by_id
 from core.models import CalendarEvent
+
+if TYPE_CHECKING:
+    from sales.models import Sale
 
 
 def create_salary(sale: Sale) -> list[Salary]:
@@ -44,6 +49,13 @@ def create_salary(sale: Sale) -> list[Salary]:
         salary.full_clean()
 
     return Salary.objects.bulk_create(salaries_to_create)
+
+
+def delete_salaries(salaries: QuerySet[Salary]) -> bool:
+    result = salaries.delete()
+    if result[0] > 0:
+        return True
+    return False
 
 
 def create_penalty(

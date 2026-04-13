@@ -8,6 +8,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from decimal import Decimal
 
 from core.selectors import get_cal_event_by_id
+from salaries.selectors import get_salaries_by_sale
+from salaries.services import delete_salaries
+
 from .forms import AddSaleForm
 from .selectors import (
     get_sales_by_cal_event,
@@ -113,7 +116,7 @@ class AddCart(LoginRequiredMixin, View):
 
         services_by_type = select_services_for_sale(sale=sale)
         discount = get_discount_for_subscriber_from_sale(sale=sale)
-        print(discount)
+
         return render(
             request,
             "sales/add_cart.html",
@@ -155,6 +158,8 @@ class DeleteCart(LoginRequiredMixin, View):
             return redirect("sales:sales_overview")
 
         if cart_delete(cart=cart):
+            salaries = get_salaries_by_sale(sale=cart.sale)
+            delete_salaries(salaries=salaries)
             messages.success(request, "Cart deleted successfully")
         else:
             messages.error(request, "Error deleting cart")

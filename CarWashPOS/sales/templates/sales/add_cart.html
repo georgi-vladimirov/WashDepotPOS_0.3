@@ -35,7 +35,7 @@
                                     class="btn btn-info btn-sm service-btn"
                                     data-service-id="{{ service.id }}"
                                     data-service-name="{{ service.name }}"
-                                    data-service-price="{{ service.price }}">
+                                    data-service-price="{{ service.price|unlocalize }}">
                                 {{ service.name }} - {{ service.price|unlocalize }} EUR
                             </button>
                         {% endfor %}

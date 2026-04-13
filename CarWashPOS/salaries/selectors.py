@@ -1,3 +1,5 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from decimal import Decimal
 from django.db.models import QuerySet, Q, F, Sum, DecimalField
 from django.db.models.functions import Coalesce
@@ -6,6 +8,10 @@ from transactions.models import Transaction, Origin
 from core.models import CalendarEvent
 from core.selectors import get_cal_events_for_period
 from typing import Any, Literal
+
+
+if TYPE_CHECKING:
+    from sales.models import Sale
 
 
 def salary_calculate_total_by_employee_date(
@@ -146,9 +152,12 @@ def get_penalties_by_month(*, cal_event: CalendarEvent) -> QuerySet[Salary]:
     return Salary.objects.filter(period_q, type=SalaryType.PENALTY)
 
 
-
 def get_salary_by_pk(*, pk: int) -> Salary | None:
     try:
         return Salary.objects.get(pk=pk)
     except Salary.DoesNotExist:
         return None
+
+
+def get_salaries_by_sale(*, sale: Sale) -> QuerySet[Salary]:
+    return Salary.objects.filter(sale=sale)
