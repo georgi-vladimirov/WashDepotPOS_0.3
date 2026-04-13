@@ -1,7 +1,6 @@
-import http
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.http import HttpResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from core.selectors import get_cal_event_by_id, get_employees_for_location
@@ -11,10 +10,12 @@ from transactions.forms import TransactionForm
 from .selectors import (
     salary_calculate_total_by_employee_date,
     get_penalties_by_cal_event,
-    get_penalties_by_month
+    get_penalties_by_month,
+    get_salary_by_pk
 )
-from .services import create_penalty
+from .services import create_penalty, delete_penalty
 from decimal import Decimal
+from django.contrib import messages
 
 
 class SalariesOverview(LoginRequiredMixin, View):
@@ -109,3 +110,18 @@ class PenaltyView(LoginRequiredMixin, View):
         return HttpResponse(
             "<script>window.opener.location.reload(); window.close();</script>"
         )
+
+
+class SalaryDeleteView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        penalty = get_salary_by_pk(pk=pk)
+        if penalty is None:
+            return redirect("salaries:salaries_overview")
+
+        result = delete_penalty(penalty)
+        if result:
+            messages.success(request, "Penalty deleted successfully.")
+        else:
+            messages.error(request, "Failed to delete penalty.")
+        return redirect("salaries:salaries_overview")
+

@@ -52,12 +52,19 @@ def create_penalty(
     employee = get_employee_by_id(employee_id=employee_id)
     if amount > 0:
         amount = -amount
-    salary = Salary(
+    penalty = Salary(
         date=cal_event,
         employee=employee,
         amount=amount,
         type=SalaryType.PENALTY,
     )
-    salary.full_clean()
-    salary.save()
-    return salary
+    penalty.full_clean()
+    penalty.save()
+    return penalty
+
+
+def delete_penalty(penalty: Salary) -> bool:
+    result = penalty.delete()
+    if result[0] > 0:
+        return True
+    return False

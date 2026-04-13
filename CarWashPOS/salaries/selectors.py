@@ -145,3 +145,10 @@ def get_penalties_by_month(*, cal_event: CalendarEvent) -> QuerySet[Salary]:
     period_q = Q(date__in=cal_events)
     return Salary.objects.filter(period_q, type=SalaryType.PENALTY)
 
+
+
+def get_salary_by_pk(*, pk: int) -> Salary | None:
+    try:
+        return Salary.objects.get(pk=pk)
+    except Salary.DoesNotExist:
+        return None
