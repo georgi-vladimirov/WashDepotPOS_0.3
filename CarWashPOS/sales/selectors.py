@@ -53,7 +53,7 @@ def get_sale_by_id(*, sale_id: int) -> Sale | None:
 
 def get_discount_for_subscriber_from_sale(*, sale: Sale) -> Decimal:
     """Return the discount percentage for a subscriber, or 0 if no subscriber."""
-    subscriber: Subscriber | None = sale.subscriber
+    subscriber: Subscriber = sale.subscriber
     if subscriber is None:
         return Decimal(0)
     return subscriber.discount_percentage

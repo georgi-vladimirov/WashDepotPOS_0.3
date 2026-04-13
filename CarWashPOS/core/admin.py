@@ -18,8 +18,9 @@ from .models import (
 class ServiceResource(resources.ModelResource):
     class Meta:
         model = Service
-        fields = ("name", "service_type", "description", "active")
+        fields = ("id", "name", "service_type", "description", "is_active")
         import_id_fields = ("name",)  # Use name as unique identifier
+        export_order = ("id", "name", "service_type", "description", "is_active")
         skip_unchanged = True
         report_skipped = True
 
@@ -27,8 +28,8 @@ class ServiceResource(resources.ModelResource):
 @admin.register(Service)
 class ServicesAdmin(ImportExportModelAdmin):
     resource_class = ServiceResource
-    list_display = ("name", "service_type", "is_active")
-    list_filter = ("service_type", "is_active")
+    list_display = ("id", "name", "service_type", "is_active")
+    list_filter = ("id", "service_type", "is_active")
     search_fields = ("name", "description")
 
 
@@ -199,11 +200,25 @@ class EmployeePositionAdmin(admin.ModelAdmin):
     list_display = ("id", "position", "description", "is_active")
 
 
-# Register remaining models
-# admin.site.register(Location)
-admin.site.register(VehicleType)
-admin.site.register(ServiceType)
-# admin.site.register(EmployeePosition)
-# admin.site.register(VehicleBrand)
-# admin.site.register(Employee)
-# admin.site.register(Subscriber)
+@admin.register(ServiceType)
+class ServiceTypeAdmin(admin.ModelAdmin):
+    class Meta:
+        model = ServiceType
+        fields = ("id", "name", "name_BG", "selectivity", "order", "is_active")
+        export_order = ("id", "name", "name_BG", "selectivity", "order", "is_active")
+
+    list_display = ("id", "name", "name_BG", "selectivity", "order", "is_active")
+
+
+@admin.register(VehicleType)
+class VehicleTypeAdmin(admin.ModelAdmin):
+    class Meta:
+        model = VehicleType
+        fields = ("id", "name")
+        export_order = ("id", "name")
+
+    list_display = ("id", "name")
+
+
+# admin.site.register(VehicleType)
+# admin.site.register(ServiceType)

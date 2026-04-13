@@ -113,7 +113,7 @@ class AddCart(LoginRequiredMixin, View):
 
         services_by_type = select_services_for_sale(sale=sale)
         discount = get_discount_for_subscriber_from_sale(sale=sale)
-
+        print(discount)
         return render(
             request,
             "sales/add_cart.html",

@@ -72,7 +72,7 @@
                                id="discount-pct"
                                name="discount"
                                class="form-control form-control-sm"
-                               value="{{ discount|default:'0' }}"
+                               value="{{ discount|unlocalize|default:'0' }}"
                                min="0"
                                max="100"
                                step="0.01">
