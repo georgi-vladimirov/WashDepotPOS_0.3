@@ -3,6 +3,7 @@ from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 from .models import (
     Location,
+    CalendarEvent,
     VehicleType,
     ServicePrice,
     ServiceType,
@@ -220,5 +221,5 @@ class VehicleTypeAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
 
 
-# admin.site.register(VehicleType)
-# admin.site.register(ServiceType)
+admin.site.register(CalendarEvent)
+
