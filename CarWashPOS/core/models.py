@@ -81,7 +81,7 @@ class ServicePrice(BaseModel):
                 )
         super().save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs): # type: ignore
+    def delete(self, *args, **kwargs):  # type: ignore
         self.is_active = False
         self.save()
 
@@ -138,6 +138,7 @@ class Employee(BaseModel):
 
 class Subscriber(BaseModel):
     name = models.CharField(max_length=100, unique=True)
+    company_id = models.CharField(max_length=10, unique=True)
     discount_percentage = models.DecimalField(
         max_digits=5, decimal_places=2, default=Decimal(0)
     )

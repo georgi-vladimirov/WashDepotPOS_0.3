@@ -102,9 +102,15 @@ class ServicePriceAdmin(ImportExportModelAdmin):
 class SubscriberResource(resources.ModelResource):
     class Meta:
         model = Subscriber
-        fields = ("name", "discount_percentage", "location", "is_active")
+        fields = ("name", "company_id", "discount_percentage", "location", "is_active")
         import_id_fields = ("name",)  # Use name as unique identifier
-        export_order = ("name", "discount_percentage", "location", "is_active")
+        export_order = (
+            "name",
+            "company_id",
+            "discount_percentage",
+            "location",
+            "is_active",
+        )
         skip_unchanged = True
         report_skipped = True
 
@@ -112,8 +118,8 @@ class SubscriberResource(resources.ModelResource):
 @admin.register(Subscriber)
 class SubscriberAdmin(ImportExportModelAdmin):
     resource_class = SubscriberResource
-    list_display = ("name", "discount_percentage", "get_locations")
-    search_fields = ("",)
+    list_display = ("name", "company_id", "discount_percentage", "get_locations")
+    search_fields = ("name", "company_id")
 
     def get_locations(self, obj):
         return ", ".join([loc.short_name for loc in obj.location.all()])
@@ -222,4 +228,3 @@ class VehicleTypeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CalendarEvent)
-
